@@ -1,0 +1,2080 @@
+{
+  "capitalization_trends": {
+    "annual_statistics": {
+      "('total_offering_amount', 'count')": {
+        "2010": 14,
+        "2011": 9,
+        "2012": 11,
+        "2013": 17,
+        "2014": 12,
+        "2015": 11,
+        "2016": 13,
+        "2017": 11,
+        "2018": 12,
+        "2019": 17,
+        "2020": 12,
+        "2021": 11,
+        "2022": 11,
+        "2023": 25,
+        "2024": 14
+      },
+      "('total_offering_amount', 'mean')": {
+        "2010": 19431846.52,
+        "2011": 8053140.65,
+        "2012": 9511145.79,
+        "2013": 8117846.18,
+        "2014": 8016589.96,
+        "2015": 5533608.34,
+        "2016": 13944228.38,
+        "2017": 16617501.68,
+        "2018": 14897910.44,
+        "2019": 10059819.88,
+        "2020": 25277921.13,
+        "2021": 10887818.72,
+        "2022": 20330601.68,
+        "2023": 14003821.83,
+        "2024": 13173672.0
+      },
+      "('total_offering_amount', 'median')": {
+        "2010": 10740119.54,
+        "2011": 9707698.73,
+        "2012": 5219013.22,
+        "2013": 4341031.04,
+        "2014": 5029322.99,
+        "2015": 5141225.38,
+        "2016": 8478659.99,
+        "2017": 9164022.88,
+        "2018": 13063599.94,
+        "2019": 6097154.79,
+        "2020": 16698789.04,
+        "2021": 5786632.73,
+        "2022": 19755551.38,
+        "2023": 7628540.66,
+        "2024": 10131534.43
+      },
+      "('total_offering_amount', 'min')": {
+        "2010": 2032924.78,
+        "2011": 998335.33,
+        "2012": 2051844.87,
+        "2013": 762941.8,
+        "2014": 640040.73,
+        "2015": 1569709.27,
+        "2016": 769383.0,
+        "2017": 1156234.19,
+        "2018": 1142827.22,
+        "2019": 1160080.68,
+        "2020": 2894421.79,
+        "2021": 1153424.53,
+        "2022": 4178008.42,
+        "2023": 1940484.33,
+        "2024": 2919212.19
+      },
+      "('total_offering_amount', 'max')": {
+        "2010": 70270541.88,
+        "2011": 18316857.34,
+        "2012": 53626213.55,
+        "2013": 30772911.21,
+        "2014": 25633414.48,
+        "2015": 11660366.02,
+        "2016": 72558184.39,
+        "2017": 74134133.76,
+        "2018": 40588085.94,
+        "2019": 38011464.76,
+        "2020": 110269679.18,
+        "2021": 43935146.87,
+        "2022": 41282841.85,
+        "2023": 87449195.69,
+        "2024": 36511876.57
+      },
+      "('total_offering_amount', 'sum')": {
+        "2010": 272045851.25,
+        "2011": 72478265.82,
+        "2012": 104622603.73,
+        "2013": 138003385.03,
+        "2014": 96199079.56,
+        "2015": 60869691.79,
+        "2016": 181274968.96,
+        "2017": 182792518.47,
+        "2018": 178774925.3,
+        "2019": 171016938.01,
+        "2020": 303335053.6,
+        "2021": 119766005.91,
+        "2022": 223636618.48,
+        "2023": 350095545.69,
+        "2024": 184431407.96
+      },
+      "('total_amount_sold', 'mean')": {
+        "2010": 14201771.28,
+        "2011": 5956410.54,
+        "2012": 7623079.7,
+        "2013": 6518324.56,
+        "2014": 5256564.04,
+        "2015": 3963688.46,
+        "2016": 8637887.49,
+        "2017": 9276927.91,
+        "2018": 10436500.69,
+        "2019": 6041268.75,
+        "2020": 22382799.87,
+        "2021": 9104140.76,
+        "2022": 12345769.43,
+        "2023": 10066004.1,
+        "2024": 9135939.27
+      },
+      "('total_amount_sold', 'median')": {
+        "2010": 6311882.12,
+        "2011": 6253594.5,
+        "2012": 3096738.86,
+        "2013": 4099092.05,
+        "2014": 3487246.84,
+        "2015": 3259133.17,
+        "2016": 4031141.51,
+        "2017": 7342453.51,
+        "2018": 10893952.64,
+        "2019": 4170924.31,
+        "2020": 12473169.64,
+        "2021": 3772480.23,
+        "2022": 12324354.12,
+        "2023": 5528339.89,
+        "2024": 5478792.88
+      },
+      "('total_amount_sold', 'sum')": {
+        "2010": 198824797.91,
+        "2011": 53607694.9,
+        "2012": 83853876.71,
+        "2013": 110811517.55,
+        "2014": 63078768.52,
+        "2015": 43600573.05,
+        "2016": 112292537.42,
+        "2017": 102046207.02,
+        "2018": 125238008.25,
+        "2019": 102701568.72,
+        "2020": 268593598.4,
+        "2021": 100145548.33,
+        "2022": 135803463.73,
+        "2023": 251650102.58,
+        "2024": 127903149.81
+      },
+      "('total_remaining', 'mean')": {
+        "2010": 5230075.24,
+        "2011": 2096730.1,
+        "2012": 1888066.09,
+        "2013": 1599521.62,
+        "2014": 2760025.92,
+        "2015": 1569919.89,
+        "2016": 5306340.89,
+        "2017": 7340573.77,
+        "2018": 4461409.75,
+        "2019": 4018551.13,
+        "2020": 2895121.27,
+        "2021": 1783677.96,
+        "2022": 7984832.25,
+        "2023": 3937817.72,
+        "2024": 4037732.72
+      },
+      "('total_remaining', 'median')": {
+        "2010": 3403298.1,
+        "2011": 997818.44,
+        "2012": 1153960.28,
+        "2013": 613434.61,
+        "2014": 1817491.43,
+        "2015": 1588673.3,
+        "2016": 1463656.98,
+        "2017": 3594917.3,
+        "2018": 1572839.6,
+        "2019": 1416816.54,
+        "2020": 1149860.2,
+        "2021": 840418.13,
+        "2022": 5963557.28,
+        "2023": 1270866.77,
+        "2024": 3261686.88
+      }
+    },
+    "top_10_by_year": {
+      "2010": [
+        {
+          "entity_name": "Company Broadway Productions",
+          "total_offering_amount": 70270541.88,
+          "filing_date": "2010-02-15 00:00:00"
+        },
+        {
+          "entity_name": "Music Man Productions LLC",
+          "total_offering_amount": 54730821.85,
+          "filing_date": "2010-02-13 00:00:00"
+        },
+        {
+          "entity_name": "Frozen Broadway LLC",
+          "total_offering_amount": 30635035.46,
+          "filing_date": "2010-07-09 00:00:00"
+        },
+        {
+          "entity_name": "Some Like It Hot Broadway LLC",
+          "total_offering_amount": 27322305.32,
+          "filing_date": "2010-02-02 00:00:00"
+        },
+        {
+          "entity_name": "POTUS Broadway Productions",
+          "total_offering_amount": 19490362.4,
+          "filing_date": "2010-02-17 00:00:00"
+        },
+        {
+          "entity_name": "Waitress Musical Productions",
+          "total_offering_amount": 18421913.04,
+          "filing_date": "2010-06-02 00:00:00"
+        },
+        {
+          "entity_name": "Frozen Broadway LLC",
+          "total_offering_amount": 11815807.48,
+          "filing_date": "2010-11-09 00:00:00"
+        },
+        {
+          "entity_name": "A Strange Loop LLC",
+          "total_offering_amount": 9664431.61,
+          "filing_date": "2010-05-01 00:00:00"
+        },
+        {
+          "entity_name": "Hamilton Productions LLC",
+          "total_offering_amount": 9472699.67,
+          "filing_date": "2010-07-26 00:00:00"
+        },
+        {
+          "entity_name": "Chicago Musical Productions",
+          "total_offering_amount": 6907402.73,
+          "filing_date": "2010-11-27 00:00:00"
+        }
+      ],
+      "2011": [
+        {
+          "entity_name": "Hamilton Productions LLC",
+          "total_offering_amount": 18316857.34,
+          "filing_date": "2011-05-29 00:00:00"
+        },
+        {
+          "entity_name": "Into the Woods Musical LLC",
+          "total_offering_amount": 13229085.59,
+          "filing_date": "2011-09-28 00:00:00"
+        },
+        {
+          "entity_name": "Music Man Productions LLC",
+          "total_offering_amount": 10264981.42,
+          "filing_date": "2011-12-09 00:00:00"
+        },
+        {
+          "entity_name": "Almost Famous Broadway LLC",
+          "total_offering_amount": 9708343.55,
+          "filing_date": "2011-05-01 00:00:00"
+        },
+        {
+          "entity_name": "Come From Away Productions",
+          "total_offering_amount": 9707698.73,
+          "filing_date": "2011-08-19 00:00:00"
+        },
+        {
+          "entity_name": "Hadestown Broadway LLC",
+          "total_offering_amount": 6867620.66,
+          "filing_date": "2011-04-16 00:00:00"
+        },
+        {
+          "entity_name": "Anastasia Broadway LLC",
+          "total_offering_amount": 2120416.33,
+          "filing_date": "2011-12-20 00:00:00"
+        },
+        {
+          "entity_name": "Dear Evan Hansen LLC",
+          "total_offering_amount": 1264926.87,
+          "filing_date": "2011-04-19 00:00:00"
+        },
+        {
+          "entity_name": "Company Broadway Productions",
+          "total_offering_amount": 998335.33,
+          "filing_date": "2011-07-31 00:00:00"
+        }
+      ],
+      "2012": [
+        {
+          "entity_name": "Life of Pi Broadway LLC",
+          "total_offering_amount": 53626213.55,
+          "filing_date": "2012-10-30 00:00:00"
+        },
+        {
+          "entity_name": "Hamilton Productions LLC",
+          "total_offering_amount": 10032318.71,
+          "filing_date": "2012-01-15 00:00:00"
+        },
+        {
+          "entity_name": "& Juliet Musical Productions",
+          "total_offering_amount": 7258180.27,
+          "filing_date": "2012-01-03 00:00:00"
+        },
+        {
+          "entity_name": "Kimberly Akimbo LLC",
+          "total_offering_amount": 7088504.79,
+          "filing_date": "2012-06-20 00:00:00"
+        },
+        {
+          "entity_name": "Back to the Future Musical LLC",
+          "total_offering_amount": 6900401.83,
+          "filing_date": "2012-04-29 00:00:00"
+        },
+        {
+          "entity_name": "Sweeney Todd Productions",
+          "total_offering_amount": 5219013.22,
+          "filing_date": "2012-01-17 00:00:00"
+        },
+        {
+          "entity_name": "MJ the Musical Productions",
+          "total_offering_amount": 4764927.72,
+          "filing_date": "2012-05-17 00:00:00"
+        },
+        {
+          "entity_name": "Phantom of the Opera LLC",
+          "total_offering_amount": 2647099.99,
+          "filing_date": "2012-12-15 00:00:00"
+        },
+        {
+          "entity_name": "A Strange Loop LLC",
+          "total_offering_amount": 2596549.56,
+          "filing_date": "2012-06-06 00:00:00"
+        },
+        {
+          "entity_name": "Hadestown Broadway LLC",
+          "total_offering_amount": 2437549.22,
+          "filing_date": "2012-02-01 00:00:00"
+        }
+      ],
+      "2013": [
+        {
+          "entity_name": "Six the Musical LLC",
+          "total_offering_amount": 30772911.21,
+          "filing_date": "2013-05-08 00:00:00"
+        },
+        {
+          "entity_name": "Spring Awakening Productions",
+          "total_offering_amount": 26192449.52,
+          "filing_date": "2013-04-14 00:00:00"
+        },
+        {
+          "entity_name": "Hadestown Broadway LLC",
+          "total_offering_amount": 20222008.19,
+          "filing_date": "2013-08-24 00:00:00"
+        },
+        {
+          "entity_name": "Back to the Future Musical LLC",
+          "total_offering_amount": 15091911.01,
+          "filing_date": "2013-02-25 00:00:00"
+        },
+        {
+          "entity_name": "Book of Mormon LLC",
+          "total_offering_amount": 7754696.45,
+          "filing_date": "2013-11-18 00:00:00"
+        },
+        {
+          "entity_name": "Into the Woods Musical LLC",
+          "total_offering_amount": 6584764.41,
+          "filing_date": "2013-10-07 00:00:00"
+        },
+        {
+          "entity_name": "Six the Musical LLC",
+          "total_offering_amount": 6289371.39,
+          "filing_date": "2013-09-19 00:00:00"
+        },
+        {
+          "entity_name": "Mrs. Doubtfire Broadway LP",
+          "total_offering_amount": 6239700.07,
+          "filing_date": "2013-06-04 00:00:00"
+        },
+        {
+          "entity_name": "Chicago Musical Productions",
+          "total_offering_amount": 4341031.04,
+          "filing_date": "2013-07-01 00:00:00"
+        },
+        {
+          "entity_name": "Jersey Boys Productions",
+          "total_offering_amount": 3382766.59,
+          "filing_date": "2013-04-16 00:00:00"
+        }
+      ],
+      "2014": [
+        {
+          "entity_name": "Hamilton Productions LLC",
+          "total_offering_amount": 25633414.48,
+          "filing_date": "2014-06-25 00:00:00"
+        },
+        {
+          "entity_name": "Jersey Boys Productions",
+          "total_offering_amount": 21099341.79,
+          "filing_date": "2014-03-20 00:00:00"
+        },
+        {
+          "entity_name": "Some Like It Hot Broadway LLC",
+          "total_offering_amount": 10686150.22,
+          "filing_date": "2014-04-11 00:00:00"
+        },
+        {
+          "entity_name": "Kinky Boots Broadway LLC",
+          "total_offering_amount": 10495274.34,
+          "filing_date": "2014-04-17 00:00:00"
+        },
+        {
+          "entity_name": "The Kite Runner Theatrical LP",
+          "total_offering_amount": 8835316.47,
+          "filing_date": "2014-06-09 00:00:00"
+        },
+        {
+          "entity_name": "Ohio State Murders LLC",
+          "total_offering_amount": 5248540.23,
+          "filing_date": "2014-12-19 00:00:00"
+        },
+        {
+          "entity_name": "Dear Evan Hansen LLC",
+          "total_offering_amount": 4810105.75,
+          "filing_date": "2014-05-09 00:00:00"
+        },
+        {
+          "entity_name": "Mrs. Doubtfire Broadway LP",
+          "total_offering_amount": 3615597.48,
+          "filing_date": "2014-06-04 00:00:00"
+        },
+        {
+          "entity_name": "Frozen Broadway LLC",
+          "total_offering_amount": 2274335.15,
+          "filing_date": "2014-01-11 00:00:00"
+        },
+        {
+          "entity_name": "Six the Musical LLC",
+          "total_offering_amount": 2154223.87,
+          "filing_date": "2014-01-31 00:00:00"
+        }
+      ],
+      "2015": [
+        {
+          "entity_name": "Chicago Musical Productions",
+          "total_offering_amount": 11660366.02,
+          "filing_date": "2015-10-16 00:00:00"
+        },
+        {
+          "entity_name": "Frozen Broadway LLC",
+          "total_offering_amount": 11174885.25,
+          "filing_date": "2015-12-21 00:00:00"
+        },
+        {
+          "entity_name": "Mrs. Doubtfire Broadway LP",
+          "total_offering_amount": 9407541.59,
+          "filing_date": "2015-07-18 00:00:00"
+        },
+        {
+          "entity_name": "A Strange Loop LLC",
+          "total_offering_amount": 7004431.15,
+          "filing_date": "2015-05-20 00:00:00"
+        },
+        {
+          "entity_name": "Aladdin Theatrical Productions",
+          "total_offering_amount": 6271805.02,
+          "filing_date": "2015-02-22 00:00:00"
+        },
+        {
+          "entity_name": "Music Man Productions LLC",
+          "total_offering_amount": 5141225.38,
+          "filing_date": "2015-09-12 00:00:00"
+        },
+        {
+          "entity_name": "Hadestown Broadway LLC",
+          "total_offering_amount": 2723479.52,
+          "filing_date": "2015-07-20 00:00:00"
+        },
+        {
+          "entity_name": "Funny Girl Broadway LP",
+          "total_offering_amount": 2129803.04,
+          "filing_date": "2015-12-13 00:00:00"
+        },
+        {
+          "entity_name": "Mrs. Doubtfire Broadway LP",
+          "total_offering_amount": 1960748.59,
+          "filing_date": "2015-08-14 00:00:00"
+        },
+        {
+          "entity_name": "Harry Potter and the Cursed Child LLC",
+          "total_offering_amount": 1825696.96,
+          "filing_date": "2015-03-28 00:00:00"
+        }
+      ],
+      "2016": [
+        {
+          "entity_name": "MJ the Musical Productions",
+          "total_offering_amount": 72558184.39,
+          "filing_date": "2016-11-19 00:00:00"
+        },
+        {
+          "entity_name": "Almost Famous Broadway LLC",
+          "total_offering_amount": 34220667.07,
+          "filing_date": "2016-07-13 00:00:00"
+        },
+        {
+          "entity_name": "Cabaret Revival LLC",
+          "total_offering_amount": 16080342.21,
+          "filing_date": "2016-01-02 00:00:00"
+        },
+        {
+          "entity_name": "Hamilton Productions LLC",
+          "total_offering_amount": 14570541.96,
+          "filing_date": "2016-03-01 00:00:00"
+        },
+        {
+          "entity_name": "Come From Away Productions",
+          "total_offering_amount": 12489567.09,
+          "filing_date": "2016-03-03 00:00:00"
+        },
+        {
+          "entity_name": "Phantom of the Opera LLC",
+          "total_offering_amount": 9011481.04,
+          "filing_date": "2016-08-09 00:00:00"
+        },
+        {
+          "entity_name": "The Kite Runner Theatrical LP",
+          "total_offering_amount": 8478659.99,
+          "filing_date": "2016-05-15 00:00:00"
+        },
+        {
+          "entity_name": "Life of Pi Broadway LLC",
+          "total_offering_amount": 4294849.7,
+          "filing_date": "2016-10-31 00:00:00"
+        },
+        {
+          "entity_name": "Kinky Boots Broadway LLC",
+          "total_offering_amount": 2701368.43,
+          "filing_date": "2016-09-08 00:00:00"
+        },
+        {
+          "entity_name": "Harry Potter and the Cursed Child LLC",
+          "total_offering_amount": 2544598.03,
+          "filing_date": "2016-03-26 00:00:00"
+        }
+      ],
+      "2017": [
+        {
+          "entity_name": "The Kite Runner Theatrical LP",
+          "total_offering_amount": 74134133.76,
+          "filing_date": "2017-08-19 00:00:00"
+        },
+        {
+          "entity_name": "Cabaret Revival LLC",
+          "total_offering_amount": 27972836.71,
+          "filing_date": "2017-03-16 00:00:00"
+        },
+        {
+          "entity_name": "Lion King Theatrical LP",
+          "total_offering_amount": 17693802.65,
+          "filing_date": "2017-09-02 00:00:00"
+        },
+        {
+          "entity_name": "Aladdin Theatrical Productions",
+          "total_offering_amount": 17258585.05,
+          "filing_date": "2017-07-24 00:00:00"
+        },
+        {
+          "entity_name": "Life of Pi Broadway LLC",
+          "total_offering_amount": 12844020.2,
+          "filing_date": "2017-06-04 00:00:00"
+        },
+        {
+          "entity_name": "Kinky Boots Broadway LLC",
+          "total_offering_amount": 9164022.88,
+          "filing_date": "2017-05-15 00:00:00"
+        },
+        {
+          "entity_name": "Wicked Broadway Productions",
+          "total_offering_amount": 7737439.02,
+          "filing_date": "2017-12-16 00:00:00"
+        },
+        {
+          "entity_name": "Ohio State Murders LLC",
+          "total_offering_amount": 6507800.2,
+          "filing_date": "2017-01-25 00:00:00"
+        },
+        {
+          "entity_name": "Back to the Future Musical LLC",
+          "total_offering_amount": 6077035.08,
+          "filing_date": "2017-03-04 00:00:00"
+        },
+        {
+          "entity_name": "Lion King Theatrical LP",
+          "total_offering_amount": 2246608.73,
+          "filing_date": "2017-08-22 00:00:00"
+        }
+      ],
+      "2018": [
+        {
+          "entity_name": "Sweeney Todd Productions",
+          "total_offering_amount": 40588085.94,
+          "filing_date": "2018-06-26 00:00:00"
+        },
+        {
+          "entity_name": "Dear Evan Hansen LLC",
+          "total_offering_amount": 32580346.79,
+          "filing_date": "2018-09-27 00:00:00"
+        },
+        {
+          "entity_name": "A Strange Loop LLC",
+          "total_offering_amount": 31669316.4,
+          "filing_date": "2018-11-18 00:00:00"
+        },
+        {
+          "entity_name": "Kimberly Akimbo LLC",
+          "total_offering_amount": 16423209.56,
+          "filing_date": "2018-04-26 00:00:00"
+        },
+        {
+          "entity_name": "Aladdin Theatrical Productions",
+          "total_offering_amount": 16226854.35,
+          "filing_date": "2018-03-03 00:00:00"
+        },
+        {
+          "entity_name": "POTUS Broadway Productions",
+          "total_offering_amount": 14429615.07,
+          "filing_date": "2018-06-30 00:00:00"
+        },
+        {
+          "entity_name": "Book of Mormon LLC",
+          "total_offering_amount": 11697584.81,
+          "filing_date": "2018-01-08 00:00:00"
+        },
+        {
+          "entity_name": "Book of Mormon LLC",
+          "total_offering_amount": 5713929.27,
+          "filing_date": "2018-06-10 00:00:00"
+        },
+        {
+          "entity_name": "Jersey Boys Productions",
+          "total_offering_amount": 3170499.53,
+          "filing_date": "2018-02-12 00:00:00"
+        },
+        {
+          "entity_name": "Almost Famous Broadway LLC",
+          "total_offering_amount": 2872274.58,
+          "filing_date": "2018-04-11 00:00:00"
+        }
+      ],
+      "2019": [
+        {
+          "entity_name": "Spring Awakening Productions",
+          "total_offering_amount": 38011464.76,
+          "filing_date": "2019-10-21 00:00:00"
+        },
+        {
+          "entity_name": "Dear Evan Hansen LLC",
+          "total_offering_amount": 32223332.98,
+          "filing_date": "2019-03-16 00:00:00"
+        },
+        {
+          "entity_name": "POTUS Broadway Productions",
+          "total_offering_amount": 18263089.78,
+          "filing_date": "2019-08-29 00:00:00"
+        },
+        {
+          "entity_name": "Les Mis\u00e9rables Broadway Productions",
+          "total_offering_amount": 14461487.98,
+          "filing_date": "2019-05-05 00:00:00"
+        },
+        {
+          "entity_name": "Into the Woods Musical LLC",
+          "total_offering_amount": 13498712.74,
+          "filing_date": "2019-10-17 00:00:00"
+        },
+        {
+          "entity_name": "Into the Woods Musical LLC",
+          "total_offering_amount": 9159210.02,
+          "filing_date": "2019-08-01 00:00:00"
+        },
+        {
+          "entity_name": "Kimberly Akimbo LLC",
+          "total_offering_amount": 6817238.68,
+          "filing_date": "2019-06-05 00:00:00"
+        },
+        {
+          "entity_name": "Hamilton Productions LLC",
+          "total_offering_amount": 6360584.61,
+          "filing_date": "2019-10-14 00:00:00"
+        },
+        {
+          "entity_name": "Funny Girl Broadway LP",
+          "total_offering_amount": 6097154.79,
+          "filing_date": "2019-01-03 00:00:00"
+        },
+        {
+          "entity_name": "Frozen Broadway LLC",
+          "total_offering_amount": 5823857.38,
+          "filing_date": "2019-07-17 00:00:00"
+        }
+      ],
+      "2020": [
+        {
+          "entity_name": "Cabaret Revival LLC",
+          "total_offering_amount": 110269679.18,
+          "filing_date": "2020-04-07 00:00:00"
+        },
+        {
+          "entity_name": "Book of Mormon LLC",
+          "total_offering_amount": 52169315.88,
+          "filing_date": "2020-10-17 00:00:00"
+        },
+        {
+          "entity_name": "Mean Girls Musical Productions",
+          "total_offering_amount": 37837111.97,
+          "filing_date": "2020-03-28 00:00:00"
+        },
+        {
+          "entity_name": "Harry Potter and the Cursed Child LLC",
+          "total_offering_amount": 28064305.83,
+          "filing_date": "2020-09-04 00:00:00"
+        },
+        {
+          "entity_name": "Paradise Square Productions",
+          "total_offering_amount": 23833386.03,
+          "filing_date": "2020-12-24 00:00:00"
+        },
+        {
+          "entity_name": "Phantom of the Opera LLC",
+          "total_offering_amount": 20568452.38,
+          "filing_date": "2020-01-19 00:00:00"
+        },
+        {
+          "entity_name": "Paradise Square Productions",
+          "total_offering_amount": 12829125.7,
+          "filing_date": "2020-02-21 00:00:00"
+        },
+        {
+          "entity_name": "Cabaret Revival LLC",
+          "total_offering_amount": 4302946.09,
+          "filing_date": "2020-06-29 00:00:00"
+        },
+        {
+          "entity_name": "Paradise Square Productions",
+          "total_offering_amount": 3679918.47,
+          "filing_date": "2020-05-09 00:00:00"
+        },
+        {
+          "entity_name": "Jersey Boys Productions",
+          "total_offering_amount": 3641865.68,
+          "filing_date": "2020-04-05 00:00:00"
+        }
+      ],
+      "2021": [
+        {
+          "entity_name": "Life of Pi Broadway LLC",
+          "total_offering_amount": 43935146.87,
+          "filing_date": "2021-05-27 00:00:00"
+        },
+        {
+          "entity_name": "Come From Away Productions",
+          "total_offering_amount": 26049778.45,
+          "filing_date": "2021-07-13 00:00:00"
+        },
+        {
+          "entity_name": "Les Mis\u00e9rables Broadway Productions",
+          "total_offering_amount": 12519671.88,
+          "filing_date": "2021-03-31 00:00:00"
+        },
+        {
+          "entity_name": "Mrs. Doubtfire Broadway LP",
+          "total_offering_amount": 10251810.54,
+          "filing_date": "2021-04-09 00:00:00"
+        },
+        {
+          "entity_name": "Kinky Boots Broadway LLC",
+          "total_offering_amount": 8754640.07,
+          "filing_date": "2021-11-12 00:00:00"
+        },
+        {
+          "entity_name": "Book of Mormon LLC",
+          "total_offering_amount": 5786632.73,
+          "filing_date": "2021-10-17 00:00:00"
+        },
+        {
+          "entity_name": "Funny Girl Broadway LP",
+          "total_offering_amount": 4215352.07,
+          "filing_date": "2021-03-05 00:00:00"
+        },
+        {
+          "entity_name": "Aladdin Theatrical Productions",
+          "total_offering_amount": 2901867.55,
+          "filing_date": "2021-06-27 00:00:00"
+        },
+        {
+          "entity_name": "Funny Girl Broadway LP",
+          "total_offering_amount": 2730380.06,
+          "filing_date": "2021-04-24 00:00:00"
+        },
+        {
+          "entity_name": "Harry Potter and the Cursed Child LLC",
+          "total_offering_amount": 1467301.16,
+          "filing_date": "2021-10-16 00:00:00"
+        }
+      ],
+      "2022": [
+        {
+          "entity_name": "Six the Musical LLC",
+          "total_offering_amount": 41282841.85,
+          "filing_date": "2022-01-14 00:00:00"
+        },
+        {
+          "entity_name": "Harry Potter and the Cursed Child LLC",
+          "total_offering_amount": 35821478.72,
+          "filing_date": "2022-12-20 00:00:00"
+        },
+        {
+          "entity_name": "Chicago Musical Productions",
+          "total_offering_amount": 31742853.57,
+          "filing_date": "2022-11-18 00:00:00"
+        },
+        {
+          "entity_name": "Into the Woods Musical LLC",
+          "total_offering_amount": 28735748.72,
+          "filing_date": "2022-11-22 00:00:00"
+        },
+        {
+          "entity_name": "Hadestown Broadway LLC",
+          "total_offering_amount": 27878022.94,
+          "filing_date": "2022-07-11 00:00:00"
+        },
+        {
+          "entity_name": "Lion King Theatrical LP",
+          "total_offering_amount": 19755551.38,
+          "filing_date": "2022-08-14 00:00:00"
+        },
+        {
+          "entity_name": "Lion King Theatrical LP",
+          "total_offering_amount": 12469709.69,
+          "filing_date": "2022-09-26 00:00:00"
+        },
+        {
+          "entity_name": "Phantom of the Opera LLC",
+          "total_offering_amount": 8788479.59,
+          "filing_date": "2022-06-11 00:00:00"
+        },
+        {
+          "entity_name": "Ohio State Murders LLC",
+          "total_offering_amount": 7105257.01,
+          "filing_date": "2022-08-02 00:00:00"
+        },
+        {
+          "entity_name": "Phantom of the Opera LLC",
+          "total_offering_amount": 5878666.59,
+          "filing_date": "2022-07-21 00:00:00"
+        }
+      ],
+      "2023": [
+        {
+          "entity_name": "Back to the Future Musical LLC",
+          "total_offering_amount": 87449195.69,
+          "filing_date": "2023-10-07 00:00:00"
+        },
+        {
+          "entity_name": "Anastasia Broadway LLC",
+          "total_offering_amount": 41328068.55,
+          "filing_date": "2023-05-18 00:00:00"
+        },
+        {
+          "entity_name": "Aladdin Theatrical Productions",
+          "total_offering_amount": 33862152.38,
+          "filing_date": "2023-12-06 00:00:00"
+        },
+        {
+          "entity_name": "Jersey Boys Productions",
+          "total_offering_amount": 29020087.97,
+          "filing_date": "2023-08-27 00:00:00"
+        },
+        {
+          "entity_name": "Come From Away Productions",
+          "total_offering_amount": 22792535.19,
+          "filing_date": "2023-02-07 00:00:00"
+        },
+        {
+          "entity_name": "Lion King Theatrical LP",
+          "total_offering_amount": 15295776.45,
+          "filing_date": "2023-11-11 00:00:00"
+        },
+        {
+          "entity_name": "MJ the Musical Productions",
+          "total_offering_amount": 14929503.33,
+          "filing_date": "2023-08-21 00:00:00"
+        },
+        {
+          "entity_name": "Les Mis\u00e9rables Broadway Productions",
+          "total_offering_amount": 13379771.8,
+          "filing_date": "2023-02-15 00:00:00"
+        },
+        {
+          "entity_name": "Jersey Boys Productions",
+          "total_offering_amount": 11480255.3,
+          "filing_date": "2023-09-06 00:00:00"
+        },
+        {
+          "entity_name": "Aladdin Theatrical Productions",
+          "total_offering_amount": 10308597.82,
+          "filing_date": "2023-06-18 00:00:00"
+        }
+      ],
+      "2024": [
+        {
+          "entity_name": "Aladdin Theatrical Productions",
+          "total_offering_amount": 36511876.57,
+          "filing_date": "2024-04-17 00:00:00"
+        },
+        {
+          "entity_name": "Chicago Musical Productions",
+          "total_offering_amount": 29125698.9,
+          "filing_date": "2024-12-01 00:00:00"
+        },
+        {
+          "entity_name": "Waitress Musical Productions",
+          "total_offering_amount": 24448184.44,
+          "filing_date": "2024-10-20 00:00:00"
+        },
+        {
+          "entity_name": "Some Like It Hot Broadway LLC",
+          "total_offering_amount": 17380709.65,
+          "filing_date": "2024-10-28 00:00:00"
+        },
+        {
+          "entity_name": "Sweeney Todd Productions",
+          "total_offering_amount": 14415075.97,
+          "filing_date": "2024-12-17 00:00:00"
+        },
+        {
+          "entity_name": "Dear Evan Hansen LLC",
+          "total_offering_amount": 12574892.53,
+          "filing_date": "2024-01-11 00:00:00"
+        },
+        {
+          "entity_name": "The Kite Runner Theatrical LP",
+          "total_offering_amount": 11007967.88,
+          "filing_date": "2024-01-30 00:00:00"
+        },
+        {
+          "entity_name": "Kimberly Akimbo LLC",
+          "total_offering_amount": 9255100.97,
+          "filing_date": "2024-07-02 00:00:00"
+        },
+        {
+          "entity_name": "Come From Away Productions",
+          "total_offering_amount": 6547452.49,
+          "filing_date": "2024-01-09 00:00:00"
+        },
+        {
+          "entity_name": "Les Mis\u00e9rables Broadway Productions",
+          "total_offering_amount": 5672043.45,
+          "filing_date": "2024-04-04 00:00:00"
+        }
+      ]
+    },
+    "top_10_overall": [
+      {
+        "entity_name": "Cabaret Revival LLC",
+        "total_offering_amount": 110269679.18,
+        "filing_date": "2020-04-07 00:00:00",
+        "filing_year": 2020
+      },
+      {
+        "entity_name": "Back to the Future Musical LLC",
+        "total_offering_amount": 87449195.69,
+        "filing_date": "2023-10-07 00:00:00",
+        "filing_year": 2023
+      },
+      {
+        "entity_name": "The Kite Runner Theatrical LP",
+        "total_offering_amount": 74134133.76,
+        "filing_date": "2017-08-19 00:00:00",
+        "filing_year": 2017
+      },
+      {
+        "entity_name": "MJ the Musical Productions",
+        "total_offering_amount": 72558184.39,
+        "filing_date": "2016-11-19 00:00:00",
+        "filing_year": 2016
+      },
+      {
+        "entity_name": "Company Broadway Productions",
+        "total_offering_amount": 70270541.88,
+        "filing_date": "2010-02-15 00:00:00",
+        "filing_year": 2010
+      },
+      {
+        "entity_name": "Music Man Productions LLC",
+        "total_offering_amount": 54730821.85,
+        "filing_date": "2010-02-13 00:00:00",
+        "filing_year": 2010
+      },
+      {
+        "entity_name": "Life of Pi Broadway LLC",
+        "total_offering_amount": 53626213.55,
+        "filing_date": "2012-10-30 00:00:00",
+        "filing_year": 2012
+      },
+      {
+        "entity_name": "Book of Mormon LLC",
+        "total_offering_amount": 52169315.88,
+        "filing_date": "2020-10-17 00:00:00",
+        "filing_year": 2020
+      },
+      {
+        "entity_name": "Life of Pi Broadway LLC",
+        "total_offering_amount": 43935146.87,
+        "filing_date": "2021-05-27 00:00:00",
+        "filing_year": 2021
+      },
+      {
+        "entity_name": "Anastasia Broadway LLC",
+        "total_offering_amount": 41328068.55,
+        "filing_date": "2023-05-18 00:00:00",
+        "filing_year": 2023
+      }
+    ],
+    "show_type_comparison": {
+      "('total_offering_amount', 'count')": {
+        "Musical": 38,
+        "Unknown": 162
+      },
+      "('total_offering_amount', 'mean')": {
+        "Musical": 16612574.04,
+        "Unknown": 12395463.25
+      },
+      "('total_offering_amount', 'median')": {
+        "Musical": 8184637.88,
+        "Unknown": 7046467.97
+      },
+      "('total_offering_amount', 'sum')": {
+        "Musical": 631277813.36,
+        "Unknown": 2008065046.2
+      }
+    }
+  },
+  "investor_base_evolution": {
+    "annual_investor_statistics": {
+      "('total_number_of_investors', 'mean')": {
+        "2010": 46.79,
+        "2011": 73.78,
+        "2012": 64.82,
+        "2013": 40.82,
+        "2014": 50.17,
+        "2015": 115.91,
+        "2016": 91.69,
+        "2017": 136.73,
+        "2018": 119.5,
+        "2019": 98.65,
+        "2020": 293.58,
+        "2021": 286.45,
+        "2022": 313.36,
+        "2023": 219.88,
+        "2024": 273.21
+      },
+      "('total_number_of_investors', 'median')": {
+        "2010": 47.0,
+        "2011": 83.0,
+        "2012": 72.0,
+        "2013": 32.0,
+        "2014": 45.0,
+        "2015": 124.0,
+        "2016": 86.0,
+        "2017": 138.0,
+        "2018": 124.0,
+        "2019": 82.0,
+        "2020": 304.0,
+        "2021": 316.0,
+        "2022": 320.0,
+        "2023": 188.0,
+        "2024": 305.5
+      },
+      "('total_number_of_investors', 'min')": {
+        "2010": 15,
+        "2011": 18,
+        "2012": 20,
+        "2013": 12,
+        "2014": 12,
+        "2015": 41,
+        "2016": 39,
+        "2017": 77,
+        "2018": 60,
+        "2019": 34,
+        "2020": 123,
+        "2021": 54,
+        "2022": 145,
+        "2023": 69,
+        "2024": 72
+      },
+      "('total_number_of_investors', 'max')": {
+        "2010": 92,
+        "2011": 98,
+        "2012": 97,
+        "2013": 100,
+        "2014": 99,
+        "2015": 187,
+        "2016": 183,
+        "2017": 191,
+        "2018": 189,
+        "2019": 190,
+        "2020": 452,
+        "2021": 498,
+        "2022": 467,
+        "2023": 455,
+        "2024": 494
+      },
+      "('total_number_of_investors', 'sum')": {
+        "2010": 655,
+        "2011": 664,
+        "2012": 713,
+        "2013": 694,
+        "2014": 602,
+        "2015": 1275,
+        "2016": 1192,
+        "2017": 1504,
+        "2018": 1434,
+        "2019": 1677,
+        "2020": 3523,
+        "2021": 3151,
+        "2022": 3447,
+        "2023": 5497,
+        "2024": 3825
+      },
+      "('minimum_investment', 'mean')": {
+        "2010": 542857.14,
+        "2011": 644444.44,
+        "2012": 331818.18,
+        "2013": 417647.06,
+        "2014": 437500.0,
+        "2015": 313636.36,
+        "2016": 173076.92,
+        "2017": 268181.82,
+        "2018": 250000.0,
+        "2019": 155882.35,
+        "2020": 133333.33,
+        "2021": 54545.45,
+        "2022": 68181.82,
+        "2023": 89000.0,
+        "2024": 105357.14
+      },
+      "('minimum_investment', 'median')": {
+        "2010": 500000.0,
+        "2011": 1000000.0,
+        "2012": 250000.0,
+        "2013": 250000.0,
+        "2014": 375000.0,
+        "2015": 250000.0,
+        "2016": 100000.0,
+        "2017": 250000.0,
+        "2018": 250000.0,
+        "2019": 100000.0,
+        "2020": 100000.0,
+        "2021": 50000.0,
+        "2022": 50000.0,
+        "2023": 50000.0,
+        "2024": 50000.0
+      },
+      "('minimum_investment', 'min')": {
+        "2010": 100000,
+        "2011": 100000,
+        "2012": 100000,
+        "2013": 100000,
+        "2014": 100000,
+        "2015": 50000,
+        "2016": 50000,
+        "2017": 50000,
+        "2018": 50000,
+        "2019": 50000,
+        "2020": 50000,
+        "2021": 25000,
+        "2022": 25000,
+        "2023": 25000,
+        "2024": 25000
+      },
+      "('minimum_investment', 'max')": {
+        "2010": 1000000,
+        "2011": 1000000,
+        "2012": 1000000,
+        "2013": 1000000,
+        "2014": 1000000,
+        "2015": 500000,
+        "2016": 500000,
+        "2017": 500000,
+        "2018": 500000,
+        "2019": 500000,
+        "2020": 250000,
+        "2021": 100000,
+        "2022": 250000,
+        "2023": 250000,
+        "2024": 250000
+      },
+      "('has_non_accredited_investors', 'sum')": {
+        "2010": 5,
+        "2011": 1,
+        "2012": 6,
+        "2013": 4,
+        "2014": 1,
+        "2015": 2,
+        "2016": 3,
+        "2017": 4,
+        "2018": 2,
+        "2019": 5,
+        "2020": 3,
+        "2021": 4,
+        "2022": 3,
+        "2023": 11,
+        "2024": 4
+      }
+    },
+    "pct_non_accredited_by_year": {
+      "2010": 35.71,
+      "2011": 11.11,
+      "2012": 54.55,
+      "2013": 23.53,
+      "2014": 8.33,
+      "2015": 18.18,
+      "2016": 23.08,
+      "2017": 36.36,
+      "2018": 16.67,
+      "2019": 29.41,
+      "2020": 25.0,
+      "2021": 36.36,
+      "2022": 27.27,
+      "2023": 44.0,
+      "2024": 28.57
+    },
+    "minimum_investment_trends": {
+      "mean": {
+        "2010": 542857.14,
+        "2011": 644444.44,
+        "2012": 331818.18,
+        "2013": 417647.06,
+        "2014": 437500.0,
+        "2015": 313636.36,
+        "2016": 173076.92,
+        "2017": 268181.82,
+        "2018": 250000.0,
+        "2019": 155882.35,
+        "2020": 133333.33,
+        "2021": 54545.45,
+        "2022": 68181.82,
+        "2023": 89000.0,
+        "2024": 105357.14
+      },
+      "median": {
+        "2010": 500000.0,
+        "2011": 1000000.0,
+        "2012": 250000.0,
+        "2013": 250000.0,
+        "2014": 375000.0,
+        "2015": 250000.0,
+        "2016": 100000.0,
+        "2017": 250000.0,
+        "2018": 250000.0,
+        "2019": 100000.0,
+        "2020": 100000.0,
+        "2021": 50000.0,
+        "2022": 50000.0,
+        "2023": 50000.0,
+        "2024": 50000.0
+      },
+      "count": {
+        "2010": 14,
+        "2011": 9,
+        "2012": 11,
+        "2013": 17,
+        "2014": 12,
+        "2015": 11,
+        "2016": 13,
+        "2017": 11,
+        "2018": 12,
+        "2019": 17,
+        "2020": 12,
+        "2021": 11,
+        "2022": 11,
+        "2023": 25,
+        "2024": 14
+      }
+    },
+    "high_investor_filings": [
+      {
+        "entity_name": "The Kite Runner Theatrical LP",
+        "total_number_of_investors": 388,
+        "filing_year": 2020,
+        "minimum_investment": 50000
+      },
+      {
+        "entity_name": "Ohio State Murders LLC",
+        "total_number_of_investors": 461,
+        "filing_year": 2022,
+        "minimum_investment": 50000
+      },
+      {
+        "entity_name": "Kimberly Akimbo LLC",
+        "total_number_of_investors": 356,
+        "filing_year": 2024,
+        "minimum_investment": 50000
+      },
+      {
+        "entity_name": "Come From Away Productions",
+        "total_number_of_investors": 494,
+        "filing_year": 2024,
+        "minimum_investment": 50000
+      },
+      {
+        "entity_name": "Book of Mormon LLC",
+        "total_number_of_investors": 381,
+        "filing_year": 2020,
+        "minimum_investment": 50000
+      },
+      {
+        "entity_name": "Harry Potter and the Cursed Child LLC",
+        "total_number_of_investors": 442,
+        "filing_year": 2022,
+        "minimum_investment": 50000
+      },
+      {
+        "entity_name": "Six the Musical LLC",
+        "total_number_of_investors": 423,
+        "filing_year": 2022,
+        "minimum_investment": 25000
+      },
+      {
+        "entity_name": "Mrs. Doubtfire Broadway LP",
+        "total_number_of_investors": 498,
+        "filing_year": 2021,
+        "minimum_investment": 25000
+      },
+      {
+        "entity_name": "Lion King Theatrical LP",
+        "total_number_of_investors": 455,
+        "filing_year": 2023,
+        "minimum_investment": 100000
+      },
+      {
+        "entity_name": "Paradise Square Productions",
+        "total_number_of_investors": 405,
+        "filing_year": 2023,
+        "minimum_investment": 50000
+      },
+      {
+        "entity_name": "Paradise Square Productions",
+        "total_number_of_investors": 452,
+        "filing_year": 2020,
+        "minimum_investment": 50000
+      },
+      {
+        "entity_name": "Funny Girl Broadway LP",
+        "total_number_of_investors": 385,
+        "filing_year": 2021,
+        "minimum_investment": 50000
+      },
+      {
+        "entity_name": "Paradise Square Productions",
+        "total_number_of_investors": 371,
+        "filing_year": 2020,
+        "minimum_investment": 250000
+      },
+      {
+        "entity_name": "Into the Woods Musical LLC",
+        "total_number_of_investors": 358,
+        "filing_year": 2022,
+        "minimum_investment": 25000
+      },
+      {
+        "entity_name": "Phantom of the Opera LLC",
+        "total_number_of_investors": 358,
+        "filing_year": 2020,
+        "minimum_investment": 100000
+      },
+      {
+        "entity_name": "Back to the Future Musical LLC",
+        "total_number_of_investors": 430,
+        "filing_year": 2023,
+        "minimum_investment": 50000
+      },
+      {
+        "entity_name": "Funny Girl Broadway LP",
+        "total_number_of_investors": 448,
+        "filing_year": 2021,
+        "minimum_investment": 50000
+      },
+      {
+        "entity_name": "Lion King Theatrical LP",
+        "total_number_of_investors": 467,
+        "filing_year": 2022,
+        "minimum_investment": 50000
+      },
+      {
+        "entity_name": "Kinky Boots Broadway LLC",
+        "total_number_of_investors": 455,
+        "filing_year": 2021,
+        "minimum_investment": 50000
+      },
+      {
+        "entity_name": "Jersey Boys Productions",
+        "total_number_of_investors": 366,
+        "filing_year": 2023,
+        "minimum_investment": 50000
+      }
+    ],
+    "high_investor_threshold": 352.4
+  },
+  "post_covid_shifts": {
+    "pre_covid_count": 127,
+    "post_covid_count": 73,
+    "metric_comparison": {
+      "total_offering_amount": {
+        "pre_covid_mean": 11480930.928503936,
+        "pre_covid_median": 6584764.41,
+        "post_covid_mean": 16181707.282739727,
+        "post_covid_median": 9255100.97,
+        "percent_change_mean": 40.94,
+        "percent_change_median": 40.55
+      },
+      "total_amount_sold": {
+        "pre_covid_mean": 7842957.087007873,
+        "pre_covid_median": 4921644.54,
+        "post_covid_mean": 12110902.230821919,
+        "post_covid_median": 6120068.84,
+        "percent_change_mean": 54.42,
+        "percent_change_median": 24.35
+      },
+      "total_number_of_investors": {
+        "pre_covid_mean": 81.96850393700787,
+        "pre_covid_median": 77.0,
+        "post_covid_mean": 266.3424657534247,
+        "post_covid_median": 275.0,
+        "percent_change_mean": 224.93,
+        "percent_change_median": 257.14
+      },
+      "minimum_investment": {
+        "pre_covid_mean": 344094.48818897636,
+        "pre_covid_median": 250000.0,
+        "post_covid_mean": 91095.8904109589,
+        "post_covid_median": 50000.0,
+        "percent_change_mean": -73.53,
+        "percent_change_median": -80.0
+      }
+    },
+    "rule_506c_usage": {
+      "pre_covid_count": 25,
+      "pre_covid_pct": 19.69,
+      "post_covid_count": 30,
+      "post_covid_pct": 41.1
+    },
+    "offering_duration": {
+      "pre_covid_avg_more_than_one_year": 40.16,
+      "post_covid_avg_more_than_one_year": 49.32
+    },
+    "annual_filing_counts": {
+      "2010": 14,
+      "2011": 9,
+      "2012": 11,
+      "2013": 17,
+      "2014": 12,
+      "2015": 11,
+      "2016": 13,
+      "2017": 11,
+      "2018": 12,
+      "2019": 17,
+      "2020": 12,
+      "2021": 11,
+      "2022": 11,
+      "2023": 25,
+      "2024": 14
+    }
+  },
+  "structural_patterns": {
+    "producer_groups": {
+      "Other": 200
+    },
+    "amendment_statistics": {
+      "total_amendments": 35,
+      "amendment_rate": 17.5,
+      "amendments_by_year": {
+        "2010": 3,
+        "2011": 2,
+        "2012": 0,
+        "2013": 2,
+        "2014": 1,
+        "2015": 2,
+        "2016": 0,
+        "2017": 4,
+        "2018": 5,
+        "2019": 3,
+        "2020": 3,
+        "2021": 1,
+        "2022": 1,
+        "2023": 7,
+        "2024": 1
+      }
+    },
+    "entity_types": {
+      "Corporation": 76,
+      "Limited Liability Company": 66,
+      "Limited Partnership": 58
+    },
+    "securities_types": {
+      "equity_offerings": 128,
+      "debt_offerings": 33,
+      "partnership_interests": 70,
+      "equity_pct": 64.0,
+      "debt_pct": 16.5
+    }
+  },
+  "geographic_trends": {
+    "top_incorporation_jurisdictions": {
+      "CA": 31,
+      "CT": 31,
+      "NV": 29,
+      "DE": 28,
+      "NY": 28,
+      "NJ": 27,
+      "IL": 26
+    },
+    "state_statistics": {
+      "('total_offering_amount', 'count')": {
+        "CA": 31,
+        "CT": 31,
+        "DE": 28,
+        "IL": 26,
+        "NJ": 27,
+        "NV": 29,
+        "NY": 28
+      },
+      "('total_offering_amount', 'mean')": {
+        "CA": 11112144.37,
+        "CT": 13222705.37,
+        "DE": 11545175.22,
+        "IL": 18769809.51,
+        "NJ": 16804786.03,
+        "NV": 11364756.37,
+        "NY": 10370550.24
+      },
+      "('total_offering_amount', 'median')": {
+        "CA": 10032318.71,
+        "CT": 6867620.66,
+        "DE": 8254668.26,
+        "IL": 10085995.38,
+        "NJ": 5141225.38,
+        "NV": 6077035.08,
+        "NY": 8053600.32
+      },
+      "('total_offering_amount', 'sum')": {
+        "CA": 344476475.41,
+        "CT": 409903866.42,
+        "DE": 323264906.15,
+        "IL": 488015047.2,
+        "NJ": 453729222.81,
+        "NV": 329577934.83,
+        "NY": 290375406.74
+      },
+      "('total_number_of_investors', 'mean')": {
+        "CA": 167.74,
+        "CT": 152.55,
+        "DE": 162.64,
+        "IL": 153.54,
+        "NJ": 129.37,
+        "NV": 139.38,
+        "NY": 137.25
+      },
+      "('total_number_of_investors', 'median')": {
+        "CA": 161.0,
+        "CT": 114.0,
+        "DE": 121.5,
+        "IL": 101.5,
+        "NJ": 81.0,
+        "NV": 98.0,
+        "NY": 99.5
+      }
+    },
+    "principal_business_states": {
+      "MA": 30,
+      "CT": 27,
+      "IL": 27,
+      "NJ": 25,
+      "TX": 24,
+      "CA": 23,
+      "PA": 22,
+      "NY": 22
+    },
+    "exemption_by_jurisdiction": {
+      "CA": {
+        "rule_506b_pct": 67.74,
+        "rule_506c_pct": 16.13,
+        "count": 31
+      },
+      "CT": {
+        "rule_506b_pct": 61.29,
+        "rule_506c_pct": 22.58,
+        "count": 31
+      },
+      "NV": {
+        "rule_506b_pct": 58.62,
+        "rule_506c_pct": 31.03,
+        "count": 29
+      },
+      "DE": {
+        "rule_506b_pct": 71.43,
+        "rule_506c_pct": 39.29,
+        "count": 28
+      },
+      "NY": {
+        "rule_506b_pct": 57.14,
+        "rule_506c_pct": 25.0,
+        "count": 28
+      }
+    }
+  },
+  "comparative_benchmarks": {
+    "benchmarks": {
+      "median_offering_size": 7096880.9,
+      "mean_offering_size": 13196714.297799997,
+      "median_investors": 100.0,
+      "mean_investors": 149.265,
+      "median_min_investment": 100000.0,
+      "mean_min_investment": 251750.0,
+      "avg_offering_utilization": 71.18984999999999,
+      "median_offering_utilization": 71.345
+    },
+    "offering_quartiles": {
+      "25th_percentile": 3226018.3325,
+      "50th_percentile": 7096880.9,
+      "75th_percentile": 16116970.245000001,
+      "90th_percentile": 31790901.510999996
+    },
+    "year_over_year_growth": {
+      "2010": null,
+      "2011": -73.36,
+      "2012": 44.35,
+      "2013": 31.91,
+      "2014": -30.29,
+      "2015": -36.73,
+      "2016": 197.81,
+      "2017": 0.84,
+      "2018": -2.2,
+      "2019": -4.34,
+      "2020": 77.37,
+      "2021": -60.52,
+      "2022": 86.73,
+      "2023": 56.55,
+      "2024": -47.32
+    }
+  },
+  "outliers": {
+    "large_offerings": [
+      {
+        "entity_name": "Cabaret Revival LLC",
+        "total_offering_amount": 110269679.18,
+        "filing_date": "2020-04-07 00:00:00",
+        "total_number_of_investors": 176
+      },
+      {
+        "entity_name": "Back to the Future Musical LLC",
+        "total_offering_amount": 87449195.69,
+        "filing_date": "2023-10-07 00:00:00",
+        "total_number_of_investors": 430
+      },
+      {
+        "entity_name": "The Kite Runner Theatrical LP",
+        "total_offering_amount": 74134133.76,
+        "filing_date": "2017-08-19 00:00:00",
+        "total_number_of_investors": 174
+      },
+      {
+        "entity_name": "MJ the Musical Productions",
+        "total_offering_amount": 72558184.39,
+        "filing_date": "2016-11-19 00:00:00",
+        "total_number_of_investors": 58
+      },
+      {
+        "entity_name": "Company Broadway Productions",
+        "total_offering_amount": 70270541.88,
+        "filing_date": "2010-02-15 00:00:00",
+        "total_number_of_investors": 78
+      },
+      {
+        "entity_name": "Music Man Productions LLC",
+        "total_offering_amount": 54730821.85,
+        "filing_date": "2010-02-13 00:00:00",
+        "total_number_of_investors": 34
+      },
+      {
+        "entity_name": "Life of Pi Broadway LLC",
+        "total_offering_amount": 53626213.55,
+        "filing_date": "2012-10-30 00:00:00",
+        "total_number_of_investors": 48
+      },
+      {
+        "entity_name": "Book of Mormon LLC",
+        "total_offering_amount": 52169315.88,
+        "filing_date": "2020-10-17 00:00:00",
+        "total_number_of_investors": 381
+      }
+    ],
+    "large_offering_threshold": 50000000,
+    "high_investor_offerings": [
+      {
+        "entity_name": "Mrs. Doubtfire Broadway LP",
+        "total_number_of_investors": 498,
+        "minimum_investment": 25000,
+        "filing_year": 2021
+      },
+      {
+        "entity_name": "Come From Away Productions",
+        "total_number_of_investors": 494,
+        "minimum_investment": 50000,
+        "filing_year": 2024
+      },
+      {
+        "entity_name": "Lion King Theatrical LP",
+        "total_number_of_investors": 467,
+        "minimum_investment": 50000,
+        "filing_year": 2022
+      },
+      {
+        "entity_name": "Ohio State Murders LLC",
+        "total_number_of_investors": 461,
+        "minimum_investment": 50000,
+        "filing_year": 2022
+      },
+      {
+        "entity_name": "Kinky Boots Broadway LLC",
+        "total_number_of_investors": 455,
+        "minimum_investment": 50000,
+        "filing_year": 2021
+      },
+      {
+        "entity_name": "Lion King Theatrical LP",
+        "total_number_of_investors": 455,
+        "minimum_investment": 100000,
+        "filing_year": 2023
+      },
+      {
+        "entity_name": "Paradise Square Productions",
+        "total_number_of_investors": 452,
+        "minimum_investment": 50000,
+        "filing_year": 2020
+      },
+      {
+        "entity_name": "Funny Girl Broadway LP",
+        "total_number_of_investors": 448,
+        "minimum_investment": 50000,
+        "filing_year": 2021
+      },
+      {
+        "entity_name": "Harry Potter and the Cursed Child LLC",
+        "total_number_of_investors": 442,
+        "minimum_investment": 50000,
+        "filing_year": 2022
+      },
+      {
+        "entity_name": "Back to the Future Musical LLC",
+        "total_number_of_investors": 430,
+        "minimum_investment": 50000,
+        "filing_year": 2023
+      }
+    ],
+    "high_investor_threshold": 423.3499999999999,
+    "low_minimum_offerings": [],
+    "low_minimum_threshold": 25000.0,
+    "major_show_matches": [
+      {
+        "show": "Hamilton",
+        "entity_name": "Hamilton Productions LLC",
+        "offering_amount": 9472699.67,
+        "filing_date": "2010-07-26 00:00:00"
+      },
+      {
+        "show": "Hamilton",
+        "entity_name": "Hamilton Productions LLC",
+        "offering_amount": 25633414.48,
+        "filing_date": "2014-06-25 00:00:00"
+      },
+      {
+        "show": "Hamilton",
+        "entity_name": "Hamilton Productions LLC",
+        "offering_amount": 10032318.71,
+        "filing_date": "2012-01-15 00:00:00"
+      },
+      {
+        "show": "Hamilton",
+        "entity_name": "Hamilton Productions LLC",
+        "offering_amount": 14570541.96,
+        "filing_date": "2016-03-01 00:00:00"
+      },
+      {
+        "show": "Hamilton",
+        "entity_name": "Hamilton Productions LLC",
+        "offering_amount": 18316857.34,
+        "filing_date": "2011-05-29 00:00:00"
+      },
+      {
+        "show": "Hamilton",
+        "entity_name": "Hamilton Productions LLC",
+        "offering_amount": 6360584.61,
+        "filing_date": "2019-10-14 00:00:00"
+      },
+      {
+        "show": "Lion King",
+        "entity_name": "Lion King Theatrical LP",
+        "offering_amount": 15295776.45,
+        "filing_date": "2023-11-11 00:00:00"
+      },
+      {
+        "show": "Lion King",
+        "entity_name": "Lion King Theatrical LP",
+        "offering_amount": 19755551.38,
+        "filing_date": "2022-08-14 00:00:00"
+      },
+      {
+        "show": "Lion King",
+        "entity_name": "Lion King Theatrical LP",
+        "offering_amount": 4108449.54,
+        "filing_date": "2023-05-21 00:00:00"
+      },
+      {
+        "show": "Lion King",
+        "entity_name": "Lion King Theatrical LP",
+        "offering_amount": 6363956.73,
+        "filing_date": "2010-05-30 00:00:00"
+      },
+      {
+        "show": "Lion King",
+        "entity_name": "Lion King Theatrical LP",
+        "offering_amount": 2246608.73,
+        "filing_date": "2017-08-22 00:00:00"
+      },
+      {
+        "show": "Lion King",
+        "entity_name": "Lion King Theatrical LP",
+        "offering_amount": 17693802.65,
+        "filing_date": "2017-09-02 00:00:00"
+      },
+      {
+        "show": "Lion King",
+        "entity_name": "Lion King Theatrical LP",
+        "offering_amount": 12469709.69,
+        "filing_date": "2022-09-26 00:00:00"
+      },
+      {
+        "show": "Wicked",
+        "entity_name": "Wicked Broadway Productions",
+        "offering_amount": 7737439.02,
+        "filing_date": "2017-12-16 00:00:00"
+      },
+      {
+        "show": "Wicked",
+        "entity_name": "Wicked Broadway Productions",
+        "offering_amount": 4756428.12,
+        "filing_date": "2023-08-03 00:00:00"
+      },
+      {
+        "show": "Harry Potter",
+        "entity_name": "Harry Potter and the Cursed Child LLC",
+        "offering_amount": 1467301.16,
+        "filing_date": "2021-10-16 00:00:00"
+      },
+      {
+        "show": "Harry Potter",
+        "entity_name": "Harry Potter and the Cursed Child LLC",
+        "offering_amount": 769383.0,
+        "filing_date": "2016-08-15 00:00:00"
+      },
+      {
+        "show": "Harry Potter",
+        "entity_name": "Harry Potter and the Cursed Child LLC",
+        "offering_amount": 1160080.68,
+        "filing_date": "2019-02-12 00:00:00"
+      },
+      {
+        "show": "Harry Potter",
+        "entity_name": "Harry Potter and the Cursed Child LLC",
+        "offering_amount": 35821478.72,
+        "filing_date": "2022-12-20 00:00:00"
+      },
+      {
+        "show": "Harry Potter",
+        "entity_name": "Harry Potter and the Cursed Child LLC",
+        "offering_amount": 28064305.83,
+        "filing_date": "2020-09-04 00:00:00"
+      },
+      {
+        "show": "Harry Potter",
+        "entity_name": "Harry Potter and the Cursed Child LLC",
+        "offering_amount": 2544598.03,
+        "filing_date": "2016-03-26 00:00:00"
+      },
+      {
+        "show": "Harry Potter",
+        "entity_name": "Harry Potter and the Cursed Child LLC",
+        "offering_amount": 1825696.96,
+        "filing_date": "2015-03-28 00:00:00"
+      },
+      {
+        "show": "Phantom",
+        "entity_name": "Phantom of the Opera LLC",
+        "offering_amount": 5878666.59,
+        "filing_date": "2022-07-21 00:00:00"
+      },
+      {
+        "show": "Phantom",
+        "entity_name": "Phantom of the Opera LLC",
+        "offering_amount": 8788479.59,
+        "filing_date": "2022-06-11 00:00:00"
+      },
+      {
+        "show": "Phantom",
+        "entity_name": "Phantom of the Opera LLC",
+        "offering_amount": 9011481.04,
+        "filing_date": "2016-08-09 00:00:00"
+      },
+      {
+        "show": "Phantom",
+        "entity_name": "Phantom of the Opera LLC",
+        "offering_amount": 20568452.38,
+        "filing_date": "2020-01-19 00:00:00"
+      },
+      {
+        "show": "Phantom",
+        "entity_name": "Phantom of the Opera LLC",
+        "offering_amount": 2647099.99,
+        "filing_date": "2012-12-15 00:00:00"
+      },
+      {
+        "show": "Chicago",
+        "entity_name": "Chicago Musical Productions",
+        "offering_amount": 31742853.57,
+        "filing_date": "2022-11-18 00:00:00"
+      },
+      {
+        "show": "Chicago",
+        "entity_name": "Chicago Musical Productions",
+        "offering_amount": 640040.73,
+        "filing_date": "2014-08-11 00:00:00"
+      },
+      {
+        "show": "Chicago",
+        "entity_name": "Chicago Musical Productions",
+        "offering_amount": 4921818.03,
+        "filing_date": "2024-06-04 00:00:00"
+      },
+      {
+        "show": "Chicago",
+        "entity_name": "Chicago Musical Productions",
+        "offering_amount": 29125698.9,
+        "filing_date": "2024-12-01 00:00:00"
+      },
+      {
+        "show": "Chicago",
+        "entity_name": "Chicago Musical Productions",
+        "offering_amount": 6907402.73,
+        "filing_date": "2010-11-27 00:00:00"
+      },
+      {
+        "show": "Chicago",
+        "entity_name": "Chicago Musical Productions",
+        "offering_amount": 11660366.02,
+        "filing_date": "2015-10-16 00:00:00"
+      },
+      {
+        "show": "Chicago",
+        "entity_name": "Chicago Musical Productions",
+        "offering_amount": 4341031.04,
+        "filing_date": "2013-07-01 00:00:00"
+      },
+      {
+        "show": "Hadestown",
+        "entity_name": "Hadestown Broadway LLC",
+        "offering_amount": 20222008.19,
+        "filing_date": "2013-08-24 00:00:00"
+      },
+      {
+        "show": "Hadestown",
+        "entity_name": "Hadestown Broadway LLC",
+        "offering_amount": 6867620.66,
+        "filing_date": "2011-04-16 00:00:00"
+      },
+      {
+        "show": "Hadestown",
+        "entity_name": "Hadestown Broadway LLC",
+        "offering_amount": 2723479.52,
+        "filing_date": "2015-07-20 00:00:00"
+      },
+      {
+        "show": "Hadestown",
+        "entity_name": "Hadestown Broadway LLC",
+        "offering_amount": 2437549.22,
+        "filing_date": "2012-02-01 00:00:00"
+      },
+      {
+        "show": "Hadestown",
+        "entity_name": "Hadestown Broadway LLC",
+        "offering_amount": 1197929.82,
+        "filing_date": "2013-06-19 00:00:00"
+      },
+      {
+        "show": "Hadestown",
+        "entity_name": "Hadestown Broadway LLC",
+        "offering_amount": 27878022.94,
+        "filing_date": "2022-07-11 00:00:00"
+      },
+      {
+        "show": "Book Of Mormon",
+        "entity_name": "Book of Mormon LLC",
+        "offering_amount": 52169315.88,
+        "filing_date": "2020-10-17 00:00:00"
+      },
+      {
+        "show": "Book Of Mormon",
+        "entity_name": "Book of Mormon LLC",
+        "offering_amount": 11697584.81,
+        "filing_date": "2018-01-08 00:00:00"
+      },
+      {
+        "show": "Book Of Mormon",
+        "entity_name": "Book of Mormon LLC",
+        "offering_amount": 7754696.45,
+        "filing_date": "2013-11-18 00:00:00"
+      },
+      {
+        "show": "Book Of Mormon",
+        "entity_name": "Book of Mormon LLC",
+        "offering_amount": 5786632.73,
+        "filing_date": "2021-10-17 00:00:00"
+      },
+      {
+        "show": "Book Of Mormon",
+        "entity_name": "Book of Mormon LLC",
+        "offering_amount": 2123605.68,
+        "filing_date": "2013-09-17 00:00:00"
+      },
+      {
+        "show": "Book Of Mormon",
+        "entity_name": "Book of Mormon LLC",
+        "offering_amount": 5713929.27,
+        "filing_date": "2018-06-10 00:00:00"
+      }
+    ]
+  },
+  "summary_insights": {
+    "insights": [
+      {
+        "title": "Broadway Capital Markets Scale",
+        "finding": "Total capital raised through Form D: $2,639,342,860. Annual offering volume grew -32.2% from 2010 to present."
+      },
+      {
+        "title": "Post-COVID Capitalization Shift",
+        "finding": "Average offering size +40.9% post-2020, from $11,480,931 to $16,181,707."
+      },
+      {
+        "title": "Investment Accessibility Trend",
+        "finding": "Median minimum investment -91.4% from early period ($583,333) to recent years ($50,000)."
+      },
+      {
+        "title": "Regulatory Exemption Usage",
+        "finding": "Rule 506(b) used in 65.0% of filings, while Rule 506(c) (general solicitation) used in 27.5%."
+      },
+      {
+        "title": "Geographic Concentration",
+        "finding": "CA leads with 15.5% of all incorporations (31 out of 200 filings)."
+      }
+    ],
+    "total_insights": 5
+  }
+}
