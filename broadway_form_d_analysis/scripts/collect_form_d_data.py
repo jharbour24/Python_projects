@@ -49,10 +49,12 @@ class BroadwayFormDCollector:
             'chicago', 'moulin rouge', 'funny girl', 'music man',
             'harry potter', 'beetlejuice', 'back to the future',
             'les miserables', 'rent', 'dear evan hansen', 'come from away',
-            'six', 'mrs doubtfire', 'tootsie', 'mean girls', 'frozen',
+            'six the musical', 'mrs doubtfire', 'tootsie', 'mean girls', 'frozen',
             'aladdin', 'book of mormon', 'jersey boys', 'kinky boots',
-            'sweeney todd', 'into the woods', 'company', 'cabaret',
-            'spring awakening', 'hedwig', 'waitress', 'anastasia'
+            'sweeney todd', 'into the woods', 'company broadway', 'cabaret revival',
+            'spring awakening', 'hedwig', 'waitress', 'anastasia',
+            'phantom of the opera', 'the producers', 'mamma mia', 'hairspray',
+            'avenue q', 'newsies', 'matilda', 'billy elliot'
         ]
     }
 
@@ -100,7 +102,28 @@ class BroadwayFormDCollector:
         text = (entity_name + " " + business_desc).lower()
         name_lower = entity_name.lower()
 
-        # STRICT: Check for known Broadway shows first (highest confidence)
+        # STRICT: First check for EXCLUSION terms (non-theatrical businesses)
+        # Use word boundaries to avoid false matches (e.g., "bar" in "cabaret")
+        exclusion_patterns = [
+            r'\bpizza\b', r'\brestaurant\b', r'\bfood\b', r'\bcafe\b', r'\bdiner\b',
+            r'\bbar\b', r'\bgrill\b', r'\btavern\b', r'\bpub\b',
+            r'\binstrument\b', r'\bequipment\b', r'\bmanufacturing\b', r'\bseating\b',
+            r'\bfurniture\b', r'\bcoating\b',
+            r'\breal estate\b', r'\brealty\b', r'\bholdings\b', r'\bproperties\b',
+            r'\bstreet\b', r'\bdistrict\b', r'\bavenue\b', r'\bboulevard\b',
+            r'\bsoftware\b', r'\bconsulting\b', r'\bnetwork\b', r'\bservices\b',
+            r'\btechnology\b', r'\btech\b',
+            r'\beducation\b', r'\bfoundation\b', r'\bcharity\b', r'\bschool\b',
+            r'\boil\b', r'\bgas\b', r'\benergy\b', r'\bagricultural\b', r'\bfarming\b',
+            r'\bfilm\b', r'\bvideo\b', r'\bcinema\b', r'\bmovie\b', r'\bpipe\b'
+        ]
+
+        # Reject if any exclusion pattern matched
+        for pattern in exclusion_patterns:
+            if re.search(pattern, name_lower):
+                return False, f"excluded: {pattern}"
+
+        # STRICT: Check for known Broadway shows (highest confidence)
         for show in self.THEATRICAL_PATTERNS['known_shows']:
             if show in name_lower:
                 return True, f"known_show: {show}"
@@ -120,7 +143,8 @@ class BroadwayFormDCollector:
                 return False, "no_core_theatrical_terms"
 
         # Has a core term - now check for production-related terms
-        production_terms = ['production', 'llc', 'lp', 'musical', 'play', 'show']
+        # More strict: require explicit production terms, not just LLC/LP
+        production_terms = ['production', 'musical', 'play', 'show', 'theatrical', 'company', 'revival']
         has_production_term = any(term in name_lower for term in production_terms)
 
         if has_production_term:
