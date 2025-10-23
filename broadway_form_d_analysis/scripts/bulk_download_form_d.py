@@ -21,6 +21,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent))
 from form_d_parser import FormDParser
 from collect_form_d_data import BroadwayFormDCollector
+from sec_config import get_user_agent
 
 logging.basicConfig(
     level=logging.INFO,
@@ -36,11 +37,6 @@ class SECBulkFormDDownloader:
     BASE_URL = "https://www.sec.gov/dera/data"
     FORM_D_URL = f"{BASE_URL}/form-d-filings"
 
-    HEADERS = {
-        'User-Agent': 'Broadway Research Analysis research@university.edu',
-        'Accept': 'application/zip, application/xml, text/xml, */*'
-    }
-
     def __init__(self, data_dir: Path):
         self.data_dir = Path(data_dir)
         self.raw_dir = self.data_dir / 'raw' / 'bulk'
@@ -51,6 +47,15 @@ class SECBulkFormDDownloader:
 
         self.parser = FormDParser()
         self.filter = BroadwayFormDCollector(self.data_dir)
+
+        # Get SEC-compliant User-Agent
+        user_agent = get_user_agent()
+        self.headers = {
+            'User-Agent': user_agent,
+            'Accept': 'application/json, application/xml, text/xml, */*',
+            'Accept-Encoding': 'gzip, deflate'
+        }
+        logger.info(f"Using User-Agent: {user_agent}")
 
     def download_bulk_dataset(self, year: int = None, quarter: int = None) -> Optional[Path]:
         """
@@ -91,7 +96,7 @@ class SECBulkFormDDownloader:
             logger.info(f"Trying: {url}")
 
             try:
-                response = requests.get(url, headers=self.HEADERS, timeout=60, stream=True)
+                response = requests.get(url, headers=self.headers, timeout=60, stream=True)
 
                 if response.status_code == 200:
                     # Download successful
@@ -156,7 +161,7 @@ class SECBulkFormDDownloader:
 
                 try:
                     time.sleep(0.2)  # Rate limiting
-                    response = requests.get(search_url, headers=self.HEADERS,
+                    response = requests.get(search_url, headers=self.headers,
                                           params=params, timeout=30)
 
                     if response.status_code != 200:
@@ -300,7 +305,7 @@ class SECBulkFormDDownloader:
 
                 try:
                     time.sleep(0.2)  # Rate limiting
-                    response = requests.get(url, headers=self.HEADERS, timeout=30)
+                    response = requests.get(url, headers=self.headers, timeout=30)
 
                     if response.status_code == 200:
                         xml_content = response.text
