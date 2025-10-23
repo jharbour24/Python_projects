@@ -92,27 +92,43 @@ class BroadwayFormDCollector:
         """
         Determine if entity is theatrical production
 
+        Uses STRICT filtering requiring multiple Broadway-specific indicators
+
         Returns:
             (is_theatrical: bool, match_reason: str)
         """
         text = (entity_name + " " + business_desc).lower()
+        name_lower = entity_name.lower()
 
-        # Check keywords
-        for keyword in self.THEATRICAL_PATTERNS['keywords']:
-            if keyword in text:
-                return True, f"keyword: {keyword}"
-
-        # Check entity type patterns
-        for pattern in self.THEATRICAL_PATTERNS['entity_types']:
-            if re.search(pattern, text, re.IGNORECASE):
-                return True, f"entity_pattern: {pattern}"
-
-        # Check known shows
+        # STRICT: Check for known Broadway shows first (highest confidence)
         for show in self.THEATRICAL_PATTERNS['known_shows']:
-            if show in text:
+            if show in name_lower:
                 return True, f"known_show: {show}"
 
-        return False, "no_match"
+        # STRICT: Require "broadway" OR "theatrical" in the entity name itself
+        theatrical_core_terms = ['broadway', 'theatrical', 'theatre', 'theater']
+        has_core_term = any(term in name_lower for term in theatrical_core_terms)
+
+        if not has_core_term:
+            # If no core term, only accept if it has "musical" + "production"
+            # or "play" + "production" in entity name
+            if ('musical' in name_lower and 'production' in name_lower):
+                return True, "keyword: musical+production"
+            elif ('play' in name_lower and 'production' in name_lower):
+                return True, "keyword: play+production"
+            else:
+                return False, "no_core_theatrical_terms"
+
+        # Has a core term - now check for production-related terms
+        production_terms = ['production', 'llc', 'lp', 'musical', 'play', 'show']
+        has_production_term = any(term in name_lower for term in production_terms)
+
+        if has_production_term:
+            # Find which core term matched
+            matched_core = next(term for term in theatrical_core_terms if term in name_lower)
+            return True, f"keyword: {matched_core}"
+
+        return False, "no_production_context"
 
     def get_company_tickers(self) -> pd.DataFrame:
         """
@@ -266,25 +282,44 @@ class BroadwayFormDCollector:
             DataFrame with fully parsed Form D data
         """
         parsed_filings = []
+        failed_count = 0
+        success_count = 0
 
         for idx, row in filings_df.iterrows():
             logger.info(f"Processing {idx + 1}/{len(filings_df)}: {row['company_name']}")
 
-            xml_content = self.download_filing_xml(row['filename'])
+            try:
+                xml_content = self.download_filing_xml(row['filename'])
 
-            if xml_content:
-                # Extract accession number from filename
-                accession = row['filename'].split('/')[-1].replace('.txt', '')
+                if xml_content:
+                    # Extract accession number from filename
+                    accession = row['filename'].split('/')[-1].replace('.txt', '')
 
-                parsed_data = self.parser.parse_xml_filing(xml_content, accession)
+                    parsed_data = self.parser.parse_xml_filing(xml_content, accession)
 
-                if parsed_data:
-                    # Add metadata
-                    parsed_data['cik'] = row.get('cik')
-                    parsed_data['match_reason'] = row.get('match_reason')
-                    parsed_filings.append(parsed_data)
+                    if parsed_data:
+                        # Add metadata
+                        parsed_data['cik'] = row.get('cik')
+                        parsed_data['match_reason'] = row.get('match_reason')
+                        parsed_filings.append(parsed_data)
+                        success_count += 1
+                    else:
+                        failed_count += 1
+                else:
+                    failed_count += 1
+                    logger.warning(f"Could not download filing for {row['company_name']}")
+
+            except Exception as e:
+                failed_count += 1
+                logger.error(f"Error processing {row['company_name']}: {e}")
+
+            # Progress update every 50 filings
+            if (idx + 1) % 50 == 0:
+                logger.info(f"Progress: {success_count} successful, {failed_count} failed")
 
             time.sleep(self.rate_limit)
+
+        logger.info(f"Final: {success_count} successfully parsed, {failed_count} failed")
 
         if parsed_filings:
             return pd.DataFrame(parsed_filings)

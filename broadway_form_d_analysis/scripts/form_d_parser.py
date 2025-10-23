@@ -39,6 +39,20 @@ class FormDParser:
         Returns:
             Dictionary containing extracted fields
         """
+        if not xml_content or len(xml_content.strip()) == 0:
+            logger.warning(f"Empty content for {accession_number}")
+            return None
+
+        # Check if content is actually XML (not HTML or plain text)
+        content_lower = xml_content.strip().lower()
+        if content_lower.startswith('<!doctype html') or content_lower.startswith('<html'):
+            logger.warning(f"HTML content (not XML) for {accession_number}")
+            return None
+
+        if not content_lower.startswith('<?xml') and not content_lower.startswith('<'):
+            logger.warning(f"Non-XML content for {accession_number}")
+            return None
+
         try:
             root = ET.fromstring(xml_content)
 
