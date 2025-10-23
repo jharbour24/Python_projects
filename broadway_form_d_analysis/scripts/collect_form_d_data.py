@@ -73,9 +73,11 @@ class BroadwayFormDCollector:
         self.processed_dir.mkdir(parents=True, exist_ok=True)
 
         self.parser = FormDParser()
-        self.rate_limit = 0.1  # 10 requests/second max for SEC
+        # Rate limiting: start conservative to avoid 403 errors
+        # 0.2 seconds = 5 requests/second (SEC allows up to 10/sec)
+        self.rate_limit = 0.2  # Configurable: increase if getting 403 errors
 
-    def _request_with_retry(self, url: str, max_retries: int = 3) -> Optional[requests.Response]:
+    def _request_with_retry(self, url: str, max_retries: int = 5) -> Optional[requests.Response]:
         """Make HTTP request with exponential backoff retry"""
         for attempt in range(max_retries):
             try:
@@ -83,10 +85,23 @@ class BroadwayFormDCollector:
                 response = requests.get(url, headers=self.HEADERS, timeout=30)
                 if response.status_code == 200:
                     return response
-                elif response.status_code == 429:  # Rate limited
+                elif response.status_code == 403:
+                    # 403 Forbidden - could be rate limiting, try with longer backoff
                     wait_time = (2 ** attempt) * 2
-                    logger.warning(f"Rate limited, waiting {wait_time}s")
+                    if attempt < max_retries - 1:
+                        logger.warning(f"403 Forbidden for {url}, waiting {wait_time}s before retry {attempt + 1}/{max_retries}")
+                        time.sleep(wait_time)
+                    else:
+                        logger.warning(f"403 Forbidden for {url}, giving up after {max_retries} attempts")
+                        return None
+                elif response.status_code == 429:  # Explicit rate limiting
+                    wait_time = (2 ** attempt) * 3
+                    logger.warning(f"Rate limited (429), waiting {wait_time}s")
                     time.sleep(wait_time)
+                elif response.status_code == 404:
+                    # 404 Not Found - file doesn't exist (weekend/holiday), skip
+                    logger.debug(f"404 Not Found for {url} (weekend/holiday?)")
+                    return None
                 else:
                     logger.warning(f"HTTP {response.status_code} for {url}")
                     return None
