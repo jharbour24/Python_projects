@@ -23,13 +23,15 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def run_complete_pipeline(use_sample_data: bool = True, num_samples: int = 200):
+def run_complete_pipeline(use_sample_data: bool = True, num_samples: int = 200,
+                         use_bulk_download: bool = False):
     """
     Execute complete analysis pipeline
 
     Args:
         use_sample_data: If True, generates sample data instead of fetching from SEC
         num_samples: Number of sample records to generate
+        use_bulk_download: If True, uses SEC bulk download/API instead of daily scraping
     """
     project_dir = Path(__file__).parent.parent
 
@@ -51,10 +53,27 @@ def run_complete_pipeline(use_sample_data: bool = True, num_samples: int = 200):
         df = generator.generate_sample_data()
         data_path = generator.save_sample_data(df)
         logger.info(f"✓ Sample data generated: {data_path}")
+    elif use_bulk_download:
+        logger.info("Using SEC EDGAR bulk download/API method...")
+        logger.info("This is faster and more reliable than daily scraping!")
+
+        from bulk_download_form_d import SECBulkFormDDownloader
+
+        data_dir = project_dir / 'data'
+        downloader = SECBulkFormDDownloader(data_dir)
+        df = downloader.run_bulk_collection(method='api')
+
+        if df.empty:
+            logger.error("No data collected. Exiting.")
+            return
+
+        logger.info(f"✓ Bulk collection complete: {len(df)} filings")
+        data_path = data_file
     else:
         logger.info("NOTE: Live SEC EDGAR data collection requires internet access")
         logger.info("      and compliance with SEC rate limits (10 requests/second).")
         logger.info("      This process may take several hours for 2010-2025 data.")
+        logger.info("      TIP: Use --bulk for faster, more reliable collection!")
 
         from collect_form_d_data import BroadwayFormDCollector
 
@@ -146,11 +165,15 @@ Examples:
   # Generate 500 sample filings
   python run_full_analysis.py --sample --num-samples 500
 
-  # Collect live data from SEC EDGAR (requires internet, takes hours)
+  # Collect REAL data using SEC bulk download (RECOMMENDED - fast & reliable)
+  python run_full_analysis.py --bulk
+
+  # Collect live data from SEC EDGAR daily indices (slower, may get rate limited)
   python run_full_analysis.py --live
 
-Note: Live data collection requires compliance with SEC EDGAR rate limits
-and may take several hours to complete for 15+ years of data.
+Note:
+  --bulk uses SEC's EDGAR API (faster, more reliable, no rate limit issues)
+  --live scrapes daily indices (slower, may encounter 403 errors)
         """
     )
 
@@ -161,9 +184,15 @@ and may take several hours to complete for 15+ years of data.
     )
 
     parser.add_argument(
+        '--bulk',
+        action='store_true',
+        help='Use SEC bulk download/API (RECOMMENDED for real data - fast & reliable)'
+    )
+
+    parser.add_argument(
         '--live',
         action='store_true',
-        help='Collect live data from SEC EDGAR (requires internet access)'
+        help='Collect live data from SEC EDGAR daily indices (slower)'
     )
 
     parser.add_argument(
@@ -175,16 +204,23 @@ and may take several hours to complete for 15+ years of data.
 
     args = parser.parse_args()
 
-    # Default to sample if neither specified
-    if not args.sample and not args.live:
+    # Default to sample if no mode specified
+    if not args.sample and not args.bulk and not args.live:
         logger.info("No data source specified. Using --sample by default.")
-        logger.info("Use --live to collect real SEC EDGAR data.\n")
+        logger.info("Use --bulk to collect real SEC EDGAR data (recommended).")
+        logger.info("Use --live to collect via daily indices (slower).\n")
         args.sample = True
 
+    # Determine collection method
     use_sample = args.sample
+    use_bulk = args.bulk
 
     try:
-        run_complete_pipeline(use_sample_data=use_sample, num_samples=args.num_samples)
+        run_complete_pipeline(
+            use_sample_data=use_sample,
+            num_samples=args.num_samples,
+            use_bulk_download=use_bulk
+        )
     except Exception as e:
         logger.error(f"Pipeline failed with error: {e}", exc_info=True)
         sys.exit(1)
