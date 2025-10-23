@@ -44,17 +44,23 @@ class BroadwayFormDCollector:
             r'\s+musical\s+',
             r'\s+play\s+'
         ],
-        'known_shows': [
-            'hamilton', 'hadestown', 'lion king', 'wicked', 'phantom',
-            'chicago', 'moulin rouge', 'funny girl', 'music man',
-            'harry potter', 'beetlejuice', 'back to the future',
-            'les miserables', 'rent', 'dear evan hansen', 'come from away',
-            'six the musical', 'mrs doubtfire', 'tootsie', 'mean girls', 'frozen',
-            'aladdin', 'book of mormon', 'jersey boys', 'kinky boots',
-            'sweeney todd', 'into the woods', 'company broadway', 'cabaret revival',
-            'spring awakening', 'hedwig', 'waitress', 'anastasia',
-            'phantom of the opera', 'the producers', 'mamma mia', 'hairspray',
-            'avenue q', 'newsies', 'matilda', 'billy elliot'
+        # Split into unique shows vs. common words that need context
+        'unique_shows': [
+            # These are unique enough to match standalone
+            'hadestown', 'beetlejuice', 'moulin rouge', 'waitress broadway',
+            'dear evan hansen', 'come from away', 'mrs doubtfire', 'tootsie',
+            'kinky boots', 'sweeney todd', 'hairspray', 'newsies',
+            'book of mormon', 'avenue q', 'matilda the musical',
+            'billy elliot', 'spring awakening', 'anastasia broadway',
+            'funny girl broadway', 'harry potter and the cursed child',
+            'back to the future musical', 'jersey boys musical',
+            'into the woods broadway', 'les miserables broadway'
+        ],
+        'common_word_shows': [
+            # These are common words - REQUIRE theatrical context
+            'hamilton', 'wicked', 'chicago', 'rent', 'frozen',
+            'aladdin', 'lion king', 'phantom', 'company', 'cabaret',
+            'six', 'mean girls', 'hedwig'
         ]
     }
 
@@ -123,10 +129,25 @@ class BroadwayFormDCollector:
             if re.search(pattern, name_lower):
                 return False, f"excluded: {pattern}"
 
-        # STRICT: Check for known Broadway shows (highest confidence)
-        for show in self.THEATRICAL_PATTERNS['known_shows']:
+        # STRICT: Check for UNIQUE Broadway shows (high confidence, standalone match OK)
+        for show in self.THEATRICAL_PATTERNS['unique_shows']:
             if show in name_lower:
-                return True, f"known_show: {show}"
+                return True, f"unique_show: {show}"
+
+        # Check for COMMON WORD shows - but ONLY if accompanied by theatrical terms
+        theatrical_context_terms = ['broadway', 'theatrical', 'theatre', 'theater',
+                                    'musical', 'production', 'show', 'play', 'stage',
+                                    'tour', 'revival', 'anniversary']
+
+        for show in self.THEATRICAL_PATTERNS['common_word_shows']:
+            if show in name_lower:
+                # Found the show name - now verify it has theatrical context
+                has_theatrical_context = any(term in name_lower for term in theatrical_context_terms)
+                if has_theatrical_context:
+                    return True, f"show_with_context: {show}"
+                else:
+                    # Show name found but no theatrical context - likely false positive
+                    return False, f"show_name_without_context: {show}"
 
         # STRICT: Require "broadway" OR "theatrical" in the entity name itself
         theatrical_core_terms = ['broadway', 'theatrical', 'theatre', 'theater']

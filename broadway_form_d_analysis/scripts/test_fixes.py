@@ -250,6 +250,15 @@ def test_filtering_strictness():
         "Industrial Production LLC",
         "Media Production Network",
         "Content Production Services",
+        # Real false positives from SEC EDGAR data
+        "Convey Health Parent, Inc.",  # Has "rent" in "Parent"
+        "Wink Parent, Inc.",  # Has "rent" in "Parent"
+        "Hamilton Lane Private Markets Opportunity Fund LP",  # Financial firm
+        "Hamilton Lane Private Markets Opportunity Feeder Fund LP",  # Financial firm
+        "Chicago Ventures Fund II, L.P.",  # VC fund
+        "Chicago Ventures Founders Fund, L.P.",  # VC fund
+        "Prana Current Yield Fund IV, L.P.",  # Has "rent" in "Current"
+        "Accelerent-Phoenix, LLC",  # Has "rent" in company name
     ]
 
     passed = 0
@@ -285,11 +294,15 @@ def test_filtering_recall():
     # Real or realistic Broadway production names that should be ACCEPTED
     real_broadway_tests = [
         "Hamilton Broadway Production LLC",
+        "Hamilton The Musical LLC",
         "Wicked National Tour Productions LP",
         "The Lion King Theatrical LLC",
         "Hadestown Broadway Productions",
         "Moulin Rouge! The Musical LLC",
         "Chicago The Musical Productions",
+        "Chicago Broadway Show LLC",
+        "Rent Musical Productions LLC",
+        "Rent 20th Anniversary Tour LLC",
         "Dear Evan Hansen Broadway LLC",
         "Come From Away Productions Limited Partnership",
         "Broadway Theatrical Productions Company",
