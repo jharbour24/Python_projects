@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-11-05T18:18:05.935729",
+  "n_candidates": 11,
+  "n_keepers": 11,
+  "n_rejected": 0,
+  "violation_rate": 0.0,
+  "violation_summary": {},
+  "template_entropy": 2.186704345910025,
+  "tone_entropy": 1.5726236638951638,
+  "topic_diversity": 0.41732283464566927,
+  "avg_brevity": 0.09523809523809523,
+  "has_personal_pronoun": 1.0,
+  "local_specificity": 1.0
+}
