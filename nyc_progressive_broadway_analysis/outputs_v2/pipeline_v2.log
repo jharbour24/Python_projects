@@ -1,0 +1,303 @@
+2025-11-09 15:22:44,411 - __main__ - INFO - ================================================================================
+2025-11-09 15:22:44,411 - __main__ - INFO - NYC PROGRESSIVE-CULTURAL SPATIAL ANALYSIS V2
+2025-11-09 15:22:44,411 - __main__ - INFO - ================================================================================
+2025-11-09 15:22:44,413 - __main__ - INFO - Directory structure created
+2025-11-09 15:22:44,413 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:22:44,413 - __main__ - INFO - STAGE 1: LOAD GEOGRAPHIC DATA
+2025-11-09 15:22:44,413 - __main__ - INFO - ================================================================================
+2025-11-09 15:22:44,413 - __main__ - INFO - Loading Census tracts
+2025-11-09 15:22:44,413 - __main__ - INFO - Creating synthetic Census tract grid
+2025-11-09 15:22:44,449 - __main__ - INFO - Loaded 750 Census tracts
+2025-11-09 15:22:44,449 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:22:44,449 - __main__ - INFO - STAGE 2: CONSTRUCT CULTURAL VENUE ACCESSIBILITY INDEX (CVAI)
+2025-11-09 15:22:44,450 - __main__ - INFO - ================================================================================
+2025-11-09 15:22:44,451 - __main__ - INFO - Building CVAI Component 1: Transit travel time accessibility
+2025-11-09 15:22:46,102 - __main__ - INFO - Travel time range: 10.7 - 90.0 min
+2025-11-09 15:22:46,103 - __main__ - INFO - Building CVAI Component 2: Venue density
+2025-11-09 15:22:46,103 - __main__ - INFO - Generating synthetic venue data
+2025-11-09 15:22:46,120 - __main__ - INFO - Venue density range: 0.00 - 4.37 per km²
+2025-11-09 15:22:46,120 - __main__ - INFO - Building CVAI Component 3: Event permit density
+2025-11-09 15:22:46,132 - __main__ - INFO - Event density (log) range: 0.74 - 4.07
+2025-11-09 15:22:46,132 - __main__ - INFO - Building CVAI Component 4: Multi-venue accessibility proxy
+2025-11-09 15:22:49,266 - __main__ - INFO - Mobility proxy range: 15.15 - 174.63
+2025-11-09 15:22:49,267 - __main__ - INFO - Aggregating CVAI using method: pca
+2025-11-09 15:22:49,271 - __main__ - INFO - PCA variance explained: 0.618
+2025-11-09 15:22:49,272 - __main__ - INFO - PCA loadings: [0.57344663 0.46133356 0.44159243 0.51315342]
+2025-11-09 15:22:49,273 - __main__ - INFO - CVAI constructed: mean=-0.000, std=1.572
+2025-11-09 15:22:49,273 - __main__ - INFO - Validating CVAI...
+2025-11-09 15:22:49,274 - __main__ - INFO - Component correlation matrix:
+2025-11-09 15:22:49,281 - __main__ - INFO - 
+                             travel_time_accessibility_z  ...  mobility_proxy_z
+travel_time_accessibility_z                     1.000000  ...          0.617594
+venue_density_z                                 0.532508  ...          0.534023
+event_density_z                                 0.637871  ...          0.350948
+mobility_proxy_z                                0.617594  ...          1.000000
+
+[4 rows x 4 columns]
+2025-11-09 15:22:49,283 - __main__ - INFO - CVAI distribution: min=-1.809, median=-0.397, max=15.157
+2025-11-09 15:22:49,283 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:22:49,284 - __main__ - INFO - STAGE 3: CONSTRUCT PROGRESSIVE SUPPORT INDEX (PSI)
+2025-11-09 15:22:49,284 - __main__ - INFO - ================================================================================
+2025-11-09 15:22:49,284 - __main__ - INFO - Loading precinct-level election results
+2025-11-09 15:22:49,284 - __main__ - INFO - Simulating race: 2018_NY14_Primary
+2025-11-09 15:22:49,533 - __main__ - INFO - Simulating race: 2020_NY14_General
+2025-11-09 15:22:49,786 - __main__ - INFO - Simulating race: 2021_AD36_Primary
+2025-11-09 15:22:50,055 - __main__ - INFO - Simulating race: 2022_NY14_Primary
+2025-11-09 15:22:50,306 - __main__ - INFO - Simulating race: 2024_AD_DSA
+2025-11-09 15:22:50,565 - __main__ - INFO - Simulating race: 2025_Mayoral_Primary
+2025-11-09 15:22:50,849 - __main__ - INFO - Loaded 13500 precinct-level results across 6 races
+2025-11-09 15:22:50,850 - __main__ - INFO - Aggregating precinct results to tract level
+2025-11-09 15:22:51,765 - __main__ - INFO - Aggregated to 4260 tract-race observations
+2025-11-09 15:22:51,765 - __main__ - INFO - Estimating latent Progressive Support Index
+2025-11-09 15:22:51,774 - __main__ - INFO - PSI estimated for 750 tracts: mean=-0.000, std=1.000
+2025-11-09 15:22:51,775 - __main__ - INFO - Validating PSI...
+2025-11-09 15:22:51,778 - __main__ - INFO - PSI by borough:
+borough
+Bronx           -0.025694
+Brooklyn         0.447795
+Manhattan        0.033872
+Queens           0.047606
+Staten Island   -0.216810
+Name: psi_z, dtype: float64
+2025-11-09 15:22:51,778 - __main__ - INFO - PSI missing: 0.0%
+2025-11-09 15:22:51,778 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:22:51,778 - __main__ - INFO - STAGE 4: PREPARE ANALYSIS DATASET
+2025-11-09 15:22:51,778 - __main__ - INFO - ================================================================================
+2025-11-09 15:22:51,778 - __main__ - INFO - Preparing analysis dataset
+2025-11-09 15:22:51,782 - __main__ - INFO - Adding control variables (simulated)
+2025-11-09 15:22:51,800 - __main__ - INFO - Analysis dataset ready: 750 tracts
+2025-11-09 15:22:51,900 - pyogrio._io - INFO - Created 750 records
+2025-11-09 15:22:51,936 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:22:51,936 - __main__ - INFO - STAGE 5: SPATIAL ECONOMETRIC MODELS
+2025-11-09 15:22:51,937 - __main__ - INFO - ================================================================================
+2025-11-09 15:22:51,937 - __main__ - INFO - Running spatial econometric models
+2025-11-09 15:22:51,937 - __main__ - INFO - Constructing spatial weights matrices
+2025-11-09 15:22:51,968 - __main__ - INFO - Queen weights: 750 units, 750 total links
+2025-11-09 15:22:51,983 - __main__ - INFO - KNN-5 weights: 750 units
+2025-11-09 15:22:51,985 - __main__ - INFO - Estimating Model 1: OLS Baseline
+2025-11-09 15:22:51,991 - __main__ - INFO - OLS: R²=0.5643, PSI β=-0.0004 (p=0.9881)
+2025-11-09 15:22:52,017 - __main__ - INFO - Moran's I on OLS residuals: 0.6662 (p=0.0010)
+2025-11-09 15:22:52,017 - __main__ - INFO - Estimating Model 2: Spatial Error Model (SEM)
+2025-11-09 15:22:52,323 - __main__ - INFO - SEM: Pseudo-R²=0.4789, λ=0.9466, PSI β=-0.0903
+2025-11-09 15:22:52,323 - __main__ - INFO - Estimating Model 3: Spatial Lag Model (SAR)
+2025-11-09 15:22:52,486 - __main__ - INFO - SAR: Pseudo-R²=0.8890, ρ=0.9331, PSI β=-0.0687
+2025-11-09 15:22:52,486 - __main__ - INFO - Creating model comparison table
+2025-11-09 15:22:52,492 - __main__ - INFO - Model comparison table:
+  Model        R²          AIC  PSI_Coefficient  PSI_P_Value  Spatial_Param
+0   OLS  0.564340  1529.237565        -0.000384      0.98805            NaN
+1   SEM  0.478891   654.359990        -0.090342          NaN       0.946596
+2   SAR  0.889043   684.521086        -0.068737          NaN       0.933129
+2025-11-09 15:22:52,492 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:22:52,492 - __main__ - INFO - STAGE 6: ROBUSTNESS & VALIDATION
+2025-11-09 15:22:52,492 - __main__ - INFO - ================================================================================
+2025-11-09 15:22:52,492 - __main__ - INFO - Running robustness tests
+2025-11-09 15:22:52,492 - __main__ - INFO - Test 1: Multicollinearity (VIF)
+2025-11-09 15:22:52,499 - __main__ - INFO - VIF:
+          Variable       VIF
+0            psi_z  1.087490
+1  median_income_z  1.006884
+2  pct_bachelors_z  1.003566
+3    pct_renters_z  1.006905
+4  pct_age_18_34_z  1.005665
+5    dist_to_cbd_z  1.096653
+6    pop_density_z  1.006909
+2025-11-09 15:22:52,500 - __main__ - INFO - Test 2: Leave-One-Borough-Out (LOBO)
+2025-11-09 15:22:52,501 - __main__ - INFO - LOBO: Holding out Staten Island
+2025-11-09 15:22:52,504 - __main__ - INFO - LOBO: Holding out Queens
+2025-11-09 15:22:52,508 - __main__ - INFO - LOBO: Holding out Manhattan
+2025-11-09 15:22:52,511 - __main__ - INFO - LOBO: Holding out Brooklyn
+2025-11-09 15:22:52,514 - __main__ - INFO - LOBO: Holding out Bronx
+2025-11-09 15:22:52,521 - __main__ - INFO - LOBO results:
+  Held_Out_Borough  N_Train  N_Test      RMSE        R2  PSI_Coef
+0    Staten Island      636     114  0.759514 -2.413098  0.011212
+1           Queens      563     187  0.374621  0.437818  0.053323
+2        Manhattan      577     173  1.272559  0.309486  0.071340
+3         Brooklyn      714      36  1.204518 -0.125974 -0.001243
+4            Bronx      510     240  0.747388 -0.324621 -0.037796
+2025-11-09 15:22:52,522 - __main__ - INFO - Test 3: CVAI component sensitivity
+2025-11-09 15:22:52,522 - __main__ - INFO - Testing CVAI component sensitivity
+2025-11-09 15:22:52,526 - __main__ - INFO - CVAI vs controls:
+                   cvai_z  median_income_z  pct_bachelors_z
+cvai_z           1.000000        -0.038955        -0.019881
+median_income_z -0.038955         1.000000        -0.005948
+pct_bachelors_z -0.019881        -0.005948         1.000000
+2025-11-09 15:22:52,526 - __main__ - INFO - CVAI discriminant validity: r(income)=-0.039 < 0.7 ✓
+2025-11-09 15:22:52,526 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:22:52,526 - __main__ - INFO - STAGE 7: GENERATE OUTPUTS
+2025-11-09 15:22:52,526 - __main__ - INFO - ================================================================================
+2025-11-09 15:22:52,526 - __main__ - INFO - Generating output figures and tables
+2025-11-09 15:22:53,190 - __main__ - INFO - Saved map_cvai_v2.png
+2025-11-09 15:22:53,871 - __main__ - INFO - Saved map_psi_v2.png
+2025-11-09 15:22:54,406 - __main__ - INFO - Saved scatter_psi_cvai_v2.png
+2025-11-09 15:22:54,717 - __main__ - INFO - Saved coefficient_comparison_v2.png
+2025-11-09 15:22:54,717 - __main__ - INFO - Generating markdown report
+2025-11-09 15:22:54,718 - __main__ - ERROR - ANALYSIS FAILED: unsupported format string passed to NoneType.__format__
+Traceback (most recent call last):
+  File "/home/user/Python_projects/nyc_progressive_broadway_analysis/nyc_progressive_spatial_v2.py", line 1325, in main
+    analysis.run_full_pipeline()
+  File "/home/user/Python_projects/nyc_progressive_broadway_analysis/nyc_progressive_spatial_v2.py", line 783, in run_full_pipeline
+    self._generate_outputs()
+  File "/home/user/Python_projects/nyc_progressive_broadway_analysis/nyc_progressive_spatial_v2.py", line 1107, in _generate_outputs
+    self._generate_markdown_report()
+  File "/home/user/Python_projects/nyc_progressive_broadway_analysis/nyc_progressive_spatial_v2.py", line 1260, in _generate_markdown_report
+    report.append(f"| {model_name.upper()} | {r2:.4f} | {aic:.1f} | {psi_coef:.4f} | {psi_pval:.4f} |")
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unsupported format string passed to NoneType.__format__
+2025-11-09 15:23:18,723 - __main__ - INFO - ================================================================================
+2025-11-09 15:23:18,724 - __main__ - INFO - NYC PROGRESSIVE-CULTURAL SPATIAL ANALYSIS V2
+2025-11-09 15:23:18,724 - __main__ - INFO - ================================================================================
+2025-11-09 15:23:18,725 - __main__ - INFO - Directory structure created
+2025-11-09 15:23:18,725 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:23:18,725 - __main__ - INFO - STAGE 1: LOAD GEOGRAPHIC DATA
+2025-11-09 15:23:18,725 - __main__ - INFO - ================================================================================
+2025-11-09 15:23:18,725 - __main__ - INFO - Loading Census tracts
+2025-11-09 15:23:18,726 - __main__ - INFO - Creating synthetic Census tract grid
+2025-11-09 15:23:18,759 - __main__ - INFO - Loaded 750 Census tracts
+2025-11-09 15:23:18,759 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:23:18,760 - __main__ - INFO - STAGE 2: CONSTRUCT CULTURAL VENUE ACCESSIBILITY INDEX (CVAI)
+2025-11-09 15:23:18,760 - __main__ - INFO - ================================================================================
+2025-11-09 15:23:18,761 - __main__ - INFO - Building CVAI Component 1: Transit travel time accessibility
+2025-11-09 15:23:20,426 - __main__ - INFO - Travel time range: 10.7 - 90.0 min
+2025-11-09 15:23:20,427 - __main__ - INFO - Building CVAI Component 2: Venue density
+2025-11-09 15:23:20,428 - __main__ - INFO - Generating synthetic venue data
+2025-11-09 15:23:20,444 - __main__ - INFO - Venue density range: 0.00 - 4.37 per km²
+2025-11-09 15:23:20,445 - __main__ - INFO - Building CVAI Component 3: Event permit density
+2025-11-09 15:23:20,455 - __main__ - INFO - Event density (log) range: 0.74 - 4.07
+2025-11-09 15:23:20,456 - __main__ - INFO - Building CVAI Component 4: Multi-venue accessibility proxy
+2025-11-09 15:23:23,596 - __main__ - INFO - Mobility proxy range: 15.15 - 174.63
+2025-11-09 15:23:23,596 - __main__ - INFO - Aggregating CVAI using method: pca
+2025-11-09 15:23:23,601 - __main__ - INFO - PCA variance explained: 0.618
+2025-11-09 15:23:23,601 - __main__ - INFO - PCA loadings: [0.57344663 0.46133356 0.44159243 0.51315342]
+2025-11-09 15:23:23,602 - __main__ - INFO - CVAI constructed: mean=-0.000, std=1.572
+2025-11-09 15:23:23,603 - __main__ - INFO - Validating CVAI...
+2025-11-09 15:23:23,603 - __main__ - INFO - Component correlation matrix:
+2025-11-09 15:23:23,610 - __main__ - INFO - 
+                             travel_time_accessibility_z  ...  mobility_proxy_z
+travel_time_accessibility_z                     1.000000  ...          0.617594
+venue_density_z                                 0.532508  ...          0.534023
+event_density_z                                 0.637871  ...          0.350948
+mobility_proxy_z                                0.617594  ...          1.000000
+
+[4 rows x 4 columns]
+2025-11-09 15:23:23,613 - __main__ - INFO - CVAI distribution: min=-1.809, median=-0.397, max=15.157
+2025-11-09 15:23:23,613 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:23:23,613 - __main__ - INFO - STAGE 3: CONSTRUCT PROGRESSIVE SUPPORT INDEX (PSI)
+2025-11-09 15:23:23,613 - __main__ - INFO - ================================================================================
+2025-11-09 15:23:23,614 - __main__ - INFO - Loading precinct-level election results
+2025-11-09 15:23:23,614 - __main__ - INFO - Simulating race: 2018_NY14_Primary
+2025-11-09 15:23:23,867 - __main__ - INFO - Simulating race: 2020_NY14_General
+2025-11-09 15:23:24,124 - __main__ - INFO - Simulating race: 2021_AD36_Primary
+2025-11-09 15:23:24,381 - __main__ - INFO - Simulating race: 2022_NY14_Primary
+2025-11-09 15:23:24,634 - __main__ - INFO - Simulating race: 2024_AD_DSA
+2025-11-09 15:23:24,881 - __main__ - INFO - Simulating race: 2025_Mayoral_Primary
+2025-11-09 15:23:25,159 - __main__ - INFO - Loaded 13500 precinct-level results across 6 races
+2025-11-09 15:23:25,160 - __main__ - INFO - Aggregating precinct results to tract level
+2025-11-09 15:23:26,067 - __main__ - INFO - Aggregated to 4260 tract-race observations
+2025-11-09 15:23:26,068 - __main__ - INFO - Estimating latent Progressive Support Index
+2025-11-09 15:23:26,077 - __main__ - INFO - PSI estimated for 750 tracts: mean=-0.000, std=1.000
+2025-11-09 15:23:26,077 - __main__ - INFO - Validating PSI...
+2025-11-09 15:23:26,081 - __main__ - INFO - PSI by borough:
+borough
+Bronx           -0.025694
+Brooklyn         0.447795
+Manhattan        0.033872
+Queens           0.047606
+Staten Island   -0.216810
+Name: psi_z, dtype: float64
+2025-11-09 15:23:26,081 - __main__ - INFO - PSI missing: 0.0%
+2025-11-09 15:23:26,081 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:23:26,081 - __main__ - INFO - STAGE 4: PREPARE ANALYSIS DATASET
+2025-11-09 15:23:26,081 - __main__ - INFO - ================================================================================
+2025-11-09 15:23:26,081 - __main__ - INFO - Preparing analysis dataset
+2025-11-09 15:23:26,085 - __main__ - INFO - Adding control variables (simulated)
+2025-11-09 15:23:26,101 - __main__ - INFO - Analysis dataset ready: 750 tracts
+2025-11-09 15:23:26,197 - pyogrio._io - INFO - Created 750 records
+2025-11-09 15:23:26,231 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:23:26,231 - __main__ - INFO - STAGE 5: SPATIAL ECONOMETRIC MODELS
+2025-11-09 15:23:26,231 - __main__ - INFO - ================================================================================
+2025-11-09 15:23:26,231 - __main__ - INFO - Running spatial econometric models
+2025-11-09 15:23:26,231 - __main__ - INFO - Constructing spatial weights matrices
+2025-11-09 15:23:26,258 - __main__ - INFO - Queen weights: 750 units, 750 total links
+2025-11-09 15:23:26,274 - __main__ - INFO - KNN-5 weights: 750 units
+2025-11-09 15:23:26,275 - __main__ - INFO - Estimating Model 1: OLS Baseline
+2025-11-09 15:23:26,282 - __main__ - INFO - OLS: R²=0.5643, PSI β=-0.0004 (p=0.9881)
+2025-11-09 15:23:26,308 - __main__ - INFO - Moran's I on OLS residuals: 0.6662 (p=0.0010)
+2025-11-09 15:23:26,309 - __main__ - INFO - Estimating Model 2: Spatial Error Model (SEM)
+2025-11-09 15:23:26,575 - __main__ - INFO - SEM: Pseudo-R²=0.4789, λ=0.9466, PSI β=-0.0903
+2025-11-09 15:23:26,575 - __main__ - INFO - Estimating Model 3: Spatial Lag Model (SAR)
+2025-11-09 15:23:26,730 - __main__ - INFO - SAR: Pseudo-R²=0.8890, ρ=0.9331, PSI β=-0.0687
+2025-11-09 15:23:26,730 - __main__ - INFO - Creating model comparison table
+2025-11-09 15:23:26,736 - __main__ - INFO - Model comparison table:
+  Model        R²          AIC  PSI_Coefficient  PSI_P_Value  Spatial_Param
+0   OLS  0.564340  1529.237565        -0.000384      0.98805            NaN
+1   SEM  0.478891   654.359990        -0.090342          NaN       0.946596
+2   SAR  0.889043   684.521086        -0.068737          NaN       0.933129
+2025-11-09 15:23:26,736 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:23:26,736 - __main__ - INFO - STAGE 6: ROBUSTNESS & VALIDATION
+2025-11-09 15:23:26,736 - __main__ - INFO - ================================================================================
+2025-11-09 15:23:26,736 - __main__ - INFO - Running robustness tests
+2025-11-09 15:23:26,736 - __main__ - INFO - Test 1: Multicollinearity (VIF)
+2025-11-09 15:23:26,746 - __main__ - INFO - VIF:
+          Variable       VIF
+0            psi_z  1.087490
+1  median_income_z  1.006884
+2  pct_bachelors_z  1.003566
+3    pct_renters_z  1.006905
+4  pct_age_18_34_z  1.005665
+5    dist_to_cbd_z  1.096653
+6    pop_density_z  1.006909
+2025-11-09 15:23:26,747 - __main__ - INFO - Test 2: Leave-One-Borough-Out (LOBO)
+2025-11-09 15:23:26,748 - __main__ - INFO - LOBO: Holding out Staten Island
+2025-11-09 15:23:26,751 - __main__ - INFO - LOBO: Holding out Queens
+2025-11-09 15:23:26,755 - __main__ - INFO - LOBO: Holding out Manhattan
+2025-11-09 15:23:26,758 - __main__ - INFO - LOBO: Holding out Brooklyn
+2025-11-09 15:23:26,761 - __main__ - INFO - LOBO: Holding out Bronx
+2025-11-09 15:23:26,768 - __main__ - INFO - LOBO results:
+  Held_Out_Borough  N_Train  N_Test      RMSE        R2  PSI_Coef
+0    Staten Island      636     114  0.759514 -2.413098  0.011212
+1           Queens      563     187  0.374621  0.437818  0.053323
+2        Manhattan      577     173  1.272559  0.309486  0.071340
+3         Brooklyn      714      36  1.204518 -0.125974 -0.001243
+4            Bronx      510     240  0.747388 -0.324621 -0.037796
+2025-11-09 15:23:26,770 - __main__ - INFO - Test 3: CVAI component sensitivity
+2025-11-09 15:23:26,770 - __main__ - INFO - Testing CVAI component sensitivity
+2025-11-09 15:23:26,773 - __main__ - INFO - CVAI vs controls:
+                   cvai_z  median_income_z  pct_bachelors_z
+cvai_z           1.000000        -0.038955        -0.019881
+median_income_z -0.038955         1.000000        -0.005948
+pct_bachelors_z -0.019881        -0.005948         1.000000
+2025-11-09 15:23:26,773 - __main__ - INFO - CVAI discriminant validity: r(income)=-0.039 < 0.7 ✓
+2025-11-09 15:23:26,773 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:23:26,773 - __main__ - INFO - STAGE 7: GENERATE OUTPUTS
+2025-11-09 15:23:26,774 - __main__ - INFO - ================================================================================
+2025-11-09 15:23:26,774 - __main__ - INFO - Generating output figures and tables
+2025-11-09 15:23:27,406 - __main__ - INFO - Saved map_cvai_v2.png
+2025-11-09 15:23:28,107 - __main__ - INFO - Saved map_psi_v2.png
+2025-11-09 15:23:28,628 - __main__ - INFO - Saved scatter_psi_cvai_v2.png
+2025-11-09 15:23:28,942 - __main__ - INFO - Saved coefficient_comparison_v2.png
+2025-11-09 15:23:28,942 - __main__ - INFO - Generating markdown report
+2025-11-09 15:23:28,943 - __main__ - INFO - Report saved to REPORT_V2.md
+2025-11-09 15:23:28,943 - __main__ - INFO - All outputs generated
+2025-11-09 15:23:28,943 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:23:28,943 - __main__ - INFO - ANALYSIS COMPLETE
+2025-11-09 15:23:28,943 - __main__ - INFO - ================================================================================
+2025-11-09 15:23:28,944 - __main__ - INFO - 
+================================================================================
+2025-11-09 15:23:28,944 - __main__ - INFO - SUCCESS: Analysis complete
+2025-11-09 15:23:28,944 - __main__ - INFO - Outputs in: /home/user/Python_projects/nyc_progressive_broadway_analysis/outputs_v2
+2025-11-09 15:23:28,944 - __main__ - INFO - ================================================================================
