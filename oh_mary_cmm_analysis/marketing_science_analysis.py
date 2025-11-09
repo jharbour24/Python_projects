@@ -182,7 +182,7 @@ class BroadwayMarketingScience:
         return {
             'top_10_authors_pct': top_10_pct,
             'top_subreddit_concentration': top_subreddit_pct,
-            'community_diversity_score': 100 - top_10_authors_pct,  # Lower concentration = more diverse
+            'community_diversity_score': 100 - top_10_pct,  # Lower concentration = more diverse
             'cross_platform_reach': df['subreddit'].nunique()
         }
 

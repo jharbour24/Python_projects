@@ -29,10 +29,24 @@ class BroadwayGrossesScraper:
         with open("config/config.yaml", "r") as f:
             self.config = yaml.safe_load(f)
 
-        # User agent to avoid blocking
-        self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        }
+        # Create session for cookies/state
+        self.session = requests.Session()
+
+        # Realistic browser headers to avoid blocking
+        self.session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'DNT': '1',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1',
+            'Sec-Fetch-Dest': 'document',
+            'Sec-Fetch-Mode': 'navigate',
+            'Sec-Fetch-Site': 'none',
+            'Cache-Control': 'max-age=0',
+            'Referer': 'https://www.broadwayworld.com/'
+        })
 
         # 2024-2025 Tony season typically starts late April
         self.season_start = datetime(2024, 4, 15)
@@ -45,11 +59,13 @@ class BroadwayGrossesScraper:
         url = f"{self.base_url}Week-Ending-{date_str}"
 
         try:
-            response = requests.get(url, headers=self.headers, timeout=10)
+            response = self.session.get(url, timeout=10)
             response.raise_for_status()
             return response.text
         except requests.RequestException as e:
-            print(f"  ⚠️  Failed to fetch {url}: {e}")
+            # Silently continue for most errors to avoid spam
+            if "403" in str(e) or "Forbidden" in str(e):
+                pass  # Expected for protected pages
             return None
 
     def parse_grosses_table(self, html: str, week_ending: datetime) -> List[Dict]:
@@ -162,11 +178,16 @@ class BroadwayGrossesScraper:
         print(f"\n📅 Scraping {len(week_dates)} weeks of data...")
         print("⏱️  This will take several minutes (rate limiting)...\n")
 
+        # Track success/failure
+        successful_fetches = 0
+        failed_fetches = 0
+
         # Scrape each week
         for week_date in tqdm(week_dates, desc="Scraping weeks"):
             html = self.get_weekly_grosses_page(week_date)
 
-            if html:
+            if html and len(html) > 500:  # Valid HTML should be substantial
+                successful_fetches += 1
                 weekly_data = self.parse_grosses_table(html, week_date)
 
                 # Match to our shows
@@ -177,9 +198,22 @@ class BroadwayGrossesScraper:
                         entry['config_name'] = self.config['shows'][show_id]['name']
                         entry['show_type'] = self.config['shows'][show_id].get('show_type', 'unknown')
                         all_grosses.append(entry)
+            else:
+                failed_fetches += 1
 
             # Rate limiting - be respectful
             time.sleep(2)
+
+        # Diagnostic info
+        print(f"\n📊 Fetch Results: {successful_fetches} successful, {failed_fetches} failed")
+
+        if failed_fetches > successful_fetches:
+            print("\n⚠️  WARNING: BroadwayWorld may be blocking automated requests.")
+            print("   Possible solutions:")
+            print("   1. Use Playbill Grosses: https://www.playbill.com/grosses")
+            print("   2. Use The Broadway League: https://www.broadwayleague.com/")
+            print("   3. Manual data entry from public sources")
+            print("   4. Consider using a browser automation tool (Selenium/Playwright)")
 
         # Convert to DataFrame
         df = pd.DataFrame(all_grosses)

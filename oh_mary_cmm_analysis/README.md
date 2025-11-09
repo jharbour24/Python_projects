@@ -76,6 +76,7 @@ This project analyzes **40+ Broadway shows** from the 2024-2025 Tony season to u
 - Scrapes weekly grosses from BroadwayWorld.com
 - Covers full 2024-2025 Tony season (April 2024 - present)
 - Collects: weekly gross revenue, capacity %, average ticket price, performances
+- **Note**: BroadwayWorld may block automated requests - see Troubleshooting for alternatives
 
 ### 3. Statistical Analysis (WHAT)
 - Extracts 30+ metrics per show from Reddit data
@@ -293,10 +294,17 @@ limits:
 - Reduced to 25 posts per subreddit to prevent hanging
 - If still hanging, reduce `reddit_posts_per_subreddit` in config.yaml
 
-### Missing Shows in Grosses Data
-- BroadwayWorld may use different show names
-- Check `match_show_to_config()` function in `broadway_grosses_scraper.py`
-- Add alternative keywords to config.yaml
+### BroadwayWorld Blocking / No Grosses Data
+- **BroadwayWorld actively blocks automated scraping** (returns 403 Forbidden)
+- The website uses anti-bot protection requiring JavaScript execution
+- **Recommended alternatives:**
+  1. **Playbill Grosses**: https://www.playbill.com/grosses (may also block bots)
+  2. **The Broadway League**: https://www.broadwayleague.com/ (official source)
+  3. **Manual data entry**: Download data manually and save to `data/grosses/broadway_grosses_2024_2025.csv`
+  4. **Browser automation**: Use Selenium or Playwright (requires additional setup)
+- If some shows are missing but others work:
+  - Check `match_show_to_config()` function in `broadway_grosses_scraper.py`
+  - Add alternative keywords to config.yaml
 
 ### Correlation Analysis Shows "No Data"
 - Ensure both Reddit and grosses data exist

@@ -194,7 +194,7 @@ class WhyCampaignsSucceed:
                 analysis['characteristics'].append('emotional')
             if any(w in full_text for w in ['queer', 'gay', 'representation']):
                 analysis['characteristics'].append('identity')
-            if len(post['text']) > 200:
+            if pd.notna(post['text']) and isinstance(post['text'], str) and len(post['text']) > 200:
                 analysis['characteristics'].append('detailed_review')
 
             viral_analysis.append(analysis)
