@@ -37,7 +37,8 @@ class ComparativeShowAnalysis:
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
         # Initialize analysis components
-        self.discourse_extractor = DiscourseExtractor(self.config)
+        movement_lexicon = self.config.get('movement_lexicon', {})
+        self.discourse_extractor = DiscourseExtractor(movement_lexicon)
         self.cmm_calculator = CMMMetricsCalculator(self.config)
 
         print("🔧 Comparative Analysis initialized")
@@ -91,6 +92,16 @@ class ComparativeShowAnalysis:
         # Add features to dataframe
         features_df = pd.DataFrame(discourse_features)
         df = pd.concat([df, features_df], axis=1)
+
+        # Create boolean labels from features for metrics calculation
+        df['identity_resonance'] = df['identity_terms_count'] >= 1
+        df['evangelism'] = df['evangelism_terms_count'] >= 1
+        df['repeat_attendance'] = df['repeat_terms_count'] >= 1
+        df['collective_voice'] = df['collective_pronouns_count'] >= 2
+        df['belonging_signal'] = df['belonging_terms_count'] >= 1
+        df['necessity_framing'] = df['necessity_terms_count'] >= 1
+        df['insider_gatekeeping'] = df['gatekeeping_terms_count'] >= 1
+        df['movement_framing'] = (df['collective_pronouns_count'] >= 2) & (df['necessity_terms_count'] >= 1)
 
         # Parse comments if available
         if 'comments_json' in df.columns:
