@@ -1,0 +1,91 @@
+{
+  "MSS": {
+    "score": 0.9405940594059405,
+    "collective_avg_engagement": 95.0,
+    "individual_avg_engagement": 101.0,
+    "lift_percentage": -5.9405940594059405,
+    "statistical_significance": false,
+    "p_value": 0.9123726586248972,
+    "collective_ci": [
+      95.0,
+      95.0
+    ],
+    "individual_ci": [
+      63.75,
+      135.0
+    ],
+    "n_collective": 1,
+    "n_individual": 4,
+    "interpretation": "No statistically significant difference in engagement between collective and individual language."
+  },
+  "IRI": {
+    "score": 0.4909819639278557,
+    "frequency": 0.4,
+    "percentage": 40.0,
+    "avg_engagement": 122.5,
+    "n_posts": 2,
+    "ci": [
+      95.0,
+      150.0
+    ],
+    "interpretation": "STRONG identity resonance: Over 30% of posts express identity alignment."
+  },
+  "ER": {
+    "score": 0.2,
+    "percentage": 20.0,
+    "n_evangelism_posts": 1,
+    "total_posts": 5,
+    "ci": [
+      0.0,
+      0.6
+    ],
+    "interpretation": "WEAK evangelism: Some urging others to see show."
+  },
+  "RAS": {
+    "score": 0.4,
+    "percentage": 40.0,
+    "n_repeat_posts": 2,
+    "total_posts": 5,
+    "ci": [
+      0.0,
+      0.8
+    ],
+    "interpretation": "STRONG repeat signal: Over 30% mention multiple viewings."
+  },
+  "BIS": {
+    "score": 0.42,
+    "frequency": 0.6,
+    "avg_belonging_terms": 0.6,
+    "intensity": 0.7,
+    "n_posts": 3,
+    "interpretation": "MODERATE belonging signal: Notable belonging expressions."
+  },
+  "GIM": {
+    "score": 0.2,
+    "percentage": 20.0,
+    "avg_markers_per_post": 0.2,
+    "n_posts": 1,
+    "interpretation": "MODERATE insider culture: Notable insider markers."
+  },
+  "CFS": {
+    "score": 0.4,
+    "percentage": 40.0,
+    "n_community_posts": 2,
+    "rush_line_mentions": 1,
+    "lottery_mentions": 1,
+    "meetup_mentions": 0,
+    "interpretation": "STRONG community formation: Clear evidence of organized fan communities."
+  },
+  "MPI": {
+    "score": 12.045238095238096,
+    "coefficient_of_variation": 12.045238095238096,
+    "n_viral_posts": 1,
+    "total_posts": 5,
+    "interpretation": "STRONG mimetic spread: High variance suggests viral content."
+  },
+  "Overall_CMM_Score": {
+    "score": 45.22855016964623,
+    "interpretation": "MODERATE MOVEMENT POTENTIAL: Oh Mary! has some CMM characteristics. Some movement behaviors present but not dominant.",
+    "category": "MODERATE_MOVEMENT"
+  }
+}

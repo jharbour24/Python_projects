@@ -1,0 +1,63 @@
+# Oh Mary! Cultural Movement Marketing Analysis Configuration
+
+show: "Oh Mary!"
+date_range: "last 12 months"
+
+keywords:
+  - "Oh Mary!"
+  - "Oh Mary"
+  - "#OhMary"
+  - "ohmary broadway"
+  - "oh mary broadway"
+  - "Cole Escola"
+  - "Sam Pinkleton"
+  - "Lyceum Theatre"
+
+platforms:
+  - tiktok
+  - instagram
+  - reddit
+
+# Reddit configuration
+reddit:
+  subreddits:
+    - broadway
+    - musicals
+    - theatre
+    - nyc
+    - gaybros
+    - rupaulsdragrace
+    - askgaybros
+    - LGBT
+  sort: "relevance"
+  time_filter: "year"
+
+# Search limits (for API rate limiting)
+limits:
+  reddit_posts_per_subreddit: 100
+  reddit_comments_per_post: 500
+  max_posts_per_platform: 1000
+
+# Movement language lexicon
+movement_lexicon:
+  collective_pronouns: ["we", "us", "our"]
+  belonging_terms: ["community", "family", "tribe", "home", "found my people", "felt seen", "represented", "safe space"]
+  necessity_terms: ["must see", "need to", "have to", "essential", "required viewing", "cannot miss"]
+  identity_terms: ["queer", "gay", "lgbtq", "theater kid", "theatre gay", "Broadway gay"]
+  evangelism_terms: ["you have to see", "dragged my friends", "bringing everyone", "spreading the word", "everyone must"]
+  repeat_terms: ["again", "second time", "third time", "going back", "saw it twice", "lottery", "rush"]
+  gatekeeping_terms: ["if you know you know", "iykyk", "insiders", "real ones", "cult"]
+  emotion_intensity: ["obsessed", "changed my life", "can't stop thinking", "crying", "screaming", "iconic"]
+
+# NLP settings
+nlp:
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+  sentiment_model: "distilbert-base-uncased-finetuned-sst-2-english"
+  min_text_length: 10
+  max_text_length: 5000
+
+# Output settings
+output:
+  generate_visualizations: true
+  save_raw_data: true
+  confidence_level: 0.95
