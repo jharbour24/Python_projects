@@ -294,6 +294,18 @@ Reddit API has rate limits. The scraper includes delays, but you may need to:
 pip install matplotlib seaborn
 ```
 
+### Old data interfering with new analysis
+
+If you want to start completely fresh:
+
+```bash
+python clean_data.py
+```
+
+Type `DELETE` when prompted. This removes all previous data, outputs, and reports.
+
+**Note:** The `run_full_analysis.py` script will automatically prompt you to clean old data before starting.
+
 ---
 
 ## 📚 Documentation
@@ -386,6 +398,12 @@ python generate_comparative_report.py
 cat outputs/reports/comparative_analysis_report.md
 open outputs/visualizations/
 ```
+
+**Clean all old data (start fresh):**
+```bash
+python clean_data.py
+```
+This removes all previous data, outputs, and reports to ensure a clean slate.
 
 ---
 

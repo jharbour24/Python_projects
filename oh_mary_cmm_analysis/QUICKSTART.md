@@ -97,15 +97,18 @@ python run_full_analysis.py
 
 1. You'll see a menu asking if you want to proceed
 2. Type: `yes` and press Enter
-3. The program will start collecting Reddit data
-4. **This takes 30-60 minutes** (mostly waiting for Reddit's API)
-5. You'll see progress updates as it works
-6. When done, you'll see "✅ ANALYSIS COMPLETE!"
+3. **You'll be asked if you want to delete old data** — Type `yes` to start fresh (recommended)
+4. The program will start collecting Reddit data
+5. **This takes 30-60 minutes** (mostly waiting for Reddit's API)
+6. You'll see progress updates as it works
+7. When done, you'll see "✅ ANALYSIS COMPLETE!"
 
 **During the wait:**
 - ☕ You can make coffee
 - 📱 The program will show progress messages
 - ⏸️ You can minimize the terminal, but don't close it
+
+**Note:** The script automatically cleans old data to ensure you're starting with a clean slate. This prevents any confusion from previous runs.
 
 ---
 
@@ -222,6 +225,18 @@ Reddit has limits on how fast you can collect data.
 Some shows might not have many Reddit posts. This is normal and part of the findings!
 
 The report will note which shows had limited data.
+
+### Want to start completely fresh?
+
+If you've run the analysis before and want to delete everything:
+
+```bash
+python clean_data.py
+```
+
+Type `DELETE` when prompted. This removes all old data, outputs, and reports.
+
+Then run `python run_full_analysis.py` again.
 
 ---
 
