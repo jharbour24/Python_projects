@@ -1,295 +1,359 @@
-# Quick Start Guide — Real Data Collection
+# Quick Start Guide for Complete Beginners
 
-**Goal:** Collect 100+ real social media posts about "Oh Mary!" in ~1 hour
+This guide assumes you have **zero coding experience** and walks you through every step.
 
-## ⚡ Super Quick Start (Recommended)
+---
+
+## What This Analysis Does
+
+This program:
+1. Collects Reddit discussions about three Broadway shows
+2. Analyzes how people talk about them
+3. Determines which show has the most effective marketing campaign
+4. Creates charts and a report
+
+**Shows analyzed:**
+- Oh Mary!
+- John Proctor is the Villain
+- Maybe Happy Ending
+
+**Time:** About 1 hour total (mostly waiting for Reddit)
+
+---
+
+## Step-by-Step Instructions
+
+### Step 1: Open Your Terminal
+
+**On Mac:**
+1. Press `Command + Space` (opens Spotlight)
+2. Type: `terminal`
+3. Press Enter
+
+**On Windows:**
+1. Press `Windows key`
+2. Type: `cmd`
+3. Press Enter
+
+**On Linux:**
+1. Press `Ctrl + Alt + T`
+
+You should see a black or white window with text. This is your terminal.
+
+---
+
+### Step 2: Navigate to the Project Folder
+
+Type or copy-paste this command and press Enter:
 
 ```bash
-cd oh_mary_cmm_analysis
-python collect_all_data.py
+cd ~/Python_projects/oh_mary_cmm_analysis
 ```
 
-This launches an **interactive menu** that guides you through:
-1. ✅ Reddit API setup (10 min, automated)
-2. ✅ TikTok manual collection (30 min, safe)
-3. ✅ Instagram manual collection (30 min, safe)
-4. ✅ Run analysis
+**On Windows, use this instead:**
+```bash
+cd C:\Users\YourUsername\Python_projects\oh_mary_cmm_analysis
+```
+*(Replace `YourUsername` with your actual Windows username)*
+
+**What this does:** Changes directory (cd) to the project folder.
+
+If you get an error like "no such file or directory", the folder might be elsewhere. Try:
+```bash
+cd /home/user/Python_projects/oh_mary_cmm_analysis
+```
 
 ---
 
-## 🛡️ Important: Why No Login Required
+### Step 3: Install Required Packages
 
-**You do NOT need to provide your login credentials** for any platform. Here's why:
-
-### ❌ What We WON'T Do (Unsafe/Illegal)
-- Use your personal login credentials
-- Automate actions with your account
-- Violate Terms of Service
-- Risk account suspension
-
-### ✅ What We WILL Do (Safe/Legal)
-- **Reddit**: Use official API with your own app credentials (not your password)
-- **TikTok**: Manual collection of public posts (no login needed)
-- **Instagram**: Manual collection via public viewers (no login needed)
-
----
-
-## 🎯 Three Collection Methods
-
-### Method 1: Reddit API (Automated) — 10 minutes
+Type this command and press Enter:
 
 ```bash
-python setup_reddit.py
+pip install -r requirements.txt
 ```
 
-**What this does:**
-1. Guides you to create a Reddit "app" (not your account password!)
-2. Gives you API credentials (client_id, client_secret)
-3. Configures the scraper to use official Reddit API
-4. Automatically collects 100+ posts
+**What this does:** Installs all the Python libraries needed for the analysis.
 
-**Steps:**
-1. Go to https://www.reddit.com/prefs/apps
-2. Click "create another app"
-3. Name: `oh_mary_analysis`, Type: `script`
-4. Copy client_id (14 chars) and client_secret (27 chars)
-5. Paste into setup script when prompted
+**What you'll see:** Lots of text scrolling by as packages install. This takes 2-5 minutes.
 
-**Result:** ~100 Reddit posts automatically collected ✅
+**If you get an error about "pip not found":**
+Try this instead:
+```bash
+python -m pip install -r requirements.txt
+```
 
 ---
 
-### Method 2: TikTok Manual Collection — 30 minutes
+### Step 4: Run the Complete Analysis
+
+Type this command and press Enter:
 
 ```bash
-python collect_tiktok.py
+python run_full_analysis.py
 ```
 
-**What this does:**
-1. Opens interactive form
-2. You search TikTok in browser (no login needed!)
-3. Copy data from each video into form
-4. Script saves to CSV automatically
+**What happens next:**
 
-**Steps:**
-1. Open TikTok in browser: https://tiktok.com
-2. Search: `#OhMary` or `#OhMaryBroadway`
-3. Click each video, copy: URL, likes, comments, caption
-4. Enter into script form
-5. Repeat for 50 videos (~30 min)
+1. You'll see a menu asking if you want to proceed
+2. Type: `yes` and press Enter
+3. The program will start collecting Reddit data
+4. **This takes 30-60 minutes** (mostly waiting for Reddit's API)
+5. You'll see progress updates as it works
+6. When done, you'll see "✅ ANALYSIS COMPLETE!"
 
-**Tips:**
-- You can see TikTok content WITHOUT logging in
-- Use incognito mode for clean search results
-- Focus on videos with 1k+ likes (high engagement)
-- Can pause and resume anytime
-
-**Result:** ~50 TikTok videos collected ✅
+**During the wait:**
+- ☕ You can make coffee
+- 📱 The program will show progress messages
+- ⏸️ You can minimize the terminal, but don't close it
 
 ---
 
-### Method 3: Instagram Manual Collection — 30 minutes
+## What You'll Get
 
+After the analysis finishes, you'll have:
+
+### 📄 Main Report
+Located at: `outputs/reports/comparative_analysis_report.md`
+
+This is a detailed report showing:
+- Which show had the most effective campaign
+- Detailed metrics for each show
+- Strategic recommendations
+
+**How to open it:**
+- **Mac:** Type `open outputs/reports/comparative_analysis_report.md`
+- **Windows:** Type `start outputs\reports\comparative_analysis_report.md`
+- Or just navigate to the folder and double-click the file
+
+### 📊 Charts
+Located in: `outputs/visualizations/`
+
+You'll find:
+- `overall_comparison.png` — Bar chart comparing all shows
+- `metrics_heatmap.png` — Heatmap of all metrics
+- `radar_comparison.png` — Radar chart
+- 8 individual metric charts
+
+**How to view:** Navigate to the folder and open the PNG files
+
+### 📈 Quick Summary Table
+Located at: `outputs/comparative_summary.csv`
+
+Open with Excel, Google Sheets, or any spreadsheet program.
+
+Shows all the scores in an easy-to-read table.
+
+---
+
+## Understanding the Results
+
+### Overall CMM Score (0-100)
+
+This is the main number showing campaign effectiveness.
+
+- **70-100** = Strong movement (very effective campaign)
+- **50-69** = Moderate movement (good campaign)
+- **30-49** = Weak movement (campaign had limited impact)
+- **0-29** = Minimal movement (campaign didn't create buzz)
+
+### The 8 Metrics
+
+Each measures a different aspect of how people talk about the show:
+
+1. **MSS** — Do people use "we" and "us" when discussing it?
+2. **IRI** — Do people say it represents their identity?
+3. **ER** — Do people tell others they must see it?
+4. **RAS** — Are people seeing it multiple times?
+5. **BIS** — Do people talk about belonging to a community?
+6. **GIM** — Are there inside jokes and insider language?
+7. **CFS** — Are fans forming communities around it?
+8. **MPI** — Are quotes and memes spreading?
+
+---
+
+## Example: Reading the Report
+
+You might see something like:
+
+```
+🏆 Most Effective Campaign: Oh Mary!
+Overall CMM Score: 68.5/100
+
+Campaign Effectiveness Ranking:
+1. 🥇 Oh Mary! — 68.5/100 (247 Reddit posts)
+2. 🥈 Maybe Happy Ending — 61.2/100 (134 posts)
+3. 🥉 John Proctor is the Villain — 52.3/100 (89 posts)
+```
+
+**What this means:**
+- Oh Mary! had the most effective campaign
+- It scored 68.5 out of 100 (moderate-to-strong movement)
+- The analysis used 247 Reddit posts about Oh Mary!
+- Maybe Happy Ending came in second
+- John Proctor is the Villain came in third
+
+---
+
+## Troubleshooting
+
+### "Command not found: python"
+
+Try using `python3` instead:
 ```bash
-python collect_instagram.py
+python3 run_full_analysis.py
 ```
 
-**What this does:**
-1. Opens interactive form
-2. You use Instagram viewers (no login needed!)
-3. Copy data from each post into form
-4. Script saves to CSV automatically
+### "ModuleNotFoundError: No module named 'praw'"
 
-**Steps:**
-1. Use Instagram viewers (NO LOGIN REQUIRED):
-   - **Picuki.com** — View any Instagram content
-   - **Imginn.com** — Another Instagram viewer
-   - **Inflact.com** — Instagram web viewer
-
-2. Search: `#OhMary` or `@colewschooler`
-
-3. Click each post, copy: URL, likes, comments, caption
-
-4. Enter into script form
-
-5. Repeat for 50 posts (~30 min)
-
-**Tips:**
-- These viewers show public Instagram WITHOUT login
-- Perfectly legal and safe
-- Can pause and resume anytime
-- Focus on posts with 500+ likes
-
-**Result:** ~50 Instagram posts collected ✅
-
----
-
-## 📊 Sample Size Guide
-
-| Items | Analysis Quality | Time Required |
-|-------|------------------|---------------|
-| 25+ | Minimum viable | 30 min |
-| 50+ | Good | 1 hour |
-| 100+ | Excellent | 1.5 hours |
-| 200+ | Professional | 2 hours |
-
-**Recommendation:** Aim for 100+ total items (mix of platforms)
-
----
-
-## 🚀 Complete Workflow
-
-### Option A: Interactive (Easiest)
-
+The requirements didn't install properly. Try:
 ```bash
-python collect_all_data.py
+pip install praw pandas pyyaml matplotlib seaborn
 ```
 
-Follow the menu:
-1. Setup Reddit API → automated collection
-2. Collect TikTok → manual 50 videos
-3. Collect Instagram → manual 50 posts
-4. Run analysis → get results!
+### "Rate limit exceeded"
 
-### Option B: Step-by-Step
+Reddit has limits on how fast you can collect data.
 
+**Solution:** Wait 10 minutes, then run the script again. It will continue where it left off.
+
+### No data collected for a show
+
+Some shows might not have many Reddit posts. This is normal and part of the findings!
+
+The report will note which shows had limited data.
+
+---
+
+## Manual Step-by-Step (If Full Script Fails)
+
+If `run_full_analysis.py` doesn't work, run each step individually:
+
+### 1. Collect Data
 ```bash
-# Step 1: Reddit (10 min)
-python setup_reddit.py
-
-# Step 2: TikTok (30 min)
-python collect_tiktok.py
-
-# Step 3: Instagram (30 min)
-python collect_instagram.py
-
-# Step 4: Run analysis
-python src/main.py
+python multi_show_reddit_scraper.py
 ```
+Wait 30-60 minutes for this to finish.
 
-### Option C: Reddit Only (Fastest)
-
+### 2. Analyze Data
 ```bash
-# Just Reddit API for quick results
-python setup_reddit.py
-python src/main.py
+python run_comparative_analysis.py
 ```
+Takes about 5 minutes.
 
-Gets you ~100 posts in 10 minutes!
-
----
-
-## 🔍 What You'll Search For
-
-### Reddit Keywords
-- Subreddits: r/broadway, r/musicals, r/nyc, r/gaybros, r/LGBT
-- Search terms: "Oh Mary", "Oh Mary Broadway", "Cole Escola"
-
-### TikTok Hashtags
-- `#OhMary` (main hashtag)
-- `#OhMaryBroadway`
-- `#BroadwayTikTok` + "Oh Mary"
-
-### Instagram Tags
-- `#OhMary`
-- `#OhMaryBroadway`
-- Location: "Lyceum Theatre"
-- `@colewschooler` (creator account)
-
----
-
-## ✅ After Collection
-
-Once you have data collected, run:
-
+### 3. Create Charts
 ```bash
-python src/main.py
+python generate_comparative_visualizations.py
+```
+Takes about 2 minutes.
+
+### 4. Generate Report
+```bash
+python generate_comparative_report.py
+```
+Takes about 1 minute.
+
+---
+
+## FAQ
+
+### How long does this take?
+- **Setup:** 5 minutes (installing packages)
+- **Data collection:** 30-60 minutes (waiting for Reddit)
+- **Analysis:** 5-10 minutes
+- **Total:** About 1 hour
+
+### Can I stop it and come back later?
+Yes! The data collection saves progress. You can close the terminal and run it again later.
+
+### Do I need a Reddit account?
+No! The script uses pre-configured credentials. You don't need to log in.
+
+### Will this cost money?
+No! This uses Reddit's free API. There are no costs.
+
+### Can I analyze different shows?
+Yes! Edit the file `config/config.yaml` to add different show names and keywords.
+
+### What if I get stuck?
+1. Read the error message carefully
+2. Check the Troubleshooting section above
+3. Try running each step manually
+4. Make sure all packages are installed
+
+---
+
+## What to Do With Your Results
+
+### For Academic Use
+- Use the report and visualizations in your research
+- Cite the methodology section
+- Include the CSV data as supporting material
+
+### For Business Use
+- Share the comparative summary with stakeholders
+- Use visualizations in presentations
+- Reference specific metrics in marketing discussions
+
+### For Personal Interest
+- Read the detailed report to understand the findings
+- Look at the visualizations to see patterns
+- Compare the three shows across metrics
+
+---
+
+## Quick Commands Reference
+
+**Navigate to project:**
+```bash
+cd ~/Python_projects/oh_mary_cmm_analysis
 ```
 
-**You'll get:**
-- Comprehensive report: `outputs/reports/report.md`
-- 8 visualizations: `outputs/visualizations/`
-- CSV data: `data/processed/`
-- CMM Score: 0-100 movement rating
+**Install everything:**
+```bash
+pip install -r requirements.txt
+```
 
-**Analysis takes ~2 minutes to run**
+**Run complete analysis:**
+```bash
+python run_full_analysis.py
+```
 
----
+**View report (Mac):**
+```bash
+open outputs/reports/comparative_analysis_report.md
+```
 
-## 🆘 Troubleshooting
+**View report (Windows):**
+```bash
+start outputs\reports\comparative_analysis_report.md
+```
 
-### "No data collected"
-**Solution:** Make sure files are named:
-- `data/raw/reddit_manual.csv` (not reddit_manual_template.csv)
-- `data/raw/tiktok_manual.csv`
-- `data/raw/instagram_manual.csv`
-
-### "Reddit API error"
-**Solution:** Re-run `python setup_reddit.py` and check credentials
-
-### "Not enough data"
-**Solution:** Analysis works with as few as 10 posts, but 50+ recommended
-
-### "Can't see TikTok/Instagram without login"
-**Solution:**
-- TikTok: Most content visible without login (try incognito mode)
-- Instagram: Use Picuki.com, Imginn.com, or Inflact.com
+**List all outputs:**
+```bash
+ls outputs/
+```
 
 ---
 
-## 💡 Pro Tips
+## You're Done! 🎉
 
-1. **Start with Reddit API** — Easiest, gets you 100 posts in 10 min
-2. **Open browser + script side-by-side** — Makes manual collection faster
-3. **Focus on high-engagement posts** — Better quality data
-4. **You can pause anytime** — Data saves as you go
-5. **Quality > Quantity** — 50 good posts > 100 mediocre ones
+After running the analysis, you'll have:
+- ✅ A comprehensive report comparing all three shows
+- ✅ Professional visualizations
+- ✅ Statistical data in CSV format
+- ✅ Evidence-based rankings of campaign effectiveness
 
----
-
-## 🔐 Security Reminder
-
-✅ **DO:**
-- Create Reddit API app (safe, official method)
-- Use public Instagram viewers (legal, no login)
-- Manually collect public TikTok data
-
-❌ **DON'T:**
-- Share your passwords with anyone (including AI)
-- Use your personal login for automation
-- Scrape with unofficial bots
-
-**This method is 100% safe, legal, and compliant!**
+**Next steps:**
+1. Open and read the report
+2. Look at the visualizations
+3. Review the comparative summary table
+4. Use the insights for your research/business needs
 
 ---
 
-## 📈 Expected Results
+**Need help?** Check the main README.md file for more details.
 
-With **100+ real posts**, you'll see:
+**Want to customize?** Edit config/config.yaml to change shows or search parameters.
 
-- **Overall CMM Score**: 30-80 (likely 50-60 for Oh Mary!)
-- **Key behaviors detected**:
-  - Identity resonance (queer representation)
-  - Evangelism (telling friends to go)
-  - Repeat attendance (seeing it multiple times)
-  - Community formation (rush line culture)
-
-- **Strategic insights**:
-  - Which constituencies are forming movements
-  - Whether to lean into movement marketing
-  - ROI on community-building vs traditional ads
-
----
-
-## 🎉 Success Criteria
-
-You're ready to run analysis when you have:
-- ✅ At least 50 total items (any mix of platforms)
-- ✅ Data saved to `data/raw/*.csv` files
-- ✅ Mix of different post types (reviews, photos, discussion)
-
-Then just run: `python src/main.py` and you're done!
-
----
-
-**Questions? Run:** `python collect_all_data.py` for interactive help
+**Questions about results?** Read the Methodology section in the main report

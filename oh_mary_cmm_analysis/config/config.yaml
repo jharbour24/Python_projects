@@ -1,34 +1,113 @@
-# Oh Mary! Cultural Movement Marketing Analysis Configuration
+# Multi-Show Broadway CMM Comparative Analysis Configuration
+# Reddit-Only Analysis
 
-show: "Oh Mary!"
 date_range: "last 12 months"
 
-keywords:
-  - "Oh Mary!"
-  - "Oh Mary"
-  - "#OhMary"
-  - "ohmary broadway"
-  - "oh mary broadway"
-  - "Cole Escola"
-  - "Sam Pinkleton"
-  - "Lyceum Theatre"
+# Shows to analyze and compare
+shows:
+  oh_mary:
+    name: "Oh Mary!"
+    keywords:
+      - "Oh Mary!"
+      - "Oh Mary"
+      - "#OhMary"
+      - "ohmary broadway"
+      - "oh mary broadway"
+      - "Cole Escola"
+      - "Sam Pinkleton"
+      - "Lyceum Theatre"
+      - "Oh Mary show"
+      - "Oh Mary play"
+
+  john_proctor:
+    name: "John Proctor is the Villain"
+    keywords:
+      - "John Proctor is the Villain"
+      - "John Proctor Villain"
+      - "JPIV"
+      - "Kimberly Belflower"
+      - "John Proctor broadway"
+      - "John Proctor play"
+      - "crucible villain"
+
+  maybe_happy_ending:
+    name: "Maybe Happy Ending"
+    keywords:
+      - "Maybe Happy Ending"
+      - "Maybe Happy Ending musical"
+      - "Maybe Happy Ending broadway"
+      - "MHE musical"
+      - "Darren Criss Maybe"
+      - "Maybe Happy Ending show"
+      - "robot musical"
 
 platforms:
-  - tiktok
-  - instagram
   - reddit
 
-# Reddit configuration
+# Reddit configuration - Comprehensive subreddit list
 reddit:
   subreddits:
+    # Broadway & Theater Core
     - broadway
     - musicals
     - theatre
+    - theater
+    - Theatre
+    - MusicalTheatre
+    - BroadwayMusicals
+    - OffBroadway
+    - theatrememes
+    - techtheatre
+
+    # NYC & Location-Based
     - nyc
+    - AskNYC
+    - newyork
+    - manhattan
+    - NewYorkCity
+
+    # LGBTQ+ Communities (Oh Mary! relevance)
+    - lgbt
     - gaybros
-    - rupaulsdragrace
     - askgaybros
-    - LGBT
+    - rupaulsdragrace
+    - gay
+    - ainbow
+    - lgbtmemes
+
+    # Arts & Entertainment
+    - entertainment
+    - LiveFromNewYork
+    - acting
+    - Showbiz
+    - CelebrityGossip
+    - popculturechat
+
+    # Student & Academic Theater
+    - highschoolmusicals
+    - CollegeTheatre
+
+    # General Discussion
+    - AskReddit
+    - movies
+    - television
+    - entertainment
+    - CasualConversation
+
+    # Arts & Culture
+    - arts
+    - culture
+    - Dance
+
+    # Comedy & Performance (Oh Mary! relevance)
+    - comedy
+    - standup
+
+    # Tech Theater
+    - techtheatre
+    - lightingdesign
+    - livesound
+
   sort: "relevance"
   time_filter: "year"
 
