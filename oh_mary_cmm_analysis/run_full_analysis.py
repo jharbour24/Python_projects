@@ -6,6 +6,7 @@ Complete workflow from data collection to final report.
 
 import sys
 import subprocess
+import shutil
 from pathlib import Path
 from datetime import datetime
 
@@ -15,6 +16,68 @@ def print_banner(text: str):
     print("\n" + "="*70)
     print(text)
     print("="*70 + "\n")
+
+
+def clean_old_data():
+    """Clean all previous data to ensure fresh analysis."""
+    print_banner("🧹 Cleaning Previous Data")
+
+    # Directories to clean
+    dirs_to_clean = [
+        Path("data/raw"),
+        Path("data/processed"),
+        Path("outputs/visualizations"),
+        Path("outputs/reports"),
+        Path("outputs")
+    ]
+
+    files_to_remove = [
+        Path("outputs/comparative_summary.csv"),
+        Path("outputs/detailed_results.json"),
+        Path("data/raw/collection_summary.json")
+    ]
+
+    print("This will delete:")
+    print("  • All raw data (data/raw/)")
+    print("  • All processed data (data/processed/)")
+    print("  • All previous outputs (outputs/)")
+    print("  • All visualizations")
+    print("  • All reports")
+
+    response = input("\n⚠️  Delete all old data? (yes/no): ").strip().lower()
+
+    if response not in ['yes', 'y']:
+        print("⏭  Skipping cleanup. Old data will be overwritten during analysis.")
+        return
+
+    print("\n🗑️  Removing old data...")
+
+    # Remove specific files first
+    for file_path in files_to_remove:
+        if file_path.exists():
+            try:
+                file_path.unlink()
+                print(f"  ✓ Removed: {file_path}")
+            except Exception as e:
+                print(f"  ⚠ Could not remove {file_path}: {e}")
+
+    # Clean directories
+    for dir_path in dirs_to_clean:
+        if dir_path.exists():
+            try:
+                # Remove all files in directory but keep the directory
+                for item in dir_path.iterdir():
+                    if item.is_file():
+                        item.unlink()
+                        print(f"  ✓ Removed: {item}")
+                    elif item.is_dir():
+                        shutil.rmtree(item)
+                        print(f"  ✓ Removed directory: {item}")
+            except Exception as e:
+                print(f"  ⚠ Could not clean {dir_path}: {e}")
+
+    print("\n✅ Cleanup complete! Starting fresh analysis.")
+    print("="*70)
 
 
 def run_step(step_name: str, script_name: str, skip_prompt: bool = False) -> bool:
@@ -90,6 +153,7 @@ def main():
     print("🎭 BROADWAY COMPARATIVE CMM ANALYSIS")
     print("="*70)
     print("\nComplete Pipeline:")
+    print("  0. Clean old data (fresh start)")
     print("  1. Data Collection (Reddit scraping)")
     print("  2. Discourse Analysis (CMM metrics)")
     print("  3. Visualizations (Comparative charts)")
@@ -103,6 +167,9 @@ def main():
         return
 
     start_time = datetime.now()
+
+    # Step 0: Clean old data
+    clean_old_data()
 
     # Check dependencies
     if not check_dependencies():

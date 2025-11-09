@@ -1,411 +1,362 @@
-# Broadway Campaign Effectiveness Analysis
+# Broadway Marketing Analysis - 2024-2025 Season
 
-A computational sociology study comparing Cultural Movement Marketing (CMM) effects across multiple Broadway shows using Reddit discourse analysis.
+Comprehensive analysis of Broadway marketing effectiveness combining Reddit fan engagement with box office performance data.
 
-## 🎭 Shows Analyzed
+## Overview
 
-1. **Oh Mary!**
-2. **John Proctor is the Villain**
-3. **Maybe Happy Ending**
+This project analyzes **40+ Broadway shows** from the 2024-2025 Tony season to understand:
 
-## 🚀 Quick Start (Complete Pipeline)
+1. **WHAT** metrics differentiate successful vs unsuccessful campaigns (statistical analysis)
+2. **WHY** certain campaigns succeed - themes, content, messaging (qualitative analysis)
+3. **HOW** fan engagement correlates with financial success (correlation analysis)
 
-**One command to run everything:**
+## Shows Analyzed
 
+### Original Plays (14)
+- All In: Comedy About Love
+- Cult of Love
+- English
+- Good Night, and Good Luck
+- The Hills of California
+- Job
+- John Proctor is the Villain ⭐
+- Left on Tenth
+- McNeal
+- Oh Mary! ⭐
+- The Picture of Dorian Gray
+- The Purpose
+- The Roommate
+- Stranger Things: The First Shadow
+
+### Original Musicals (14)
+- A Wonderful World
+- Boop!
+- Buena Vista Social Club
+- The Dead Outlaw
+- Death Becomes Her
+- Just in Time
+- Maybe Happy Ending ⭐
+- Operation Mincemeat
+- Real Women Have Curves
+- Redwood
+- Smash
+- The Old Friends
+- Swept Away
+- Tammy Faye
+
+### Play Revivals (7)
+- Eureka Day
+- Glengarry Glen Ross
+- Home
+- Othello
+- Our Town
+- Romeo + Juliet
+- Yellow Face
+
+### Musical Revivals (7)
+- Elf The Musical
+- Floyd Collins
+- Gypsy
+- The Last Five Years
+- Once Upon a Mattress
+- The Pirates of Penzance
+- Sunset Boulevard
+
+⭐ = Initially identified as successful campaigns
+
+## What This Analysis Does
+
+### 1. Reddit Data Collection
+- Scrapes Reddit posts and comments for all shows
+- Searches 11 curated subreddits (Broadway, musicals, theatre, NYC, LGBTQ+, entertainment)
+- Collects: upvotes, comments, sentiment, engagement metrics
+- Time period: Last 12 months
+
+### 2. Broadway Box Office Data Collection
+- Scrapes weekly grosses from BroadwayWorld.com
+- Covers full 2024-2025 Tony season (April 2024 - present)
+- Collects: weekly gross revenue, capacity %, average ticket price, performances
+
+### 3. Statistical Analysis (WHAT)
+- Extracts 30+ metrics per show from Reddit data
+- Performs t-tests comparing successful vs unsuccessful campaigns
+- Calculates effect sizes (Cohen's d) and confidence intervals
+- Identifies which metrics significantly differentiate success/failure
+
+### 4. Qualitative Analysis (WHY)
+- Analyzes conversation themes (performance, creative, emotional, identity, etc.)
+- Identifies viral content characteristics
+- Examines audience language patterns and tone
+- Discovers what messaging resonates with communities
+
+### 5. Correlation Analysis (Reddit vs Grosses)
+- Merges Reddit engagement data with box office performance
+- Calculates correlations between social metrics and financial success
+- Identifies over/underperformers (shows that defy the buzz-to-revenue pattern)
+- Analyzes patterns by show type (original vs revival, play vs musical)
+
+## Installation
+
+### Requirements
+- Python 3.8+
+- Mac or Linux (Windows with WSL)
+
+### Setup
+
+1. Clone the repository:
 ```bash
-cd oh_mary_cmm_analysis
-python run_full_analysis.py
+cd /path/to/oh_mary_cmm_analysis
 ```
 
-This will:
-1. ✅ Collect Reddit data for all three shows (20-40 min)
-2. ✅ Analyze discourse and calculate CMM metrics (5 min)
-3. ✅ Generate comparative visualizations (2 min)
-4. ✅ Create comprehensive report (1 min)
-
-**Total time:** ~30-60 minutes (mostly waiting for Reddit API)
-
----
-
-## Research Question
-
-**Which Broadway show generated the most effective Cultural Movement Marketing campaign?**
-
-We measure whether audiences discuss shows as movements, identity spaces, or cultural necessities — rather than just entertainment.
-
----
-
-## Manual Workflow (Step by Step)
-
-If you prefer to run each step manually:
-
-### Step 1: Collect Reddit Data
-
-```bash
-python multi_show_reddit_scraper.py
-```
-
-This searches 30+ subreddits for all three shows and saves data to `data/raw/`.
-
-**Time:** 20-40 minutes (Reddit API rate limits)
-
-### Step 2: Run Analysis
-
-```bash
-python run_comparative_analysis.py
-```
-
-This processes discourse, calculates CMM metrics, and creates comparative summary.
-
-**Time:** 5 minutes
-
-### Step 3: Generate Visualizations
-
-```bash
-python generate_comparative_visualizations.py
-```
-
-This creates charts comparing all three shows across metrics.
-
-**Time:** 2 minutes
-
-### Step 4: Generate Report
-
-```bash
-python generate_comparative_report.py
-```
-
-This creates a comprehensive markdown report with findings and recommendations.
-
-**Time:** 1 minute
-
----
-
-## 📊 Outputs
-
-After running the analysis, you'll find:
-
-### Reports
-- **`outputs/reports/comparative_analysis_report.md`** — Full analysis with rankings and insights
-- **`outputs/comparative_summary.csv`** — Quick comparison table
-
-### Visualizations
-- **`outputs/visualizations/overall_comparison.png`** — Overall CMM scores
-- **`outputs/visualizations/metrics_heatmap.png`** — All metrics heatmap
-- **`outputs/visualizations/radar_comparison.png`** — Radar chart
-- **`outputs/visualizations/metric_*.png`** — 8 individual metric charts
-
-### Data
-- **`data/raw/reddit_*.csv`** — Raw Reddit data per show
-- **`data/processed/*_processed.csv`** — Processed data with discourse features
-- **`outputs/detailed_results.json`** — Complete metrics in JSON format
-
----
-
-## 📋 Requirements
-
-### Python Dependencies
-
-Install all requirements:
-
+2. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-Core dependencies:
-- `praw` — Reddit API
-- `pandas` — Data processing
-- `pyyaml` — Configuration
-- `matplotlib` — Visualizations
-- `seaborn` — Charts
-- `nltk` — Natural language processing
-- `scikit-learn` — Machine learning
-
-### Reddit API
-
-✅ **Already configured!** The script uses pre-configured Reddit credentials.
-
-If you need to use your own:
-1. Create app at https://www.reddit.com/prefs/apps
-2. Update credentials in `multi_show_reddit_scraper.py`
-
----
-
-## 🎯 Cultural Movement Marketing (CMM) Framework
-
-### What is CMM?
-
-CMM measures whether audiences treat entertainment as a **movement** vs. just a product.
-
-### 8 Core Metrics
-
-| Metric | Abbreviation | Measures |
-|--------|--------------|----------|
-| Movement Sentiment Score | MSS | Collective voice engagement lift |
-| Identity Resonance Index | IRI | Personal identity connection |
-| Evangelism Ratio | ER | Sharing & recommendation behavior |
-| Repeat Attendance Signal | RAS | Multiple viewing indicators |
-| Belonging Intensity Score | BIS | Community & belonging language |
-| Gatekeeping Markers | GIM | Insider culture signals |
-| Community Formation Signals | CFS | Social bonding patterns |
-| Mimetic Propagation Index | MPI | Viral quote/meme spread |
-
-**Overall CMM Score:** Average of all 8 metrics (0-100 scale)
-
-### Score Interpretation
-
-- **70-100:** Strong movement characteristics
-- **50-69:** Moderate movement signals
-- **30-49:** Weak movement formation
-- **0-29:** Minimal movement discourse
-
----
-
-## 📁 Project Structure
-
-```
-oh_mary_cmm_analysis/
-├── config/
-│   └── config.yaml                      # Show configs & subreddit list
-├── src/
-│   └── analysis/
-│       ├── discourse_extractor.py       # Extract movement language
-│       ├── cmm_metrics.py               # Calculate 8 metrics
-│       └── nlp_engine.py                # NLP analysis
-├── data/
-│   ├── raw/                             # Collected Reddit data
-│   └── processed/                       # Processed data with features
-├── outputs/
-│   ├── reports/                         # Markdown reports
-│   ├── visualizations/                  # Charts and graphs
-│   ├── comparative_summary.csv          # Quick comparison table
-│   └── detailed_results.json            # Complete metrics
-├── multi_show_reddit_scraper.py         # Data collection script
-├── run_comparative_analysis.py          # Analysis pipeline
-├── generate_comparative_visualizations.py  # Visualization generator
-├── generate_comparative_report.py       # Report generator
-└── run_full_analysis.py                 # Complete pipeline orchestrator
+3. Verify configuration:
+```bash
+cat config/config.yaml
 ```
 
----
+## Running the Complete Analysis
 
-## 🔧 Configuration
+### Option 1: Run Everything (Recommended)
 
-Edit `config/config.yaml` to:
+```bash
+python3 run_success_failure_analysis.py
+```
 
-- Add/remove shows
-- Change keywords for each show
-- Modify subreddit list
-- Adjust search parameters
+This runs all 5 steps sequentially:
+1. Reddit data collection (2-3 hours)
+2. Broadway grosses scraping (10-15 minutes)
+3. Statistical analysis (5-10 minutes)
+4. Qualitative analysis (5-10 minutes)
+5. Correlation analysis (2-3 minutes)
 
-Example:
+**Total time: ~2.5-3.5 hours**
+
+### Option 2: Run Individual Scripts
+
+If you want to run steps separately:
+
+```bash
+# Step 1: Collect Reddit data
+python3 multi_show_reddit_scraper.py
+
+# Step 2: Scrape Broadway grosses
+python3 broadway_grosses_scraper.py
+
+# Step 3: Statistical analysis
+python3 marketing_science_analysis.py
+
+# Step 4: Qualitative analysis
+python3 why_campaigns_succeed_analysis.py
+
+# Step 5: Correlation analysis
+python3 reddit_grosses_correlation_analysis.py
+```
+
+### Option 3: Simple Marketing Effectiveness (Alternative)
+
+For a simpler analysis without complex statistics:
+
+```bash
+python3 marketing_effectiveness_analysis.py
+```
+
+This provides straightforward engagement, reach, sentiment, and word-of-mouth scores.
+
+## Output Files
+
+### Reddit Data
+```
+data/raw/
+├── reddit_oh_mary.csv
+├── reddit_john_proctor.csv
+├── reddit_maybe_happy_ending.csv
+└── ... (40+ files)
+```
+
+### Box Office Data
+```
+data/grosses/
+├── broadway_grosses_2024_2025.csv    # Weekly data
+└── grosses_summary.csv                # Summary by show
+```
+
+### Analysis Reports
+```
+outputs/
+├── marketing_science_all_metrics.csv          # All metrics for all shows
+├── statistical_comparison.csv                 # T-test results
+├── marketing_science_report.json              # Statistical analysis JSON
+├── why_campaigns_succeed_report.md            # Qualitative insights
+├── why_analysis_raw_data.json                 # Theme and pattern data
+├── reddit_grosses_correlation_report.md       # Correlation analysis
+├── merged_reddit_grosses.csv                  # Combined dataset
+├── reddit_grosses_correlation.png             # Visualizations
+└── correlation_analysis_data.json             # Raw correlation data
+```
+
+## Key Questions Answered
+
+### 1. WHAT differs between successful and unsuccessful campaigns?
+
+**See:** `outputs/statistical_comparison.csv`
+
+Find out:
+- Which Reddit metrics are statistically different
+- Effect sizes (how big the differences are)
+- Statistical significance (p-values)
+- Confidence intervals
+
+### 2. WHY do some campaigns succeed?
+
+**See:** `outputs/why_campaigns_succeed_report.md`
+
+Discover:
+- What themes dominate conversations (performance quality, emotional impact, identity resonance)
+- What language patterns indicate success (personal vs collective voice)
+- What content characteristics make posts go viral
+- What types of conversations generate buzz
+
+### 3. How does fan engagement correlate with financial success?
+
+**See:** `outputs/reddit_grosses_correlation_report.md`
+
+Learn:
+- Which Reddit metrics predict box office performance
+- Correlation coefficients and significance levels
+- Over/underperformers (shows defying expectations)
+- Patterns by show type (original plays vs musicals vs revivals)
+
+## Configuration
+
+### Adding/Removing Shows
+
+Edit `config/config.yaml`:
 
 ```yaml
 shows:
-  oh_mary:
-    name: "Oh Mary!"
+  show_id:
+    name: "Show Name"
+    show_type: "original_play|original_musical|play_revival|musical_revival"
+    category: "successful|unsuccessful|unknown"
     keywords:
-      - "Oh Mary!"
-      - "Cole Escola"
-      # ... more keywords
+      - "Keyword 1"
+      - "Keyword 2"
+```
 
+### Adjusting Search Parameters
+
+```yaml
 reddit:
   subreddits:
     - broadway
     - musicals
-    # ... 30+ subreddits
+    # Add more subreddits
+
+limits:
+  reddit_posts_per_subreddit: 100  # Adjust for faster/slower scraping
 ```
 
----
+## Technical Details
 
-## 📊 Data Collection Details
+### Reddit API
+- Uses PRAW (Python Reddit API Wrapper)
+- Credentials hardcoded in `multi_show_reddit_scraper.py`
+- Rate limited to avoid API restrictions
+- Searches 11 verified subreddits
+- Only uses first keyword per show to reduce API calls
 
-### Subreddits Searched
+### BroadwayWorld Scraping
+- Uses BeautifulSoup for HTML parsing
+- Respectful rate limiting (2 second delays)
+- Parses weekly grosses tables
+- Matches show names to config via fuzzy matching
 
-**30+ communities including:**
+### Statistical Methods
+- T-tests for comparing group means
+- Cohen's d for effect size
+- 95% confidence intervals
+- Pearson and Spearman correlations
 
-- **Theater:** broadway, musicals, theatre, theater, OffBroadway
-- **NYC:** nyc, AskNYC, newyork, manhattan
-- **LGBTQ+:** lgbt, gaybros, askgaybros, gay, rupaulsdragrace
-- **Arts:** entertainment, acting, comedy, arts, culture
-- **General:** AskReddit, movies, CasualConversation
+### Qualitative Methods
+- Theme extraction via keyword matching
+- Sentiment analysis using word lists
+- Viral content pattern identification
+- Language tone analysis (personal vs collective voice)
 
-### Data Points Collected
+## Troubleshooting
 
-For each Reddit post:
-- Post title and text
-- Author, subreddit, score
-- Comments (top 25 per post)
-- Timestamps, URLs
-- Upvote ratio, comment count
+### Reddit Scraper Hangs
+- Reduced to 25 posts per subreddit to prevent hanging
+- If still hanging, reduce `reddit_posts_per_subreddit` in config.yaml
 
-### Privacy & Ethics
+### Missing Shows in Grosses Data
+- BroadwayWorld may use different show names
+- Check `match_show_to_config()` function in `broadway_grosses_scraper.py`
+- Add alternative keywords to config.yaml
 
-- ✅ Public data only (no private subreddits)
-- ✅ Reddit API compliant
-- ✅ No personal information stored
-- ✅ Respects platform ToS
+### Correlation Analysis Shows "No Data"
+- Ensure both Reddit and grosses data exist
+- Run `multi_show_reddit_scraper.py` first
+- Then run `broadway_grosses_scraper.py`
+- Then run correlation analysis
 
----
+### Import Errors (scipy, etc.)
+- scipy is optional - code will work without it
+- If issues persist, check `requirements.txt` compatibility
+- Mac M1/M2: Use simplified requirements (no Fortran dependencies)
 
-## 💡 Example Results
-
-After analysis, you might see:
+## Project Structure
 
 ```
-COMPARATIVE SUMMARY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Show                           CMM Score   Posts
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Oh Mary!                         68.5      247
-John Proctor is the Villain      52.3      89
-Maybe Happy Ending               61.2      134
-
-🏆 Most Effective Campaign: Oh Mary!
+oh_mary_cmm_analysis/
+├── config/
+│   └── config.yaml                              # Show configuration
+├── data/
+│   ├── raw/                                     # Reddit data (CSV)
+│   └── grosses/                                 # Box office data (CSV)
+├── outputs/                                     # Analysis reports
+├── multi_show_reddit_scraper.py                # Reddit data collection
+├── broadway_grosses_scraper.py                 # Box office scraper
+├── marketing_science_analysis.py               # Statistical analysis
+├── why_campaigns_succeed_analysis.py           # Qualitative analysis
+├── reddit_grosses_correlation_analysis.py      # Correlation analysis
+├── marketing_effectiveness_analysis.py         # Simple alternative
+├── run_success_failure_analysis.py             # Master orchestrator
+├── requirements.txt                             # Python dependencies
+└── README.md                                    # This file
 ```
 
----
+## Future Enhancements
 
-## 🛠️ Troubleshooting
+Potential additions:
+- TikTok and Instagram data collection
+- Sentiment analysis using ML models (BERT, etc.)
+- Time series analysis (how buzz changes over run)
+- Predictive modeling (predict grosses from early Reddit activity)
+- Topic modeling (LDA, BERTopic)
+- Network analysis (community detection, influencer identification)
 
-### "PRAW not installed"
+## Credits
 
-```bash
-pip install praw
-```
+**Data Sources:**
+- Reddit (via PRAW API)
+- BroadwayWorld.com (public box office data)
 
-### "No data found for show"
+**Analysis Framework:**
+- Statistical methods: scipy, scikit-learn
+- Visualization: matplotlib, seaborn
+- Data processing: pandas, numpy
 
-The scraper may not have found Reddit posts. Try:
-1. Run scraper again (different API limits)
-2. Add more keywords in `config/config.yaml`
-3. Expand date range in config
-
-### "Rate limit exceeded"
-
-Reddit API has rate limits. The scraper includes delays, but you may need to:
-- Wait 10 minutes
-- Run again (it will continue)
-
-### Missing visualizations
-
-```bash
-pip install matplotlib seaborn
-```
+**2024-2025 Broadway Season Coverage**
+- Original research analyzing 40+ shows
+- Combining social media analytics with financial performance
+- PhD-level comparative analysis methodology
 
 ---
 
-## 📚 Documentation
-
-- **This README** — Overview and quick start
-- **`outputs/reports/comparative_analysis_report.md`** — Full analysis findings
-- **`AUTOMATION_SUMMARY.md`** — Previous automation work (legacy)
-- **`AUTOMATED_COLLECTION_GUIDE.md`** — TikTok/Instagram guides (legacy)
-
----
-
-## 🎓 Methodology
-
-### Discourse Analysis
-
-Uses lexicon-based extraction to identify:
-- Collective pronouns (we, us, our)
-- Belonging terms (community, family, home)
-- Necessity language (must see, essential)
-- Identity markers (queer, theater kid)
-- Evangelism phrases (you have to see)
-- Repeat signals (second time, going back)
-
-### Statistical Analysis
-
-- Bootstrap confidence intervals (95%)
-- T-tests for significance
-- Effect size calculations
-- Comparative ranking
-
-### NLP Features
-
-- Transformer embeddings (sentence-transformers)
-- Topic clustering
-- Sentiment analysis
-- Pronoun shift detection (I→we)
-
----
-
-## 📈 Use Cases
-
-### For Producers
-- Benchmark campaign effectiveness
-- Identify successful marketing tactics
-- Understand audience engagement patterns
-
-### For Marketers
-- Learn what drives movement behavior
-- Optimize community-building strategies
-- Measure cultural impact beyond tickets
-
-### For Researchers
-- Study cultural movement formation
-- Analyze social media discourse
-- Measure entertainment as identity space
-
----
-
-## ⚠️ Limitations
-
-1. **Reddit-only analysis** — Doesn't include TikTok/Instagram
-2. **English language only** — Non-English posts excluded
-3. **Public data only** — Private communities not accessible
-4. **Past 12 months** — Limited historical context
-5. **Correlation not causation** — High CMM doesn't prove campaign caused it
-
----
-
-## 🚀 Quick Reference
-
-**Run everything:**
-```bash
-python run_full_analysis.py
-```
-
-**Just collect data:**
-```bash
-python multi_show_reddit_scraper.py
-```
-
-**Just analyze (if data exists):**
-```bash
-python run_comparative_analysis.py
-python generate_comparative_visualizations.py
-python generate_comparative_report.py
-```
-
-**View results:**
-```bash
-cat outputs/reports/comparative_analysis_report.md
-open outputs/visualizations/
-```
-
----
-
-## 📞 Support
-
-If you encounter issues:
-
-1. Check `data/raw/collection_summary.json` for collection stats
-2. Review `outputs/detailed_results.json` for metric details
-3. Verify all dependencies: `pip install -r requirements.txt`
-
----
-
-## 📄 License
-
-Research and educational use.
-
----
-
-**Created:** 2024
-**Analysis Platform:** Reddit API via PRAW
-**Framework:** Cultural Movement Marketing (CMM)
-**Shows:** Oh Mary! | John Proctor is the Villain | Maybe Happy Ending
+**Last Updated:** November 2025
+**Season:** 2024-2025 Tony Awards Season

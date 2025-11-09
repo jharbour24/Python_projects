@@ -1,112 +1,422 @@
-# Multi-Show Broadway CMM Comparative Analysis Configuration
+# Multi-Show Broadway Marketing Success/Failure Analysis
 # Reddit-Only Analysis
 
 date_range: "last 12 months"
 
 # Shows to analyze and compare
+# ALL shows from 2024-2025 Tony season
+# Categorized by type and marketing success
 shows:
-  oh_mary:
-    name: "Oh Mary!"
+  # ========== ORIGINAL PLAYS ==========
+  all_in:
+    name: "All In: Comedy About Love"
+    show_type: "original_play"
+    category: "unknown"
     keywords:
-      - "Oh Mary!"
-      - "Oh Mary"
-      - "#OhMary"
-      - "ohmary broadway"
-      - "oh mary broadway"
-      - "Cole Escola"
-      - "Sam Pinkleton"
-      - "Lyceum Theatre"
-      - "Oh Mary show"
-      - "Oh Mary play"
+      - "All In Comedy About Love"
+      - "All In broadway"
+      - "Simon Rich broadway"
+
+  cult_of_love:
+    name: "Cult of Love"
+    show_type: "original_play"
+    category: "unknown"
+    keywords:
+      - "Cult of Love"
+      - "Cult of Love broadway"
+      - "Leslye Headland play"
+
+  english:
+    name: "English"
+    show_type: "original_play"
+    category: "unknown"
+    keywords:
+      - "English broadway"
+      - "Sanaz Toossi English"
+      - "English play broadway"
+
+  good_night:
+    name: "Good Night, and Good Luck"
+    show_type: "original_play"
+    category: "unknown"
+    keywords:
+      - "Good Night and Good Luck"
+      - "Good Night Good Luck broadway"
+      - "George Clooney broadway"
+
+  hills_california:
+    name: "The Hills of California"
+    show_type: "original_play"
+    category: "unknown"
+    keywords:
+      - "Hills of California"
+      - "The Hills of California"
+      - "Jez Butterworth broadway"
+
+  job:
+    name: "Job"
+    show_type: "original_play"
+    category: "unknown"
+    keywords:
+      - "Job broadway"
+      - "Job play"
+      - "Peter Sarsgaard Job"
 
   john_proctor:
     name: "John Proctor is the Villain"
+    show_type: "original_play"
+    category: "successful"
     keywords:
       - "John Proctor is the Villain"
       - "John Proctor Villain"
       - "JPIV"
       - "Kimberly Belflower"
-      - "John Proctor broadway"
-      - "John Proctor play"
-      - "crucible villain"
+
+  left_tenth:
+    name: "Left on Tenth"
+    show_type: "original_play"
+    category: "unknown"
+    keywords:
+      - "Left on Tenth"
+      - "Left on Tenth broadway"
+      - "Julianna Margulies broadway"
+
+  mcneal:
+    name: "McNeal"
+    show_type: "original_play"
+    category: "unknown"
+    keywords:
+      - "McNeal"
+      - "McNeal broadway"
+      - "Robert Downey Jr broadway"
+
+  oh_mary:
+    name: "Oh Mary!"
+    show_type: "original_play"
+    category: "successful"
+    keywords:
+      - "Oh Mary!"
+      - "Oh Mary"
+      - "#OhMary"
+      - "Cole Escola"
+      - "Lyceum Theatre"
+
+  dorian_gray:
+    name: "The Picture of Dorian Gray"
+    show_type: "original_play"
+    category: "unknown"
+    keywords:
+      - "Dorian Gray broadway"
+      - "Picture of Dorian Gray"
+      - "Dorian Gray Music Box"
+
+  purpose:
+    name: "The Purpose"
+    show_type: "original_play"
+    category: "unknown"
+    keywords:
+      - "The Purpose broadway"
+      - "Branden Jacobs-Jenkins Purpose"
+      - "Purpose play broadway"
+
+  roommate:
+    name: "The Roommate"
+    show_type: "original_play"
+    category: "unknown"
+    keywords:
+      - "The Roommate"
+      - "Roommate broadway"
+      - "Mia Farrow Patti Lupone"
+
+  stranger_things:
+    name: "Stranger Things: The First Shadow"
+    show_type: "original_play"
+    category: "unknown"
+    keywords:
+      - "Stranger Things broadway"
+      - "Stranger Things First Shadow"
+      - "Stranger Things play"
+
+  # ========== ORIGINAL MUSICALS ==========
+  wonderful_world:
+    name: "A Wonderful World"
+    show_type: "original_musical"
+    category: "unknown"
+    keywords:
+      - "A Wonderful World"
+      - "Wonderful World musical"
+      - "Louis Armstrong musical"
+
+  boop:
+    name: "Boop!"
+    show_type: "original_musical"
+    category: "unknown"
+    keywords:
+      - "Boop musical"
+      - "Boop broadway"
+      - "Betty Boop musical"
+
+  buena_vista:
+    name: "Buena Vista Social Club"
+    show_type: "original_musical"
+    category: "unknown"
+    keywords:
+      - "Buena Vista Social Club"
+      - "Buena Vista broadway"
+      - "BVSC musical"
+
+  dead_outlaw:
+    name: "The Dead Outlaw"
+    show_type: "original_musical"
+    category: "unsuccessful"
+    keywords:
+      - "Dead Outlaw"
+      - "The Dead Outlaw"
+      - "Dead Outlaw musical"
+      - "Dead Outlaw broadway"
+
+  death_becomes_her:
+    name: "Death Becomes Her"
+    show_type: "original_musical"
+    category: "unknown"
+    keywords:
+      - "Death Becomes Her"
+      - "Death Becomes Her musical"
+      - "Death Becomes Her broadway"
+
+  just_in_time:
+    name: "Just in Time"
+    show_type: "original_musical"
+    category: "unknown"
+    keywords:
+      - "Just in Time broadway"
+      - "Just in Time musical"
+      - "Tony Yazbeck musical"
 
   maybe_happy_ending:
     name: "Maybe Happy Ending"
+    show_type: "original_musical"
+    category: "successful"
     keywords:
       - "Maybe Happy Ending"
       - "Maybe Happy Ending musical"
-      - "Maybe Happy Ending broadway"
       - "MHE musical"
       - "Darren Criss Maybe"
-      - "Maybe Happy Ending show"
-      - "robot musical"
+
+  operation_mincemeat:
+    name: "Operation Mincemeat"
+    show_type: "original_musical"
+    category: "unknown"
+    keywords:
+      - "Operation Mincemeat"
+      - "Operation Mincemeat broadway"
+      - "Mincemeat musical"
+
+  real_women_curves:
+    name: "Real Women Have Curves"
+    show_type: "original_musical"
+    category: "unsuccessful"
+    keywords:
+      - "Real Women Have Curves"
+      - "Real Women Have Curves musical"
+      - "RWHC broadway"
+
+  redwood:
+    name: "Redwood"
+    show_type: "original_musical"
+    category: "unsuccessful"
+    keywords:
+      - "Redwood musical"
+      - "Redwood broadway"
+      - "Redwood show"
+
+  smash:
+    name: "Smash"
+    show_type: "original_musical"
+    category: "unsuccessful"
+    keywords:
+      - "Smash musical"
+      - "Smash broadway"
+      - "Smash NBC musical"
+
+  old_friends:
+    name: "The Old Friends"
+    show_type: "original_musical"
+    category: "unknown"
+    keywords:
+      - "The Old Friends"
+      - "Old Friends musical"
+      - "Old Friends broadway"
+
+  swept_away:
+    name: "Swept Away"
+    show_type: "original_musical"
+    category: "unknown"
+    keywords:
+      - "Swept Away"
+      - "Swept Away musical"
+      - "Avett Brothers musical"
+
+  tammy_faye:
+    name: "Tammy Faye"
+    show_type: "original_musical"
+    category: "unsuccessful"
+    keywords:
+      - "Tammy Faye"
+      - "Tammy Faye musical"
+      - "Tammy Faye broadway"
+
+  # ========== PLAY REVIVALS ==========
+  eureka_day:
+    name: "Eureka Day"
+    show_type: "play_revival"
+    category: "unknown"
+    keywords:
+      - "Eureka Day"
+      - "Eureka Day broadway"
+      - "Jonathan Spier revival"
+
+  glengarry:
+    name: "Glengarry Glen Ross"
+    show_type: "play_revival"
+    category: "unknown"
+    keywords:
+      - "Glengarry Glen Ross"
+      - "Glengarry broadway"
+      - "Kieran Culkin Glengarry"
+
+  home:
+    name: "Home"
+    show_type: "play_revival"
+    category: "unknown"
+    keywords:
+      - "Home broadway"
+      - "Home play revival"
+      - "Samm-Art Williams Home"
+
+  othello:
+    name: "Othello"
+    show_type: "play_revival"
+    category: "unknown"
+    keywords:
+      - "Othello broadway"
+      - "Othello revival"
+      - "Denzel Washington Othello"
+
+  our_town:
+    name: "Our Town"
+    show_type: "play_revival"
+    category: "unknown"
+    keywords:
+      - "Our Town broadway"
+      - "Our Town revival"
+      - "Jim Parsons Our Town"
+
+  romeo_juliet:
+    name: "Romeo + Juliet"
+    show_type: "play_revival"
+    category: "unknown"
+    keywords:
+      - "Romeo Juliet broadway"
+      - "Romeo and Juliet revival"
+      - "Kit Connor Rachel Zegler"
+
+  yellow_face:
+    name: "Yellow Face"
+    show_type: "play_revival"
+    category: "unknown"
+    keywords:
+      - "Yellow Face"
+      - "Yellow Face broadway"
+      - "David Henry Hwang revival"
+
+  # ========== MUSICAL REVIVALS ==========
+  elf:
+    name: "Elf The Musical"
+    show_type: "musical_revival"
+    category: "unknown"
+    keywords:
+      - "Elf musical"
+      - "Elf broadway"
+      - "Elf revival"
+
+  floyd_collins:
+    name: "Floyd Collins"
+    show_type: "musical_revival"
+    category: "unknown"
+    keywords:
+      - "Floyd Collins"
+      - "Floyd Collins broadway"
+      - "Floyd Collins revival"
+
+  gypsy:
+    name: "Gypsy"
+    show_type: "musical_revival"
+    category: "unsuccessful"
+    keywords:
+      - "Gypsy broadway"
+      - "Gypsy revival"
+      - "Audra McDonald Gypsy"
+
+  last_five_years:
+    name: "The Last Five Years"
+    show_type: "musical_revival"
+    category: "unknown"
+    keywords:
+      - "The Last Five Years"
+      - "Last Five Years broadway"
+      - "Last 5 Years revival"
+
+  once_mattress:
+    name: "Once Upon a Mattress"
+    show_type: "musical_revival"
+    category: "unknown"
+    keywords:
+      - "Once Upon a Mattress"
+      - "Mattress musical"
+      - "Sutton Foster Mattress"
+
+  pirates:
+    name: "The Pirates of Penzance"
+    show_type: "musical_revival"
+    category: "unknown"
+    keywords:
+      - "Pirates of Penzance"
+      - "Pirates broadway"
+      - "Pirates Penzance revival"
+
+  sunset_blvd:
+    name: "Sunset Boulevard"
+    show_type: "musical_revival"
+    category: "unsuccessful"
+    keywords:
+      - "Sunset Boulevard"
+      - "Sunset Blvd broadway"
+      - "Nicole Scherzinger Sunset"
 
 platforms:
   - reddit
 
-# Reddit configuration - Comprehensive subreddit list
+# Reddit configuration - Core subreddits only (tested and verified)
 reddit:
   subreddits:
-    # Broadway & Theater Core
+    # Broadway & Theater Core (verified to exist)
     - broadway
     - musicals
     - theatre
-    - theater
-    - Theatre
-    - MusicalTheatre
-    - BroadwayMusicals
-    - OffBroadway
-    - theatrememes
-    - techtheatre
 
-    # NYC & Location-Based
+    # NYC
     - nyc
     - AskNYC
-    - newyork
-    - manhattan
-    - NewYorkCity
 
-    # LGBTQ+ Communities (Oh Mary! relevance)
+    # LGBTQ+ Communities
     - lgbt
     - gaybros
     - askgaybros
-    - rupaulsdragrace
-    - gay
-    - ainbow
-    - lgbtmemes
 
-    # Arts & Entertainment
+    # Entertainment
     - entertainment
-    - LiveFromNewYork
-    - acting
-    - Showbiz
-    - CelebrityGossip
-    - popculturechat
-
-    # Student & Academic Theater
-    - highschoolmusicals
-    - CollegeTheatre
-
-    # General Discussion
-    - AskReddit
     - movies
-    - television
-    - entertainment
-    - CasualConversation
-
-    # Arts & Culture
-    - arts
-    - culture
-    - Dance
-
-    # Comedy & Performance (Oh Mary! relevance)
-    - comedy
-    - standup
-
-    # Tech Theater
-    - techtheatre
-    - lightingdesign
-    - livesound
 
   sort: "relevance"
   time_filter: "year"
