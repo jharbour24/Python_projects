@@ -336,9 +336,21 @@ class BroadwayMarketingScience:
         if not success_factors:
             print("\n⚠ No statistically significant differences found with medium+ effect sizes")
             print("This may indicate:")
-            print("  • Insufficient sample size")
+            print("  • Insufficient sample size (3 successful vs 7 unsuccessful shows)")
             print("  • Similar marketing approaches")
             print("  • Need for more granular metrics")
+
+            print("\n📊 Top Observed Differences (regardless of statistical significance):")
+            print("Note: These may not be statistically significant due to small sample size\n")
+
+            # Show top 5 differences by effect size
+            top_diffs = statistical_results.head(5)
+            for _, row in top_diffs.iterrows():
+                direction = "higher" if row['difference'] > 0 else "lower"
+                print(f"• {row['metric'].replace('_', ' ').title()}:")
+                print(f"  Successful: {row['successful_mean']:.1f} | Unsuccessful: {row['unsuccessful_mean']:.1f}")
+                print(f"  Difference: {abs(row['pct_difference']):.0f}% {direction} ({row['effect_size']} effect)")
+                print(f"  p-value: {row['p_value']:.3f} {'✓ significant' if row['significant'] else '(not significant)'}\n")
 
         return success_factors
 
@@ -355,12 +367,26 @@ class BroadwayMarketingScience:
         # Top 5 differentiating factors
         top_factors = statistical_results.head(5)
 
-        for _, row in top_factors.iterrows():
-            if row['difference'] > 0 and row['significant']:
-                metric = row['metric'].replace('_', ' ').title()
-                rec = f"Focus on increasing {metric} - successful shows averaged {row['successful_mean']:.1f} vs {row['unsuccessful_mean']:.1f} for unsuccessful shows"
-                recommendations.append(rec)
-                print(f"\n→ {rec}")
+        if success_factors:
+            # If we have statistically significant factors, use them
+            for _, row in top_factors.iterrows():
+                if row['difference'] > 0 and row['significant']:
+                    metric = row['metric'].replace('_', ' ').title()
+                    rec = f"Focus on increasing {metric} - successful shows averaged {row['successful_mean']:.1f} vs {row['unsuccessful_mean']:.1f} for unsuccessful shows"
+                    recommendations.append(rec)
+                    print(f"\n→ {rec}")
+        else:
+            # If no significant factors, provide directional guidance
+            print("\n⚠️ Note: Limited sample size (3 vs 7 shows) prevents strong statistical conclusions.")
+            print("However, here are observed patterns to investigate further:\n")
+
+            for _, row in top_factors.iterrows():
+                if row['difference'] > 0:  # Only positive differences
+                    metric = row['metric'].replace('_', ' ').title()
+                    rec = f"Investigate {metric} - successful shows averaged {row['successful_mean']:.1f} vs {row['unsuccessful_mean']:.1f}"
+                    recommendations.append(rec)
+                    print(f"→ {rec}")
+                    print(f"  (Effect size: {row['effect_size']}, p={row['p_value']:.3f})")
 
         return recommendations
 
