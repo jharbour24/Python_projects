@@ -91,29 +91,44 @@ class MultiShowRedditScraper:
 
             for keyword in keywords:
                 try:
+                    # Limit to first keyword only to speed up collection
+                    # Search with smaller limit to avoid hanging
                     search_results = subreddit.search(
                         keyword,
-                        limit=self.limit_per_subreddit,
+                        limit=25,  # Reduced from 100 to avoid hanging
                         time_filter='year',
                         sort='relevance'
                     )
 
+                    # Convert to list with timeout protection
+                    count = 0
                     for submission in search_results:
-                        post_data = self._extract_post_data(submission, show_name)
-                        posts.append(post_data)
+                        try:
+                            post_data = self._extract_post_data(submission, show_name)
+                            posts.append(post_data)
+                            count += 1
+                            if count >= 25:  # Stop after 25 posts per keyword
+                                break
+                        except Exception:
+                            continue
                         time.sleep(0.1)  # Rate limiting
+
+                    # Only use first keyword to speed up collection
+                    break
 
                 except Exception as e:
                     # Skip if subreddit doesn't exist or is private
                     if "private" in str(e).lower() or "banned" in str(e).lower():
-                        continue
+                        print(f"  ⏭ Skipping {subreddit_name} (private/banned)")
+                        break
                     # Rate limit handling
                     elif "429" in str(e) or "rate limit" in str(e).lower():
                         print(f"  ⏸ Rate limited, waiting 60 seconds...")
                         time.sleep(60)
                         continue
                     else:
-                        continue
+                        print(f"  ⚠ Error in {subreddit_name}: {str(e)[:50]}")
+                        break
 
         except Exception as e:
             # Subreddit doesn't exist or other error

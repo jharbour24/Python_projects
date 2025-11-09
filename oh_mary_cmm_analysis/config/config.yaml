@@ -44,69 +44,26 @@ shows:
 platforms:
   - reddit
 
-# Reddit configuration - Comprehensive subreddit list
+# Reddit configuration - Core subreddits only (tested and verified)
 reddit:
   subreddits:
-    # Broadway & Theater Core
+    # Broadway & Theater Core (verified to exist)
     - broadway
     - musicals
     - theatre
-    - theater
-    - Theatre
-    - MusicalTheatre
-    - BroadwayMusicals
-    - OffBroadway
-    - theatrememes
-    - techtheatre
 
-    # NYC & Location-Based
+    # NYC
     - nyc
     - AskNYC
-    - newyork
-    - manhattan
-    - NewYorkCity
 
-    # LGBTQ+ Communities (Oh Mary! relevance)
+    # LGBTQ+ Communities
     - lgbt
     - gaybros
     - askgaybros
-    - rupaulsdragrace
-    - gay
-    - ainbow
-    - lgbtmemes
 
-    # Arts & Entertainment
+    # Entertainment
     - entertainment
-    - LiveFromNewYork
-    - acting
-    - Showbiz
-    - CelebrityGossip
-    - popculturechat
-
-    # Student & Academic Theater
-    - highschoolmusicals
-    - CollegeTheatre
-
-    # General Discussion
-    - AskReddit
     - movies
-    - television
-    - entertainment
-    - CasualConversation
-
-    # Arts & Culture
-    - arts
-    - culture
-    - Dance
-
-    # Comedy & Performance (Oh Mary! relevance)
-    - comedy
-    - standup
-
-    # Tech Theater
-    - techtheatre
-    - lightingdesign
-    - livesound
 
   sort: "relevance"
   time_filter: "year"
