@@ -62,15 +62,25 @@ def main():
 
         print("\nWhat would you like to do?")
         print("-" * 70)
-        print("1. Setup Reddit API (automated collection)")
-        print("2. Collect TikTok data (manual, safe)")
-        print("3. Collect Instagram data (manual, safe)")
-        print("4. Run analysis with current data")
-        print("5. View data collection tips")
-        print("6. Exit")
+        print("AUTOMATED OPTIONS:")
+        print("  1. Setup Reddit API (free, automated)")
+        print("  2. Setup Apify API ($5-10, fully automated TikTok/Instagram)")
+        print("  3. Browser-assisted collection (free, semi-automated)")
+        print()
+        print("MANUAL OPTIONS:")
+        print("  4. Collect TikTok manually (free, 100% safe)")
+        print("  5. Collect Instagram manually (free, 100% safe)")
+        print()
+        print("ANALYSIS:")
+        print("  6. Run analysis with current data")
+        print()
+        print("HELP:")
+        print("  7. View automation options comparison")
+        print("  8. View data collection tips")
+        print("  9. Exit")
         print()
 
-        choice = input("Enter choice (1-6): ").strip()
+        choice = input("Enter choice (1-9): ").strip()
         print()
 
         if choice == '1':
@@ -79,16 +89,30 @@ def main():
             subprocess.run([sys.executable, "setup_reddit.py"])
 
         elif choice == '2':
-            print("📱 Starting TikTok collection helper...")
+            print("🤖 Running Apify API setup...")
+            print()
+            subprocess.run([sys.executable, "setup_apify.py"])
+            print()
+            response = input("Run Apify collection now? (y/n): ").strip().lower()
+            if response == 'y':
+                subprocess.run([sys.executable, "collect_apify.py"])
+
+        elif choice == '3':
+            print("🌐 Starting browser-assisted collection...")
+            print()
+            subprocess.run([sys.executable, "collect_browser_assisted.py"])
+
+        elif choice == '4':
+            print("📱 Starting TikTok manual collection...")
             print()
             subprocess.run([sys.executable, "collect_tiktok.py"])
 
-        elif choice == '3':
-            print("📱 Starting Instagram collection helper...")
+        elif choice == '5':
+            print("📱 Starting Instagram manual collection...")
             print()
             subprocess.run([sys.executable, "collect_instagram.py"])
 
-        elif choice == '4':
+        elif choice == '6':
             print("🚀 Running analysis...")
             print()
             print("This will:")
