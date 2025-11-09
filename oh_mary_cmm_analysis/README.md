@@ -73,10 +73,10 @@ This project analyzes **40+ Broadway shows** from the 2024-2025 Tony season to u
 - Time period: Last 12 months
 
 ### 2. Broadway Box Office Data Collection
-- Scrapes weekly grosses from BroadwayWorld.com
+- Scrapes weekly grosses from BroadwayWorld.com JSON API
+- Uses `json_grosses.cfm` endpoint (more reliable than HTML scraping)
 - Covers full 2024-2025 Tony season (April 2024 - present)
-- Collects: weekly gross revenue, capacity %, average ticket price, performances
-- **Note**: BroadwayWorld may block automated requests - see Troubleshooting for alternatives
+- Collects: weekly gross revenue, capacity %, average ticket price, attendance, performances
 
 ### 3. Statistical Analysis (WHAT)
 - Extracts 30+ metrics per show from Reddit data
@@ -271,10 +271,11 @@ limits:
 - Only uses first keyword per show to reduce API calls
 
 ### BroadwayWorld Scraping
-- Uses BeautifulSoup for HTML parsing
-- Respectful rate limiting (2 second delays)
-- Parses weekly grosses tables
-- Matches show names to config via fuzzy matching
+- Uses JSON API endpoint (`json_grosses.cfm`) instead of HTML page scraping
+- BeautifulSoup parses HTML fragments from API responses
+- Respectful rate limiting (0.5 second delays between weeks)
+- Fetches both musicals and plays for each week
+- Matches show names to config via exact and keyword matching
 
 ### Statistical Methods
 - T-tests for comparing group means
@@ -294,17 +295,17 @@ limits:
 - Reduced to 25 posts per subreddit to prevent hanging
 - If still hanging, reduce `reddit_posts_per_subreddit` in config.yaml
 
-### BroadwayWorld Blocking / No Grosses Data
-- **BroadwayWorld actively blocks automated scraping** (returns 403 Forbidden)
-- The website uses anti-bot protection requiring JavaScript execution
-- **Recommended alternatives:**
-  1. **Playbill Grosses**: https://www.playbill.com/grosses (may also block bots)
-  2. **The Broadway League**: https://www.broadwayleague.com/ (official source)
-  3. **Manual data entry**: Download data manually and save to `data/grosses/broadway_grosses_2024_2025.csv`
-  4. **Browser automation**: Use Selenium or Playwright (requires additional setup)
-- If some shows are missing but others work:
+### No Grosses Data / Missing Shows
+- **Script now uses BroadwayWorld JSON API** (much more reliable than HTML scraping)
+- If no data is found:
+  1. Check network connectivity
+  2. Verify the API endpoint is still available: https://www.broadwayworld.com/json_grosses.cfm
+  3. Try running `broadway_grosses_scraper.py` directly to see detailed error messages
+- If some shows are missing:
+  - Show names in config.yaml may not match BroadwayWorld's naming
   - Check `match_show_to_config()` function in `broadway_grosses_scraper.py`
-  - Add alternative keywords to config.yaml
+  - Add alternative keywords to config.yaml for better matching
+  - Check BroadwayWorld website to see exact show names used
 
 ### Correlation Analysis Shows "No Data"
 - Ensure both Reddit and grosses data exist
