@@ -36,15 +36,31 @@ class RedditScraper:
 
         if use_api and PRAW_AVAILABLE:
             try:
-                # Try to initialize PRAW (will fail without credentials)
-                self.reddit = praw.Reddit(
-                    client_id='YOUR_CLIENT_ID',
-                    client_secret='YOUR_CLIENT_SECRET',
-                    user_agent='oh_mary_cmm_analysis:v1.0 (by /u/YOUR_USERNAME)'
-                )
-                print("✓ Reddit API initialized")
+                # Try to load credentials from config file
+                from pathlib import Path
+                import sys
+
+                creds_path = Path(__file__).parent.parent.parent / "config" / "reddit_credentials.py"
+
+                if creds_path.exists():
+                    # Load credentials
+                    sys.path.insert(0, str(creds_path.parent))
+                    import reddit_credentials as creds
+
+                    self.reddit = praw.Reddit(
+                        client_id=creds.REDDIT_CLIENT_ID,
+                        client_secret=creds.REDDIT_CLIENT_SECRET,
+                        user_agent=creds.REDDIT_USER_AGENT
+                    )
+                    print("✓ Reddit API initialized with credentials")
+                else:
+                    print("⚠ No credentials found. Run: python setup_reddit.py")
+                    print("⚠ Falling back to manual data collection")
+                    self.use_api = False
+
             except Exception as e:
                 print(f"⚠ Reddit API not available: {e}")
+                print("⚠ Run setup_reddit.py to configure credentials")
                 print("⚠ Falling back to manual data collection")
                 self.use_api = False
         elif not PRAW_AVAILABLE:
