@@ -14,7 +14,7 @@ from typing import Dict, List, Any
 
 # Import analysis modules
 from src.analysis.discourse_extractor import DiscourseExtractor
-from src.analysis.cmm_metrics import CMMMetrics
+from src.analysis.cmm_metrics import CMMMetricsCalculator
 
 
 class ComparativeShowAnalysis:
@@ -38,7 +38,7 @@ class ComparativeShowAnalysis:
 
         # Initialize analysis components
         self.discourse_extractor = DiscourseExtractor(self.config)
-        self.cmm_calculator = CMMMetrics(self.config)
+        self.cmm_calculator = CMMMetricsCalculator(self.config)
 
         print("🔧 Comparative Analysis initialized")
         print(f"  • Shows: {len(self.shows)}")
