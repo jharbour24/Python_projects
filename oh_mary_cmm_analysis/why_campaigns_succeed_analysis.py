@@ -32,6 +32,30 @@ class WhyCampaignsSucceed:
         self.output_dir = Path("outputs")
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
+        # Load show classifications from statistical analysis
+        self.load_show_classifications()
+
+    def load_show_classifications(self):
+        """Load show classifications based on box office performance."""
+        classification_file = self.output_dir / "show_classification_by_grosses.csv"
+
+        if not classification_file.exists():
+            print("⚠️  No classification file found - run marketing_science_analysis.py first")
+            print("Using manual categories from config as fallback")
+            return
+
+        # Load classifications
+        classifications = pd.read_csv(classification_file)
+
+        # Update show categories based on data-driven classification
+        for _, row in classifications.iterrows():
+            show_id = row['show_id']
+            if show_id in self.shows:
+                self.shows[show_id]['category'] = row['category']
+                self.shows[show_id]['success_score'] = row['success_score']
+
+        print(f"✓ Loaded data-driven classifications for {len(classifications)} shows")
+
     def extract_top_themes(self, df: pd.DataFrame, show_name: str, n=10) -> Dict[str, Any]:
         """
         Extract most discussed themes/topics.

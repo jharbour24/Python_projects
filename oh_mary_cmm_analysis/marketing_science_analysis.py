@@ -31,13 +31,76 @@ class BroadwayMarketingScience:
         self.output_dir = Path("outputs")
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        # Categorize shows
-        self.successful_shows = {k: v for k, v in self.shows.items() if v.get('category') == 'successful'}
-        self.unsuccessful_shows = {k: v for k, v in self.shows.items() if v.get('category') == 'unsuccessful'}
+        # Load grosses data and classify shows by financial performance
+        self.classify_shows_by_performance()
 
-        print(f"📊 Initialized analysis:")
-        print(f"  • Successful campaigns: {len(self.successful_shows)}")
-        print(f"  • Unsuccessful campaigns: {len(self.unsuccessful_shows)}")
+    def classify_shows_by_performance(self):
+        """Classify shows as successful/unsuccessful based on box office data."""
+        grosses_file = Path("data/grosses/broadway_grosses_2024_2025.csv")
+
+        if not grosses_file.exists():
+            print("⚠️  No grosses data found - using manual categories from config")
+            self.successful_shows = {k: v for k, v in self.shows.items() if v.get('category') == 'successful'}
+            self.unsuccessful_shows = {k: v for k, v in self.shows.items() if v.get('category') == 'unsuccessful'}
+            print(f"📊 Initialized analysis:")
+            print(f"  • Successful campaigns: {len(self.successful_shows)}")
+            print(f"  • Unsuccessful campaigns: {len(self.unsuccessful_shows)}")
+            return
+
+        # Load and aggregate grosses data
+        grosses_df = pd.read_csv(grosses_file)
+
+        # Calculate performance metrics by show
+        show_performance = grosses_df.groupby('show_id').agg({
+            'gross': ['sum', 'mean'],
+            'capacity_percent': 'mean',
+            'week_ending': 'count'  # weeks on Broadway
+        }).reset_index()
+
+        show_performance.columns = ['show_id', 'total_gross', 'avg_weekly_gross', 'avg_capacity', 'weeks_tracked']
+
+        # Calculate composite success score
+        # Normalize each metric to 0-1 range, then average
+        show_performance['gross_score'] = (show_performance['total_gross'] - show_performance['total_gross'].min()) / (show_performance['total_gross'].max() - show_performance['total_gross'].min())
+        show_performance['capacity_score'] = show_performance['avg_capacity'] / 100.0
+        show_performance['longevity_score'] = (show_performance['weeks_tracked'] - show_performance['weeks_tracked'].min()) / (show_performance['weeks_tracked'].max() - show_performance['weeks_tracked'].min())
+
+        # Composite score: weighted average
+        show_performance['success_score'] = (
+            show_performance['gross_score'] * 0.5 +  # 50% weight on total gross
+            show_performance['capacity_score'] * 0.3 +  # 30% weight on capacity
+            show_performance['longevity_score'] * 0.2   # 20% weight on longevity
+        )
+
+        # Classify: top 33% = successful, bottom 33% = unsuccessful
+        top_threshold = show_performance['success_score'].quantile(0.67)
+        bottom_threshold = show_performance['success_score'].quantile(0.33)
+
+        successful_ids = set(show_performance[show_performance['success_score'] >= top_threshold]['show_id'])
+        unsuccessful_ids = set(show_performance[show_performance['success_score'] <= bottom_threshold]['show_id'])
+
+        self.successful_shows = {k: v for k, v in self.shows.items() if k in successful_ids}
+        self.unsuccessful_shows = {k: v for k, v in self.shows.items() if k in unsuccessful_ids}
+
+        print(f"📊 Initialized analysis (data-driven classification):")
+        print(f"  • Total shows with grosses data: {len(show_performance)}")
+        print(f"  • Successful campaigns (top 33%): {len(self.successful_shows)}")
+        print(f"  • Unsuccessful campaigns (bottom 33%): {len(self.unsuccessful_shows)}")
+        print(f"  • Middle tier (excluded from comparison): {len(show_performance) - len(successful_ids) - len(unsuccessful_ids)}")
+
+        # Save classification for reference
+        classification = show_performance.merge(
+            pd.DataFrame([(k, v['name']) for k, v in self.shows.items()], columns=['show_id', 'show_name']),
+            on='show_id', how='left'
+        )
+        classification['category'] = classification['show_id'].apply(
+            lambda x: 'successful' if x in successful_ids else ('unsuccessful' if x in unsuccessful_ids else 'middle')
+        )
+        classification = classification.sort_values('success_score', ascending=False)
+
+        classification_path = self.output_dir / "show_classification_by_grosses.csv"
+        classification.to_csv(classification_path, index=False)
+        print(f"  💾 Saved classification: {classification_path}")
 
     def extract_comprehensive_metrics(self, df: pd.DataFrame, show_name: str, category: str) -> Dict[str, Any]:
         """
