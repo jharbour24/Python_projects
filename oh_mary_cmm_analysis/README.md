@@ -96,6 +96,69 @@ This project analyzes **40+ Broadway shows** from the 2024-2025 Tony season to u
 - Identifies over/underperformers (shows that defy the buzz-to-revenue pattern)
 - Analyzes patterns by show type (original vs revival, play vs musical)
 
+### 6. Lagged Causality Analysis (PUBLICATION-READY) 🆕
+**Advanced econometric analysis testing whether social media buzz predicts future box office grosses.**
+
+**Research Question**: Does Reddit engagement at time t-k predict Broadway grosses at time t?
+
+**Key Features**:
+- **Panel regression** with show and time fixed effects
+- **Cluster-robust standard errors** (accounts for correlation within shows)
+- **Advance purchase hypothesis testing**: Default lag = 4 weeks (≈31 days typical ticket purchase)
+- **Granger causality tests**: Does engagement temporally precede grosses?
+- **Sensitivity analysis**: Robust to lag specification (tests 1, 2, 4, 6 weeks)
+
+**Statistical Models**:
+1. **OLS with Fixed Effects** (statsmodels)
+   - Controls for show-specific factors (quality, stars, genre)
+   - Controls for time trends (seasonality, market conditions)
+   - Cluster-robust SEs by show
+
+2. **Panel Within Estimator** (linearmodels.PanelOLS)
+   - Entity (show) and time (week) fixed effects
+   - More efficient for balanced panels
+   - Industry-standard panel data method
+
+3. **Granger Causality Tests**
+   - Tests temporal precedence: does X at t-k predict Y at t?
+   - Aggregates evidence across shows using Fisher's method
+   - Reports % of shows with significant predictive power
+
+**Outputs**:
+- Publication-ready coefficient tables with 95% CIs
+- Model diagnostics (R², F-tests, within/between variance)
+- Sensitivity analyses showing robustness
+- JSON/TXT/CSV formats for further analysis
+
+**Usage**:
+```bash
+# 1. Build the merged panel dataset
+python3 build_panel_dataset.py
+
+# 2. Run main causal analysis (4-week lag)
+python3 run_lagged_causality_analysis.py
+
+# 3. Test sensitivity to lag choice
+python3 run_lagged_causality_analysis.py --sensitivity
+
+# 4. Run Granger causality tests
+python3 run_lagged_causality_analysis.py --granger
+
+# 5. Full analysis suite
+python3 run_lagged_causality_analysis.py --full
+```
+
+**Interpretation**:
+- Positive coefficient on lagged engagement → Social buzz predicts future grosses
+- Significant p-value (p < 0.05) → Effect is statistically distinguishable from zero
+- Granger test significance → Temporal precedence established (not just correlation)
+
+**Academic Rigor**:
+- Addresses endogeneity through lagged predictors and fixed effects
+- Controls for supply constraints (capacity flags)
+- Accounts for show lifecycle (preview vs post-opening)
+- Cluster-robust inference prevents overconfident conclusions
+
 ## Installation
 
 ### Requirements
