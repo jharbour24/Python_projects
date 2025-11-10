@@ -21,6 +21,7 @@ import logging
 from typing import List, Dict, Any, Optional
 from datetime import datetime, timedelta
 from pathlib import Path
+from dataclasses import dataclass, asdict
 import re
 import asyncio
 
@@ -28,9 +29,29 @@ from playwright.async_api import async_playwright, TimeoutError as PlaywrightTim
 
 from ..common.net import respect_robots
 from ..common.timebins import to_week_start, week_agg
+from ..common.snapshots import save_snapshot
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class TikTokPost:
+    """Structured representation of a TikTok post."""
+    post_id: str
+    post_url: str
+    post_datetime: str  # ISO format YYYY-MM-DD
+    views: int
+    likes: int
+    comments: int
+    shares: int
+    caption: str
+    hashtags: List[str]
+    is_video: bool = True  # TikTok is primarily video
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary."""
+        return asdict(self)
 
 
 class TikTokPublicCollector:
@@ -54,7 +75,7 @@ class TikTokPublicCollector:
         self,
         handle: str,
         max_posts: int = 30
-    ) -> List[Dict[str, Any]]:
+    ) -> List[TikTokPost]:
         """
         Fetch recent public posts from a TikTok profile.
 
@@ -63,7 +84,7 @@ class TikTokPublicCollector:
             max_posts: Maximum number of recent posts to collect
 
         Returns:
-            List of post dictionaries with metrics
+            List of TikTokPost objects
 
         Example:
             >>> collector = TikTokPublicCollector()
@@ -137,7 +158,7 @@ class TikTokPublicCollector:
 
         return posts
 
-    async def _parse_post_element(self, element, page) -> Optional[Dict[str, Any]]:
+    async def _parse_post_element(self, element, page) -> Optional[TikTokPost]:
         """
         Parse a single post element to extract metrics.
 
@@ -146,7 +167,7 @@ class TikTokPublicCollector:
             page: Playwright page object
 
         Returns:
-            Dict with post data or None
+            TikTokPost object or None
         """
         try:
             # Extract post URL
@@ -212,17 +233,18 @@ class TikTokPublicCollector:
             await page.keyboard.press('Escape')
             await asyncio.sleep(0.5)
 
-            return {
-                'post_id': post_id,
-                'post_url': f"{self.base_url}{post_url}",
-                'timestamp': timestamp,
-                'views': metrics.get('views', 0),
-                'likes': metrics.get('likes', 0),
-                'comments': metrics.get('comments', 0),
-                'shares': metrics.get('shares', 0),
-                'caption': caption,
-                'hashtags': hashtags
-            }
+            return TikTokPost(
+                post_id=post_id or "",
+                post_url=f"{self.base_url}{post_url}",
+                post_datetime=timestamp or "",
+                views=metrics.get('views', 0),
+                likes=metrics.get('likes', 0),
+                comments=metrics.get('comments', 0),
+                shares=metrics.get('shares', 0),
+                caption=caption,
+                hashtags=hashtags,
+                is_video=True
+            )
 
         except Exception as e:
             logger.debug(f"Error parsing post element: {e}")
@@ -319,20 +341,22 @@ class TikTokPublicCollector:
             logger.error(f"No TikTok data collected for {show_name}")
             return pd.DataFrame()
 
-        # Convert to DataFrame
-        df = pd.DataFrame(posts)
+        # Convert TikTokPost objects to DataFrame
+        post_dicts = [post.to_dict() for post in posts]
+        df = pd.DataFrame(post_dicts)
         df['show'] = show_name
         df['handle'] = handle
 
         # Filter to posts with timestamps
-        df = df[df['timestamp'].notna()].copy()
+        df = df[df['post_datetime'].notna() & (df['post_datetime'] != "")].copy()
 
         if df.empty:
             logger.warning(f"No posts with timestamps for {show_name}")
             return pd.DataFrame()
 
-        # Save raw data
-        raw_file = self.output_dir / f"{show_name.replace(' ', '_').replace(':', '')}_raw.csv"
+        # Save per-post CSV with timestamp in filename
+        timestamp = datetime.now().strftime("%Y%m%d")
+        raw_file = self.output_dir / f"{show_name.replace(' ', '_').replace(':', '')}_posts_{timestamp}.csv"
         df.to_csv(raw_file, index=False)
         logger.info(f"  💾 Saved raw data: {raw_file}")
 
@@ -356,12 +380,12 @@ class TikTokPublicCollector:
             ])
 
         df = df.copy()
-        df['timestamp'] = pd.to_datetime(df['timestamp'])
+        df['post_datetime'] = pd.to_datetime(df['post_datetime'])
 
         # Aggregate to weekly
         weekly = week_agg(
             df,
-            date_col='timestamp',
+            date_col='post_datetime',
             group_cols=['show'],
             agg_spec={
                 'post_id': 'count',
@@ -375,7 +399,7 @@ class TikTokPublicCollector:
         # Count unique hashtags per week
         hashtag_counts = df.groupby(['show']).apply(
             lambda x: pd.Series({
-                'week_start': to_week_start(x['timestamp'].iloc[0]),
+                'week_start': to_week_start(x['post_datetime'].iloc[0]),
                 'unique_hashtags': len(set([tag for tags in x['hashtags'] for tag in tags]))
             })
         ).reset_index()

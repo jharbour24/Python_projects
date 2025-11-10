@@ -12,9 +12,11 @@ Handles:
 import time
 import random
 import logging
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Tuple
 from urllib.parse import urlparse
 from urllib.robotparser import RobotFileParser
+from dataclasses import dataclass
+from enum import Enum
 
 import requests
 from tenacity import (
@@ -26,6 +28,29 @@ from tenacity import (
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+class ErrorCategory(Enum):
+    """Taxonomy of web scraping errors for monitoring."""
+    ROBOTS_BLOCKED = "robots_blocked"
+    RATE_LIMITED = "rate_limited"
+    SERVER_ERROR = "server_error"
+    CLIENT_ERROR = "client_error"
+    TIMEOUT = "timeout"
+    NETWORK = "network"
+    PARSE_ERROR = "parse_error"
+    UNKNOWN = "unknown"
+
+
+@dataclass
+class FetchResult:
+    """Result of a fetch operation with metadata."""
+    response: Optional[requests.Response]
+    success: bool
+    error_category: Optional[ErrorCategory]
+    error_message: Optional[str]
+    attempts: int
+    total_wait_time: float
 
 
 # Custom user agent identifying this research project
@@ -214,3 +239,95 @@ def fetch_safe(
     except Exception as e:
         logger.error(f"Fetch failed (suppressed): {url} - {e}")
         return None
+
+
+def fetch_with_metadata(
+    url: str,
+    max_retries: int = 4,
+    **kwargs
+) -> FetchResult:
+    """
+    Fetch with detailed metadata about attempts and errors.
+
+    Args:
+        url: URL to fetch
+        max_retries: Maximum retry attempts
+        **kwargs: Arguments passed to fetch()
+
+    Returns:
+        FetchResult with response and metadata
+
+    Example:
+        >>> result = fetch_with_metadata("https://example.com/api")
+        >>> if result.success:
+        ...     data = result.response.json()
+        ... else:
+        ...     print(f"Failed: {result.error_category}")
+    """
+    start_time = time.time()
+    attempts = 0
+    last_error = None
+    error_category = None
+
+    for attempt in range(max_retries):
+        attempts += 1
+        try:
+            response = fetch(url, **kwargs)
+            total_time = time.time() - start_time
+
+            return FetchResult(
+                response=response,
+                success=True,
+                error_category=None,
+                error_message=None,
+                attempts=attempts,
+                total_wait_time=total_time
+            )
+
+        except ValueError as e:
+            # robots.txt blocked
+            if "robots.txt" in str(e):
+                error_category = ErrorCategory.ROBOTS_BLOCKED
+                last_error = str(e)
+                break  # Don't retry
+
+        except requests.exceptions.HTTPError as e:
+            last_error = str(e)
+            if e.response.status_code == 429:
+                error_category = ErrorCategory.RATE_LIMITED
+            elif 500 <= e.response.status_code < 600:
+                error_category = ErrorCategory.SERVER_ERROR
+            else:
+                error_category = ErrorCategory.CLIENT_ERROR
+                break  # Don't retry client errors
+
+        except requests.exceptions.Timeout as e:
+            error_category = ErrorCategory.TIMEOUT
+            last_error = str(e)
+
+        except requests.exceptions.RequestException as e:
+            error_category = ErrorCategory.NETWORK
+            last_error = str(e)
+
+        except Exception as e:
+            error_category = ErrorCategory.UNKNOWN
+            last_error = str(e)
+            break  # Don't retry unknown errors
+
+        # Wait before retry (except on last attempt)
+        if attempt < max_retries - 1:
+            wait_time = 2 ** (attempt + 1)  # Exponential backoff
+            logger.info(f"Retry {attempt + 1}/{max_retries} after {wait_time}s")
+            time.sleep(wait_time)
+
+    # All attempts failed
+    total_time = time.time() - start_time
+
+    return FetchResult(
+        response=None,
+        success=False,
+        error_category=error_category or ErrorCategory.UNKNOWN,
+        error_message=last_error,
+        attempts=attempts,
+        total_wait_time=total_time
+    )
