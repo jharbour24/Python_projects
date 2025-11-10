@@ -1,0 +1,80 @@
+# Public Signals Configuration
+#
+# Configure Broadway shows for public demand proxy collection
+#
+# Required fields:
+#   - name: Show name (used as identifier)
+#
+# Optional fields:
+#   - google_queries: List of search queries for Google Trends
+#   - wikipedia_title: Wikipedia article title (auto-detected if not provided)
+#   - tiktok_handle: TikTok handle (with or without @)
+#   - instagram_handle: Instagram handle (without @)
+#
+# Example configuration below:
+
+shows:
+  # Oh, Mary!
+  - name: "Oh, Mary!"
+    google_queries:
+      - "Oh Mary Broadway"
+      - "Cole Escola"
+      - "Oh Mary tickets"
+    wikipedia_title: "Oh,_Mary!"
+    tiktok_handle: "@ohmaryplay"
+    instagram_handle: "ohmaryplay"
+
+  # Maybe Happy Ending
+  - name: "Maybe Happy Ending"
+    google_queries:
+      - "Maybe Happy Ending Broadway"
+      - "Maybe Happy Ending musical"
+      - "Maybe Happy Ending tickets"
+    wikipedia_title: "Maybe_Happy_Ending_(musical)"
+    tiktok_handle: "@maybehappyending"
+    instagram_handle: "maybehappyendingmusical"
+
+  # Hamilton (example of established show)
+  - name: "Hamilton"
+    google_queries:
+      - "Hamilton Broadway"
+      - "Hamilton musical"
+      - "Hamilton tickets"
+    wikipedia_title: "Hamilton_(musical)"
+    tiktok_handle: "@hamiltonmusical"
+    instagram_handle: "hamiltonmusical"
+
+  # The Outsiders
+  - name: "The Outsiders"
+    google_queries:
+      - "The Outsiders Broadway"
+      - "The Outsiders musical"
+      - "Outsiders Broadway tickets"
+    wikipedia_title: "The_Outsiders_(musical)"
+    tiktok_handle: "@outsidersmusical"
+    instagram_handle: "outsidersbway"
+
+  # Wicked
+  - name: "Wicked"
+    google_queries:
+      - "Wicked Broadway"
+      - "Wicked musical"
+      - "Wicked tickets"
+    wikipedia_title: "Wicked_(musical)"
+    tiktok_handle: "@wickedthemusical"
+    instagram_handle: "wickedthemusical"
+
+  # Example with minimal config (auto-detection)
+  - name: "The Lion King"
+    google_queries:
+      - "Lion King Broadway"
+      - "Lion King musical tickets"
+    # wikipedia_title will be auto-detected as "The_Lion_King_(musical)"
+    # Social handles optional - omit if not available
+
+# Notes:
+# 1. Google Trends queries should be specific to avoid noise
+# 2. Wikipedia titles use underscores and may have disambiguation suffixes like "_(musical)"
+# 3. TikTok handles can include @ or not - both work
+# 4. Instagram handles should not include @
+# 5. Social media handles are optional - collector will skip if not provided
