@@ -26,5 +26,11 @@ seaborn>=0.12.0
 # Data formats
 pyarrow>=14.0.0  # For reading/writing Parquet files
 
+# Public signals collection
+pytrends>=4.9.0  # Google Trends API
+wikipediaapi>=0.6.0  # Wikipedia API
+playwright>=1.40.0  # Headless browser for TikTok/Instagram
+tenacity>=8.2.0  # Retry logic with backoff
+
 # Utilities
 tqdm>=4.65.0
