@@ -1,434 +1,384 @@
-# Broadway Marketing Analysis - 2024-2025 Season
+# Broadway Marketing Analysis: Complete Causal Inference Pipeline
 
-Comprehensive analysis of Broadway marketing effectiveness combining Reddit fan engagement with box office performance data.
+**Publication-ready analysis of how social media engagement and public interest predict Broadway box office performance.**
 
-## Overview
-
-This project analyzes **40+ Broadway shows** from the 2024-2025 Tony season to understand:
-
-1. **WHAT** metrics differentiate successful vs unsuccessful campaigns (statistical analysis)
-2. **WHY** certain campaigns succeed - themes, content, messaging (qualitative analysis)
-3. **HOW** fan engagement correlates with financial success (correlation analysis)
-
-## Shows Analyzed
-
-### Original Plays (14)
-- All In: Comedy About Love
-- Cult of Love
-- English
-- Good Night, and Good Luck
-- The Hills of California
-- Job
-- John Proctor is the Villain ⭐
-- Left on Tenth
-- McNeal
-- Oh Mary! ⭐
-- The Picture of Dorian Gray
-- The Purpose
-- The Roommate
-- Stranger Things: The First Shadow
-
-### Original Musicals (14)
-- A Wonderful World
-- Boop!
-- Buena Vista Social Club
-- The Dead Outlaw
-- Death Becomes Her
-- Just in Time
-- Maybe Happy Ending ⭐
-- Operation Mincemeat
-- Real Women Have Curves
-- Redwood
-- Smash
-- The Old Friends
-- Swept Away
-- Tammy Faye
-
-### Play Revivals (7)
-- Eureka Day
-- Glengarry Glen Ross
-- Home
-- Othello
-- Our Town
-- Romeo + Juliet
-- Yellow Face
-
-### Musical Revivals (7)
-- Elf The Musical
-- Floyd Collins
-- Gypsy
-- The Last Five Years
-- Once Upon a Mattress
-- The Pirates of Penzance
-- Sunset Boulevard
-
-⭐ = Initially identified as successful campaigns
-
-## What This Analysis Does
-
-### 1. Reddit Data Collection
-- Scrapes Reddit posts and comments for all shows
-- Searches 11 curated subreddits (Broadway, musicals, theatre, NYC, LGBTQ+, entertainment)
-- Collects: upvotes, comments, sentiment, engagement metrics
-- Time period: Last 12 months
-
-### 2. Broadway Box Office Data Collection
-- Scrapes weekly grosses from BroadwayWorld.com JSON API
-- Uses `json_grosses.cfm` endpoint (more reliable than HTML scraping)
-- Covers full 2024-2025 Tony season (April 2024 - present)
-- Collects: weekly gross revenue, capacity %, average ticket price, attendance, performances
-
-### 3. Statistical Analysis (WHAT)
-- Extracts 30+ metrics per show from Reddit data
-- Performs t-tests comparing successful vs unsuccessful campaigns
-- Calculates effect sizes (Cohen's d) and confidence intervals
-- Identifies which metrics significantly differentiate success/failure
-
-### 4. Qualitative Analysis (WHY)
-- Analyzes conversation themes (performance, creative, emotional, identity, etc.)
-- Identifies viral content characteristics
-- Examines audience language patterns and tone
-- Discovers what messaging resonates with communities
-
-### 5. Correlation Analysis (Reddit vs Grosses)
-- Merges Reddit engagement data with box office performance
-- Calculates correlations between social metrics and financial success
-- Identifies over/underperformers (shows that defy the buzz-to-revenue pattern)
-- Analyzes patterns by show type (original vs revival, play vs musical)
-
-### 6. Lagged Causality Analysis (PUBLICATION-READY) 🆕
-**Advanced econometric analysis testing whether social media buzz predicts future box office grosses.**
-
-**Research Question**: Does Reddit engagement at time t-k predict Broadway grosses at time t?
-
-**Key Features**:
-- **Panel regression** with show and time fixed effects
-- **Cluster-robust standard errors** (accounts for correlation within shows)
-- **Advance purchase hypothesis testing**: Default lag = 4 weeks (≈31 days typical ticket purchase)
-- **Granger causality tests**: Does engagement temporally precede grosses?
-- **Sensitivity analysis**: Robust to lag specification (tests 1, 2, 4, 6 weeks)
-
-**Statistical Models**:
-1. **OLS with Fixed Effects** (statsmodels)
-   - Controls for show-specific factors (quality, stars, genre)
-   - Controls for time trends (seasonality, market conditions)
-   - Cluster-robust SEs by show
-
-2. **Panel Within Estimator** (linearmodels.PanelOLS)
-   - Entity (show) and time (week) fixed effects
-   - More efficient for balanced panels
-   - Industry-standard panel data method
-
-3. **Granger Causality Tests**
-   - Tests temporal precedence: does X at t-k predict Y at t?
-   - Aggregates evidence across shows using Fisher's method
-   - Reports % of shows with significant predictive power
-
-**Outputs**:
-- Publication-ready coefficient tables with 95% CIs
-- Model diagnostics (R², F-tests, within/between variance)
-- Sensitivity analyses showing robustness
-- JSON/TXT/CSV formats for further analysis
-
-**Usage**:
-```bash
-# 1. Build the merged panel dataset
-python3 build_panel_dataset.py
-
-# 2. Run main causal analysis (4-week lag)
-python3 run_lagged_causality_analysis.py
-
-# 3. Test sensitivity to lag choice
-python3 run_lagged_causality_analysis.py --sensitivity
-
-# 4. Run Granger causality tests
-python3 run_lagged_causality_analysis.py --granger
-
-# 5. Full analysis suite
-python3 run_lagged_causality_analysis.py --full
-```
-
-**Interpretation**:
-- Positive coefficient on lagged engagement → Social buzz predicts future grosses
-- Significant p-value (p < 0.05) → Effect is statistically distinguishable from zero
-- Granger test significance → Temporal precedence established (not just correlation)
-
-**Academic Rigor**:
-- Addresses endogeneity through lagged predictors and fixed effects
-- Controls for supply constraints (capacity flags)
-- Accounts for show lifecycle (preview vs post-opening)
-- Cluster-robust inference prevents overconfident conclusions
-
-## Installation
-
-### Requirements
-- Python 3.8+
-- Mac or Linux (Windows with WSL)
-
-### Setup
-
-1. Clone the repository:
-```bash
-cd /path/to/oh_mary_cmm_analysis
-```
-
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-3. Verify configuration:
-```bash
-cat config/config.yaml
-```
-
-## Running the Complete Analysis
-
-### Option 1: Run Everything (Recommended)
-
-```bash
-python3 run_success_failure_analysis.py
-```
-
-This runs all 5 steps sequentially:
-1. Reddit data collection (2-3 hours)
-2. Broadway grosses scraping (10-15 minutes)
-3. Statistical analysis (5-10 minutes)
-4. Qualitative analysis (5-10 minutes)
-5. Correlation analysis (2-3 minutes)
-
-**Total time: ~2.5-3.5 hours**
-
-### Option 2: Run Individual Scripts
-
-If you want to run steps separately:
-
-```bash
-# Step 1: Collect Reddit data
-python3 multi_show_reddit_scraper.py
-
-# Step 2: Scrape Broadway grosses
-python3 broadway_grosses_scraper.py
-
-# Step 3: Statistical analysis
-python3 marketing_science_analysis.py
-
-# Step 4: Qualitative analysis
-python3 why_campaigns_succeed_analysis.py
-
-# Step 5: Correlation analysis
-python3 reddit_grosses_correlation_analysis.py
-```
-
-### Option 3: Simple Marketing Effectiveness (Alternative)
-
-For a simpler analysis without complex statistics:
-
-```bash
-python3 marketing_effectiveness_analysis.py
-```
-
-This provides straightforward engagement, reach, sentiment, and word-of-mouth scores.
-
-## Output Files
-
-### Reddit Data
-```
-data/raw/
-├── reddit_oh_mary.csv
-├── reddit_john_proctor.csv
-├── reddit_maybe_happy_ending.csv
-└── ... (40+ files)
-```
-
-### Box Office Data
-```
-data/grosses/
-├── broadway_grosses_2024_2025.csv    # Weekly data
-└── grosses_summary.csv                # Summary by show
-```
-
-### Analysis Reports
-```
-outputs/
-├── marketing_science_all_metrics.csv          # All metrics for all shows
-├── statistical_comparison.csv                 # T-test results
-├── marketing_science_report.json              # Statistical analysis JSON
-├── why_campaigns_succeed_report.md            # Qualitative insights
-├── why_analysis_raw_data.json                 # Theme and pattern data
-├── reddit_grosses_correlation_report.md       # Correlation analysis
-├── merged_reddit_grosses.csv                  # Combined dataset
-├── reddit_grosses_correlation.png             # Visualizations
-└── correlation_analysis_data.json             # Raw correlation data
-```
-
-## Key Questions Answered
-
-### 1. WHAT differs between successful and unsuccessful campaigns?
-
-**See:** `outputs/statistical_comparison.csv`
-
-Find out:
-- Which Reddit metrics are statistically different
-- Effect sizes (how big the differences are)
-- Statistical significance (p-values)
-- Confidence intervals
-
-### 2. WHY do some campaigns succeed?
-
-**See:** `outputs/why_campaigns_succeed_report.md`
-
-Discover:
-- What themes dominate conversations (performance quality, emotional impact, identity resonance)
-- What language patterns indicate success (personal vs collective voice)
-- What content characteristics make posts go viral
-- What types of conversations generate buzz
-
-### 3. How does fan engagement correlate with financial success?
-
-**See:** `outputs/reddit_grosses_correlation_report.md`
-
-Learn:
-- Which Reddit metrics predict box office performance
-- Correlation coefficients and significance levels
-- Over/underperformers (shows defying expectations)
-- Patterns by show type (original plays vs musicals vs revivals)
-
-## Configuration
-
-### Adding/Removing Shows
-
-Edit `config/config.yaml`:
-
-```yaml
-shows:
-  show_id:
-    name: "Show Name"
-    show_type: "original_play|original_musical|play_revival|musical_revival"
-    category: "successful|unsuccessful|unknown"
-    keywords:
-      - "Keyword 1"
-      - "Keyword 2"
-```
-
-### Adjusting Search Parameters
-
-```yaml
-reddit:
-  subreddits:
-    - broadway
-    - musicals
-    # Add more subreddits
-
-limits:
-  reddit_posts_per_subreddit: 100  # Adjust for faster/slower scraping
-```
-
-## Technical Details
-
-### Reddit API
-- Uses PRAW (Python Reddit API Wrapper)
-- Credentials hardcoded in `multi_show_reddit_scraper.py`
-- Rate limited to avoid API restrictions
-- Searches 11 verified subreddits
-- Only uses first keyword per show to reduce API calls
-
-### BroadwayWorld Scraping
-- Uses JSON API endpoint (`json_grosses.cfm`) instead of HTML page scraping
-- BeautifulSoup parses HTML fragments from API responses
-- Respectful rate limiting (0.5 second delays between weeks)
-- Fetches both musicals and plays for each week
-- Matches show names to config via exact and keyword matching
-
-### Statistical Methods
-- T-tests for comparing group means
-- Cohen's d for effect size
-- 95% confidence intervals
-- Pearson and Spearman correlations
-
-### Qualitative Methods
-- Theme extraction via keyword matching
-- Sentiment analysis using word lists
-- Viral content pattern identification
-- Language tone analysis (personal vs collective voice)
-
-## Troubleshooting
-
-### Reddit Scraper Hangs
-- Reduced to 25 posts per subreddit to prevent hanging
-- If still hanging, reduce `reddit_posts_per_subreddit` in config.yaml
-
-### No Grosses Data / Missing Shows
-- **Script now uses BroadwayWorld JSON API** (much more reliable than HTML scraping)
-- If no data is found:
-  1. Check network connectivity
-  2. Verify the API endpoint is still available: https://www.broadwayworld.com/json_grosses.cfm
-  3. Try running `broadway_grosses_scraper.py` directly to see detailed error messages
-- If some shows are missing:
-  - Show names in config.yaml may not match BroadwayWorld's naming
-  - Check `match_show_to_config()` function in `broadway_grosses_scraper.py`
-  - Add alternative keywords to config.yaml for better matching
-  - Check BroadwayWorld website to see exact show names used
-
-### Correlation Analysis Shows "No Data"
-- Ensure both Reddit and grosses data exist
-- Run `multi_show_reddit_scraper.py` first
-- Then run `broadway_grosses_scraper.py`
-- Then run correlation analysis
-
-### Import Errors (scipy, etc.)
-- scipy is optional - code will work without it
-- If issues persist, check `requirements.txt` compatibility
-- Mac M1/M2: Use simplified requirements (no Fortran dependencies)
-
-## Project Structure
-
-```
-oh_mary_cmm_analysis/
-├── config/
-│   └── config.yaml                              # Show configuration
-├── data/
-│   ├── raw/                                     # Reddit data (CSV)
-│   └── grosses/                                 # Box office data (CSV)
-├── outputs/                                     # Analysis reports
-├── multi_show_reddit_scraper.py                # Reddit data collection
-├── broadway_grosses_scraper.py                 # Box office scraper
-├── marketing_science_analysis.py               # Statistical analysis
-├── why_campaigns_succeed_analysis.py           # Qualitative analysis
-├── reddit_grosses_correlation_analysis.py      # Correlation analysis
-├── marketing_effectiveness_analysis.py         # Simple alternative
-├── run_success_failure_analysis.py             # Master orchestrator
-├── requirements.txt                             # Python dependencies
-└── README.md                                    # This file
-```
-
-## Future Enhancements
-
-Potential additions:
-- TikTok and Instagram data collection
-- Sentiment analysis using ML models (BERT, etc.)
-- Time series analysis (how buzz changes over run)
-- Predictive modeling (predict grosses from early Reddit activity)
-- Topic modeling (LDA, BERTopic)
-- Network analysis (community detection, influencer identification)
-
-## Credits
-
-**Data Sources:**
-- Reddit (via PRAW API)
-- BroadwayWorld.com (public box office data)
-
-**Analysis Framework:**
-- Statistical methods: scipy, scikit-learn
-- Visualization: matplotlib, seaborn
-- Data processing: pandas, numpy
-
-**2024-2025 Broadway Season Coverage**
-- Original research analyzing 40+ shows
-- Combining social media analytics with financial performance
-- PhD-level comparative analysis methodology
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
-**Last Updated:** November 2025
-**Season:** 2024-2025 Tony Awards Season
+## 🎯 Research Question
+
+**Does social media engagement and public interest at time t-k predict Broadway box office grosses at time t?**
+
+We test the **advance purchase hypothesis**: audiences engage with content ~4 weeks before attending shows, meaning early engagement should predict future box office performance.
+
+---
+
+## 📊 Data Sources
+
+This pipeline integrates **6 comprehensive data sources**:
+
+| Source | Metrics | Frequency | Coverage |
+|--------|---------|-----------|----------|
+| **Reddit** (r/Broadway) | Posts, comments, score, unique authors | Weekly | High |
+| **TikTok** | Views, likes, comments, shares, hashtags | Weekly | Medium |
+| **Instagram** | Posts, likes, comments, reels | Weekly | Medium |
+| **Wikipedia** | Daily pageviews | Daily → Weekly | High |
+| **Google Trends** | Search interest index (0-100) | Weekly | High |
+| **Broadway Grosses** | Revenue, capacity, attendance, ticket price | Weekly | High |
+
+**Total predictors:** 60+ lagged engagement metrics across 5 social sources
+
+---
+
+## 🏗️ Architecture
+
+```
+oh_mary_cmm_analysis/
+├── broadway_grosses_scraper.py          # Collect weekly box office data
+├── build_panel_dataset.py               # Build Reddit + Grosses panel
+├── marketing_science_analysis.py        # Statistical comparison (successful vs unsuccessful)
+├── reddit_grosses_correlation_analysis.py  # Reddit → Grosses correlation
+├── run_lagged_causality_analysis.py     # Panel regression with fixed effects
+├── why_campaigns_succeed_analysis.py    # Qualitative analysis
+│
+├── public_signals/                      # Social signals collection system
+│   ├── src/
+│   │   ├── common/                      # Utilities (net, snapshots, timebins)
+│   │   ├── sources/                     # Data collectors
+│   │   │   ├── google_trends.py
+│   │   │   ├── wikipedia.py
+│   │   │   ├── tiktok_public.py
+│   │   │   └── instagram_public.py
+│   │   ├── aggregation/                 # Weekly aggregation + schema
+│   │   ├── features/                    # Feature engineering (lags, deltas, etc.)
+│   │   ├── quality/                     # Data validation
+│   │   └── cli/                         # Command-line tools
+│   │       ├── pull_public_signals.py   # Collect all social data
+│   │       ├── make_weekly_panel.py     # Build social panel
+│   │       ├── merge_all_sources.py     # Merge Reddit + Social + Grosses
+│   │       ├── build_model_ready_social.py  # Feature engineering
+│   │       ├── validate_social_panel.py     # Data quality checks
+│   │       └── run_complete_analysis.py     # Complete causal analysis
+│   ├── config/
+│   │   └── shows.yaml                   # Show configuration
+│   └── README_social_pipeline.md        # Technical documentation
+│
+├── analysis/                            # Analysis utilities
+├── models/                              # Statistical models
+├── data/                                # Data storage
+│   ├── reddit/                          # Reddit posts
+│   ├── grosses/                         # Broadway grosses
+│   ├── merged/                          # Reddit + Grosses panel
+│   └── panel/                           # Complete merged dataset
+├── outputs/                             # Analysis outputs
+│
+├── README.md                            # This file
+├── QUICKSTART.md                        # Quick start guide
+└── HOW_TO_RUN_COMPLETE_ANALYSIS.md      # Detailed step-by-step guide
+```
+
+---
+
+## ⚡ Quick Start
+
+### **Prerequisites**
+
+```bash
+# Clone repository
+cd /path/to/Python_projects/oh_mary_cmm_analysis
+
+# Install dependencies
+pip install pandas numpy pyarrow pyyaml playwright pytrends tenacity \
+            statsmodels linearmodels scipy matplotlib seaborn
+
+# Install Playwright browser (for TikTok/Instagram)
+playwright install chromium
+```
+
+### **Run Complete Pipeline (3 Commands)**
+
+```bash
+cd public_signals/src/cli
+
+# 1. Collect all social signals (TikTok, Instagram, Wikipedia, Google Trends)
+python3 pull_public_signals.py \
+  --config ../../config/shows.yaml \
+  --start 2024-01-01 --end 2024-12-31
+
+# 2. Merge all sources (Reddit + Social + Grosses) + engineer features
+python3 merge_all_sources.py --engineer-features --lags 1 2 4 6
+
+# 3. Run complete causal analysis
+python3 run_complete_analysis.py --lag 4 --outcome gross
+```
+
+**That's it!** Results will be in `outputs/complete_causality_analysis/`
+
+See **[QUICKSTART.md](QUICKSTART.md)** for detailed instructions.
+
+---
+
+## 📖 Documentation
+
+- **[QUICKSTART.md](QUICKSTART.md)** - Get started in 5 minutes
+- **[HOW_TO_RUN_COMPLETE_ANALYSIS.md](HOW_TO_RUN_COMPLETE_ANALYSIS.md)** - Complete step-by-step guide
+- **[public_signals/README_social_pipeline.md](public_signals/README_social_pipeline.md)** - Technical documentation for social signals system
+
+---
+
+## 🔬 Methodology
+
+### **Statistical Approach**
+
+- **Panel Regression** with entity (show) and time (week) fixed effects
+- **Cluster-Robust Standard Errors** (accounts for serial correlation within shows)
+- **Lagged Predictors** (temporal precedence for causal inference)
+- **Control Variables** (capacity constraints, preview periods)
+
+### **Model Specification**
+
+```
+gross_it = β₀ + β₁·engagement_i(t-k) + α_i + γ_t + ε_it
+
+where:
+  gross_it        = Weekly gross for show i at time t
+  engagement_i(t-k) = Engagement metric k weeks prior
+  α_i             = Show fixed effects (baseline popularity)
+  γ_t             = Time fixed effects (seasonal trends)
+  ε_it            = Error term (clustered by show)
+```
+
+### **Default Configuration**
+
+- **Primary lag:** 4 weeks (advance purchase hypothesis)
+- **Sensitivity analysis:** 1, 2, 4, 6 week lags
+- **Placebo tests:** Lead variables (should NOT be significant)
+- **Significance threshold:** p < 0.05
+- **Minimum observations:** 30 per predictor
+
+---
+
+## 📊 Example Results
+
+```
+RUNNING CAUSAL ANALYSIS: gross ~ predictors_lag4
+================================================================
+
+Results: 60 predictors tested
+Significant (p<0.05): 8
+
+Top 3 Significant Predictors:
+
+1. total_posts_lag4 (reddit)
+   Coefficient: $1,250.45
+   P-value: 0.0023
+   95% CI: [$456.78, $2,044.12]
+   Interpretation: Each additional Reddit post 4 weeks ago predicts
+                   $1,250 higher weekly gross
+
+2. tt_sum_views_lag4 (tiktok)
+   Coefficient: $0.15
+   P-value: 0.0451
+   95% CI: [$0.01, $0.29]
+   Interpretation: Each 1,000 additional TikTok views 4 weeks ago
+                   predicts $150 higher weekly gross
+
+3. gt_index_lag4 (google_trends)
+   Coefficient: $8,500.23
+   P-value: 0.0089
+   95% CI: [$2,340.56, $14,659.90]
+   Interpretation: 10-point increase in Google Trends 4 weeks ago
+                   predicts $85,000 higher weekly gross
+```
+
+---
+
+## 🎓 Academic Rigor
+
+This pipeline produces **publication-ready results** suitable for marketing and entertainment journals:
+
+✅ **Causal Inference Design**
+- Lagged predictors establish temporal precedence
+- Fixed effects control for unobserved heterogeneity
+- Cluster-robust SEs account for autocorrelation
+
+✅ **Data Quality**
+- Automated validation with anomaly detection
+- Deduplication by post ID
+- Coverage metrics (must be ≥60%)
+- Schema enforcement with type checking
+
+✅ **Reproducibility**
+- Deterministic runs with timestamps
+- HTML snapshots for debugging
+- Cached API requests
+- Version-controlled code
+
+✅ **Robustness**
+- Multiple data sources (triangulation)
+- Sensitivity analysis across lag specifications
+- Placebo tests with lead variables
+- Multiple hypothesis testing adjustments available
+
+---
+
+## 📂 Key Files
+
+### **Data Collection**
+
+- `broadway_grosses_scraper.py` - Scrape weekly Broadway box office data from BroadwayWorld
+- `public_signals/src/cli/pull_public_signals.py` - Collect TikTok, Instagram, Wikipedia, Google Trends
+
+### **Data Processing**
+
+- `build_panel_dataset.py` - Merge Reddit with Broadway Grosses
+- `public_signals/src/cli/make_weekly_panel.py` - Build social signals panel
+- `public_signals/src/cli/merge_all_sources.py` - Merge all sources + feature engineering
+
+### **Analysis**
+
+- `run_lagged_causality_analysis.py` - Panel regression (Reddit + Grosses only)
+- `public_signals/src/cli/run_complete_analysis.py` - Complete analysis (all sources)
+- `marketing_science_analysis.py` - Statistical comparison (successful vs unsuccessful campaigns)
+- `why_campaigns_succeed_analysis.py` - Qualitative analysis of success factors
+
+### **Validation**
+
+- `public_signals/src/cli/validate_social_panel.py` - Data quality checks with exit codes
+
+---
+
+## 🔧 Configuration
+
+### **Add Shows**
+
+Edit `public_signals/config/shows.yaml`:
+
+```yaml
+shows:
+  - name: "Oh, Mary!"
+    google_queries:
+      - "Oh Mary Broadway"
+      - "Cole Escola"
+    wikipedia_title: "Oh,_Mary!"
+    tiktok_handle: "@ohmaryplay"
+    instagram_handle: "ohmaryplay"
+
+  - name: "Your Show Name"
+    google_queries:
+      - "Your Show Broadway"
+    tiktok_handle: "@yourshow"
+    instagram_handle: "yourshow"
+```
+
+### **Customize Analysis**
+
+```bash
+# Different lag period
+python3 run_complete_analysis.py --lag 2
+
+# Different outcome variable
+python3 run_complete_analysis.py --outcome capacity_pct
+
+# Custom feature engineering
+python3 merge_all_sources.py --engineer-features --lags 1 3 5 --no-deltas
+```
+
+---
+
+## 📈 Output Files
+
+After running the complete pipeline:
+
+```
+data/panel/
+├── complete_modeling_dataset.parquet          # Main dataset (all sources)
+├── complete_modeling_dataset_metadata.json    # Coverage statistics
+
+outputs/complete_causality_analysis/
+├── complete_analysis_lag4_{timestamp}.json    # Full results
+├── complete_analysis_lag4_{timestamp}.csv     # Sorted by p-value
+└── complete_analysis_lag4_{timestamp}.txt     # Human-readable report
+
+public_signals/data/
+├── raw/                                       # Per-post raw data
+├── raw_snapshots/                             # HTML for debugging
+├── weekly/                                    # Per-source weekly aggregates
+└── panel/                                     # Social signals panel
+```
+
+---
+
+## ⚠️ Known Limitations
+
+1. **TikTok/Instagram** - Public data only (no authentication)
+   - Instagram may hide exact counts
+   - TikTok selectors may change (HTML snapshots enable quick fixes)
+
+2. **Google Trends** - Low search volume returns zeros
+   - Use multiple related queries per show
+   - Aggregate as mean across queries
+
+3. **Wikipedia** - Article title auto-detection may fail
+   - Manually specify `wikipedia_title` in config if needed
+
+4. **Sample Size** - Need sufficient weeks per show
+   - Minimum 30 observations per predictor
+   - More shows = more statistical power
+
+See **[HOW_TO_RUN_COMPLETE_ANALYSIS.md](HOW_TO_RUN_COMPLETE_ANALYSIS.md)** for troubleshooting.
+
+---
+
+## 🤝 Contributing
+
+This is a research project. If you use this pipeline:
+
+1. **Cite data sources** appropriately in publications
+2. **Respect rate limits** and robots.txt
+3. **Share findings** (open science principles)
+4. **Report issues** with HTML snapshots attached
+
+---
+
+## 📄 License
+
+MIT License - See LICENSE file for details
+
+When using in publications, please cite:
+```
+Broadway Marketing Analysis Pipeline
+GitHub: https://github.com/yourusername/oh_mary_cmm_analysis
+Year: 2025
+```
+
+---
+
+## 📞 Support
+
+- **Quick Start**: See [QUICKSTART.md](QUICKSTART.md)
+- **Detailed Guide**: See [HOW_TO_RUN_COMPLETE_ANALYSIS.md](HOW_TO_RUN_COMPLETE_ANALYSIS.md)
+- **Technical Docs**: See [public_signals/README_social_pipeline.md](public_signals/README_social_pipeline.md)
+- **Issues**: Check validation reports and HTML snapshots
+
+---
+
+## 🎯 Summary
+
+**This pipeline enables publication-ready causal analysis of how social media engagement predicts Broadway box office performance.**
+
+Key features:
+- ✅ 6 data sources (Reddit, TikTok, Instagram, Wikipedia, Google Trends, Broadway Grosses)
+- ✅ 60+ lagged predictors with feature engineering
+- ✅ Panel regression with fixed effects and cluster-robust SEs
+- ✅ Automated data quality validation
+- ✅ Production-grade error handling and retry logic
+- ✅ Complete documentation and reproducibility
+
+**Get started:** See [QUICKSTART.md](QUICKSTART.md)
+
+---
+
+*Built for rigorous causal inference in entertainment marketing research.*
