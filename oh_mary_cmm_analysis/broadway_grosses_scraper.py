@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 Broadway Grosses Scraper
-Scrapes weekly box office data from BroadwayWorld.com for 2024-2025 Tony season.
+Scrapes weekly box office data from BroadwayWorld.com JSON API for 2024-2025 Tony season.
+Uses the json_grosses.cfm endpoint which is more reliable than HTML scraping.
 """
 
 import requests
@@ -12,16 +13,17 @@ import time
 import re
 from pathlib import Path
 from datetime import datetime, timedelta
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 from tqdm import tqdm
 
 
 class BroadwayGrossesScraper:
-    """Scrapes Broadway box office grosses from BroadwayWorld."""
+    """Scrapes Broadway box office grosses from BroadwayWorld JSON API."""
 
     def __init__(self):
         """Initialize scraper."""
-        self.base_url = "https://www.broadwayworld.com/grosses/"
+        # Use JSON API endpoint instead of HTML pages
+        self.base_url = "https://www.broadwayworld.com/json_grosses.cfm"
         self.data_dir = Path("data/grosses")
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
@@ -29,98 +31,131 @@ class BroadwayGrossesScraper:
         with open("config/config.yaml", "r") as f:
             self.config = yaml.safe_load(f)
 
-        # User agent to avoid blocking
-        self.headers = {
+        # Simple headers for API requests
+        self.session = requests.Session()
+        self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        }
+        })
 
-        # 2024-2025 Tony season typically starts late April
+        # 2024-2025 Tony season starts late April
         self.season_start = datetime(2024, 4, 15)
         self.season_end = datetime.now()
 
-    def get_weekly_grosses_page(self, date: datetime) -> str:
-        """Fetch the grosses page for a specific week."""
-        # BroadwayWorld uses format: grosses/Week-Ending-MM-DD-YY
-        date_str = date.strftime("%m-%d-%y")
-        url = f"{self.base_url}Week-Ending-{date_str}"
+    def clean_numeric_string(self, s: Optional[str]) -> Optional[float]:
+        """Clean numeric strings (remove $, %, commas, handle negatives)."""
+        if s is None:
+            return None
+        if isinstance(s, (int, float)):
+            return float(s)
 
-        try:
-            response = requests.get(url, headers=self.headers, timeout=10)
-            response.raise_for_status()
-            return response.text
-        except requests.RequestException as e:
-            print(f"  ⚠️  Failed to fetch {url}: {e}")
+        s = str(s).strip()
+        is_negative = (s.startswith('(') and s.endswith(')')) or s.startswith('-')
+        s = re.sub(r'[^\d.]', '', s)
+
+        if not s:
             return None
 
-    def parse_grosses_table(self, html: str, week_ending: datetime) -> List[Dict]:
-        """Parse the grosses table from HTML."""
-        if not html:
+        try:
+            value = float(s)
+            return -value if is_negative else value
+        except (ValueError, TypeError):
+            return None
+
+    def get_weekly_grosses(self, date: datetime, show_type: str) -> List[Dict]:
+        """
+        Fetch grosses for a specific week and show type from JSON API.
+
+        Args:
+            date: Week ending date (Sunday)
+            show_type: 'MUSICAL' or 'PLAY'
+
+        Returns:
+            List of show dictionaries with grosses data
+        """
+        date_str = date.strftime("%Y-%m-%d")
+        params = {
+            "week": date_str,
+            "typer": show_type
+        }
+
+        try:
+            response = self.session.get(self.base_url, params=params, timeout=20)
+            response.raise_for_status()
+            html_content = response.text
+
+            if not html_content.strip():
+                return []
+
+            # Parse the HTML response (it's HTML fragments in the JSON response)
+            soup = BeautifulSoup(html_content, 'lxml')
+            results = []
+
+            # Each show is a div with class 'row' containing data attributes
+            for row in soup.find_all('div', class_='row'):
+                show_data = self.parse_row(row, date_str)
+                if show_data:
+                    show_data['show_type_raw'] = 'M' if show_type == 'MUSICAL' else 'P'
+                    results.append(show_data)
+
+            return results
+
+        except requests.exceptions.RequestException as e:
+            # Silently continue for most errors
+            return []
+        except Exception as e:
+            # Log unexpected errors but continue
+            print(f"  ⚠️  Error processing {show_type}s for {date_str}: {e}")
             return []
 
-        soup = BeautifulSoup(html, 'html.parser')
-        results = []
+    def parse_row(self, row_tag, date_str: str) -> Optional[Dict[str, Any]]:
+        """Parse a single row from the BroadwayWorld JSON response."""
+        try:
+            attrs = row_tag.attrs
+            cells = row_tag.find_all('div', class_='cell')
 
-        # BroadwayWorld table structure - find the main grosses table
-        # The table usually has headers: Show, Gross, Potential Gross, Diff, Avg Paid, Capacity, Perf, Prev Week
-        table = soup.find('table', {'class': 'grosses-table'})
+            if not cells or len(cells) < 7:
+                return None
 
-        if not table:
-            # Try alternative table identification
-            table = soup.find('table', string=re.compile('Gross|Theatre|Capacity'))
+            # Extract data from attributes
+            show_name = attrs.get('data-name', 'Unknown')
+            gross = self.clean_numeric_string(attrs.get('data-gross'))
+            attendance = self.clean_numeric_string(attrs.get('data-attendee'))
+            capacity_pct = self.clean_numeric_string(attrs.get('data-capacity'))
+            avg_ticket = self.clean_numeric_string(attrs.get('data-ticket'))
 
-        if not table:
-            return []
+            # Extract theater name from first cell
+            theater_elem = cells[0].find('a', class_='theater')
+            theater_name = theater_elem.get_text(strip=True) if theater_elem else "Unknown"
 
-        # Find all rows
-        rows = table.find_all('tr')
+            # Extract performances from 7th cell
+            regular_perfs_raw = ""
+            previews_raw = ""
+            if len(cells) > 6:
+                out_span = cells[6].find('span', class_='out')
+                in_span = cells[6].find('span', class_='in')
+                regular_perfs_raw = out_span.get_text(strip=True) if out_span else ""
+                previews_raw = in_span.get_text(strip=True) if in_span else ""
 
-        for row in rows[1:]:  # Skip header row
-            cols = row.find_all('td')
-            if len(cols) < 5:
-                continue
+            regular_perfs = int(self.clean_numeric_string(regular_perfs_raw) or 0)
+            previews = int(self.clean_numeric_string(previews_raw) or 0)
+            total_perfs = regular_perfs + previews
 
-            try:
-                # Extract show name
-                show_name_elem = cols[0]
-                show_name = show_name_elem.get_text(strip=True)
+            return {
+                'show_name': show_name,
+                'theater': theater_name,
+                'week_ending': date_str,
+                'gross': gross,
+                'avg_ticket_price': avg_ticket,
+                'attendance': attendance,
+                'capacity_percent': capacity_pct,
+                'performances': total_perfs,
+                'scrape_date': datetime.now().strftime('%Y-%m-%d')
+            }
 
-                # Clean up show name
-                show_name = re.sub(r'\s+', ' ', show_name)
+        except Exception as e:
+            return None
 
-                # Extract numeric values (remove $, %, commas)
-                def clean_number(text):
-                    text = text.strip()
-                    text = re.sub(r'[$,%]', '', text)
-                    text = re.sub(r',', '', text)
-                    try:
-                        return float(text) if text else None
-                    except ValueError:
-                        return None
-
-                # Typical column order (may vary):
-                # 0: Show, 1: Gross, 2: Potential Gross, 3: Diff, 4: Avg Ticket, 5: Capacity, 6: Performances
-                gross = clean_number(cols[1].get_text(strip=True)) if len(cols) > 1 else None
-                capacity_pct = clean_number(cols[5].get_text(strip=True)) if len(cols) > 5 else None
-                avg_ticket = clean_number(cols[4].get_text(strip=True)) if len(cols) > 4 else None
-                performances = clean_number(cols[6].get_text(strip=True)) if len(cols) > 6 else None
-
-                results.append({
-                    'show_name': show_name,
-                    'week_ending': week_ending.strftime('%Y-%m-%d'),
-                    'gross': gross,
-                    'capacity_percent': capacity_pct,
-                    'avg_ticket_price': avg_ticket,
-                    'performances': performances,
-                    'scrape_date': datetime.now().strftime('%Y-%m-%d')
-                })
-
-            except Exception as e:
-                print(f"  ⚠️  Error parsing row: {e}")
-                continue
-
-        return results
-
-    def match_show_to_config(self, broadway_name: str) -> str:
+    def match_show_to_config(self, broadway_name: str) -> Optional[str]:
         """Match Broadway World show name to our config shows."""
         broadway_name_lower = broadway_name.lower()
 
@@ -138,54 +173,83 @@ class BroadwayGrossesScraper:
 
         return None
 
+    def get_sundays(self, start_date: datetime) -> List[datetime]:
+        """Generate list of all Sundays from start_date to today."""
+        sundays = []
+        current_date = start_date
+
+        # Move to first Sunday
+        while current_date.weekday() != 6:  # 6 = Sunday
+            current_date += timedelta(days=1)
+
+        # Collect all Sundays until today
+        while current_date <= self.season_end:
+            sundays.append(current_date)
+            current_date += timedelta(days=7)
+
+        return sundays
+
     def scrape_season(self) -> pd.DataFrame:
-        """Scrape entire 2024-2025 season."""
+        """Scrape entire 2024-2025 season using JSON API."""
         print("\n" + "="*70)
-        print("📊 SCRAPING BROADWAY GROSSES")
+        print("📊 SCRAPING BROADWAY GROSSES (JSON API)")
         print("="*70)
         print(f"\nSeason period: {self.season_start.strftime('%Y-%m-%d')} to {self.season_end.strftime('%Y-%m-%d')}")
 
         all_grosses = []
+        sundays = self.get_sundays(self.season_start)
 
-        # Generate all Sundays (week-ending dates) in the season
-        current_date = self.season_start
-        week_dates = []
-
-        while current_date <= self.season_end:
-            # Move to next Sunday
-            days_until_sunday = (6 - current_date.weekday()) % 7
-            sunday = current_date + timedelta(days=days_until_sunday)
-            if sunday <= self.season_end:
-                week_dates.append(sunday)
-            current_date = sunday + timedelta(days=7)
-
-        print(f"\n📅 Scraping {len(week_dates)} weeks of data...")
+        print(f"\n📅 Scraping {len(sundays)} weeks of data...")
         print("⏱️  This will take several minutes (rate limiting)...\n")
 
-        # Scrape each week
-        for week_date in tqdm(week_dates, desc="Scraping weeks"):
-            html = self.get_weekly_grosses_page(week_date)
+        # Track success/failure
+        successful_fetches = 0
+        failed_fetches = 0
 
-            if html:
-                weekly_data = self.parse_grosses_table(html, week_date)
+        # Scrape each week for both musicals and plays
+        for week_date in tqdm(sundays, desc="Scraping weeks"):
+            week_data = []
 
-                # Match to our shows
-                for entry in weekly_data:
+            # Fetch musicals
+            musicals = self.get_weekly_grosses(week_date, 'MUSICAL')
+            week_data.extend(musicals)
+
+            # Small delay between requests
+            time.sleep(0.1)
+
+            # Fetch plays
+            plays = self.get_weekly_grosses(week_date, 'PLAY')
+            week_data.extend(plays)
+
+            if week_data:
+                successful_fetches += 1
+
+                # Match shows to our config
+                for entry in week_data:
                     show_id = self.match_show_to_config(entry['show_name'])
                     if show_id:
                         entry['show_id'] = show_id
                         entry['config_name'] = self.config['shows'][show_id]['name']
                         entry['show_type'] = self.config['shows'][show_id].get('show_type', 'unknown')
                         all_grosses.append(entry)
+            else:
+                failed_fetches += 1
 
             # Rate limiting - be respectful
-            time.sleep(2)
+            time.sleep(0.5)
+
+        # Diagnostic info
+        print(f"\n📊 Fetch Results: {successful_fetches} successful, {failed_fetches} failed")
 
         # Convert to DataFrame
         df = pd.DataFrame(all_grosses)
 
         if df.empty:
             print("\n⚠️  No grosses data found!")
+            print("\nPossible issues:")
+            print("  1. API endpoint may have changed")
+            print("  2. Network connectivity issues")
+            print("  3. Show names in config don't match BroadwayWorld names")
             return df
 
         print(f"\n✅ Scraped {len(df)} records for {df['show_id'].nunique()} shows")
@@ -243,10 +307,8 @@ def main():
     """Main execution."""
     print("\n🎭 BROADWAY BOX OFFICE GROSSES SCRAPER")
     print("=" * 70)
-    print("\nThis will scrape weekly grosses data from BroadwayWorld.com")
+    print("\nThis will scrape weekly grosses data from BroadwayWorld.com JSON API")
     print("for all shows in the 2024-2025 Tony season.\n")
-    print("⚠️  Note: BroadwayWorld may change their website structure,")
-    print("which could affect scraping. Manual verification recommended.\n")
 
     scraper = BroadwayGrossesScraper()
     df = scraper.scrape_season()

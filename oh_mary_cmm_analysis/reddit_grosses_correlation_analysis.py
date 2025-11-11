@@ -68,28 +68,46 @@ class RedditGrossesCorrelationAnalysis:
 
     def calculate_weekly_reddit_metrics(self, reddit_df: pd.DataFrame) -> pd.DataFrame:
         """Aggregate Reddit data by week."""
-        weekly = reddit_df.groupby('week_ending').agg({
+        # Build aggregation dict based on available columns
+        agg_dict = {
             'score': ['sum', 'mean', 'max'],
             'num_comments': ['sum', 'mean'],
-            'upvote_ratio': 'mean',
             'id': 'count',  # post count
             'subreddit': 'nunique',  # subreddit diversity
             'author': 'nunique'  # unique contributors
-        }).reset_index()
+        }
+
+        # Add upvote_ratio if it exists (might be missing in older data)
+        has_upvote_ratio = 'upvote_ratio' in reddit_df.columns
+        if has_upvote_ratio:
+            agg_dict['upvote_ratio'] = 'mean'
+
+        weekly = reddit_df.groupby('week_ending').agg(agg_dict).reset_index()
 
         # Flatten column names
-        weekly.columns = [
+        column_names = [
             'week_ending',
             'total_upvotes',
             'avg_upvotes',
             'max_upvotes',
             'total_comments',
-            'avg_comments',
-            'avg_upvote_ratio',
+            'avg_comments'
+        ]
+
+        if has_upvote_ratio:
+            column_names.append('avg_upvote_ratio')
+
+        column_names.extend([
             'post_count',
             'subreddit_diversity',
             'unique_contributors'
-        ]
+        ])
+
+        weekly.columns = column_names
+
+        # If upvote_ratio is missing, add a default value
+        if not has_upvote_ratio:
+            weekly['avg_upvote_ratio'] = 0.85  # Typical Reddit average
 
         # Calculate engagement metrics
         weekly['total_engagement'] = weekly['total_upvotes'] + weekly['total_comments']

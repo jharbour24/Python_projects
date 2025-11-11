@@ -32,6 +32,30 @@ class WhyCampaignsSucceed:
         self.output_dir = Path("outputs")
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
+        # Load show classifications from statistical analysis
+        self.load_show_classifications()
+
+    def load_show_classifications(self):
+        """Load show classifications based on box office performance."""
+        classification_file = self.output_dir / "show_classification_by_grosses.csv"
+
+        if not classification_file.exists():
+            print("⚠️  No classification file found - run marketing_science_analysis.py first")
+            print("Using manual categories from config as fallback")
+            return
+
+        # Load classifications
+        classifications = pd.read_csv(classification_file)
+
+        # Update show categories based on data-driven classification
+        for _, row in classifications.iterrows():
+            show_id = row['show_id']
+            if show_id in self.shows:
+                self.shows[show_id]['category'] = row['category']
+                self.shows[show_id]['success_score'] = row['success_score']
+
+        print(f"✓ Loaded data-driven classifications for {len(classifications)} shows")
+
     def extract_top_themes(self, df: pd.DataFrame, show_name: str, n=10) -> Dict[str, Any]:
         """
         Extract most discussed themes/topics.
@@ -194,7 +218,7 @@ class WhyCampaignsSucceed:
                 analysis['characteristics'].append('emotional')
             if any(w in full_text for w in ['queer', 'gay', 'representation']):
                 analysis['characteristics'].append('identity')
-            if len(post['text']) > 200:
+            if pd.notna(post['text']) and isinstance(post['text'], str) and len(post['text']) > 200:
                 analysis['characteristics'].append('detailed_review')
 
             viral_analysis.append(analysis)
@@ -251,7 +275,15 @@ class WhyCampaignsSucceed:
             'dominant_voice': max(marker_densities.items(), key=lambda x: x[1])[0] if marker_densities else None
         }
 
-    def extract_key_differentiators(self, successful_data: List[Dict], unsuccessful_data: List[Dict]) -> Dict[str, Any]:
+    def extract_key_differentiators(
+        self,
+        successful_themes_data: List[Dict],
+        unsuccessful_themes_data: List[Dict],
+        successful_viral_data: List[Dict],
+        unsuccessful_viral_data: List[Dict],
+        successful_language_data: List[Dict],
+        unsuccessful_language_data: List[Dict]
+    ) -> Dict[str, Any]:
         """
         Compare successful vs unsuccessful to find KEY DIFFERENCES.
 
@@ -268,19 +300,19 @@ class WhyCampaignsSucceed:
         successful_themes = {}
         unsuccessful_themes = {}
 
-        for data in successful_data:
+        for data in successful_themes_data:
             for theme, count in data.get('theme_counts', {}).items():
                 successful_themes[theme] = successful_themes.get(theme, 0) + count
 
-        for data in unsuccessful_data:
+        for data in unsuccessful_themes_data:
             for theme, count in data.get('theme_counts', {}).items():
                 unsuccessful_themes[theme] = unsuccessful_themes.get(theme, 0) + count
 
         # Normalize by number of shows
         for theme in successful_themes:
-            successful_themes[theme] /= len(successful_data) if successful_data else 1
+            successful_themes[theme] /= len(successful_themes_data) if successful_themes_data else 1
         for theme in unsuccessful_themes:
-            unsuccessful_themes[theme] /= len(unsuccessful_data) if unsuccessful_data else 1
+            unsuccessful_themes[theme] /= len(unsuccessful_themes_data) if unsuccessful_themes_data else 1
 
         theme_diffs = []
         for theme in set(successful_themes.keys()) | set(unsuccessful_themes.keys()):
@@ -312,11 +344,11 @@ class WhyCampaignsSucceed:
         successful_viral_traits = Counter()
         unsuccessful_viral_traits = Counter()
 
-        for data in successful_data:
+        for data in successful_viral_data:
             viral_traits = data.get('common_viral_traits', {})
             successful_viral_traits.update(viral_traits)
 
-        for data in unsuccessful_data:
+        for data in unsuccessful_viral_data:
             viral_traits = data.get('common_viral_traits', {})
             unsuccessful_viral_traits.update(viral_traits)
 
@@ -332,8 +364,34 @@ class WhyCampaignsSucceed:
         print("\n📌 AUDIENCE VOICE ANALYSIS:")
         print("(How audiences talk about successful vs unsuccessful shows)")
 
+        # Aggregate language markers
+        successful_markers = Counter()
+        unsuccessful_markers = Counter()
+
+        for data in successful_language_data:
+            markers = data.get('language_markers', {})
+            successful_markers.update(markers)
+
+        for data in unsuccessful_language_data:
+            markers = data.get('language_markers', {})
+            unsuccessful_markers.update(markers)
+
+        if successful_markers:
+            print("\nSuccessful shows' language patterns:")
+            for marker, count in successful_markers.most_common(5):
+                print(f"  • {marker}: {count} uses")
+
+        if unsuccessful_markers:
+            print("\nUnsuccessful shows' language patterns:")
+            for marker, count in unsuccessful_markers.most_common(5):
+                print(f"  • {marker}: {count} uses")
+
         return {
             'theme_differentiators': theme_diffs,
+            'successful_viral_traits': dict(successful_viral_traits.most_common(10)),
+            'unsuccessful_viral_traits': dict(unsuccessful_viral_traits.most_common(10)),
+            'successful_language_markers': dict(successful_markers.most_common(10)),
+            'unsuccessful_language_markers': dict(unsuccessful_markers.most_common(10)),
             'key_insights': differentiators,
             'viral_traits_successful': dict(successful_viral_traits.most_common(10)),
             'viral_traits_unsuccessful': dict(unsuccessful_viral_traits.most_common(10))
@@ -476,7 +534,11 @@ class WhyCampaignsSucceed:
         # Compare successful vs unsuccessful
         differentiators = self.extract_key_differentiators(
             successful_data['themes'],
-            unsuccessful_data['themes']
+            unsuccessful_data['themes'],
+            successful_data['viral'],
+            unsuccessful_data['viral'],
+            successful_data['language'],
+            unsuccessful_data['language']
         )
 
         # Generate comprehensive report

@@ -31,13 +31,76 @@ class BroadwayMarketingScience:
         self.output_dir = Path("outputs")
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
-        # Categorize shows
-        self.successful_shows = {k: v for k, v in self.shows.items() if v.get('category') == 'successful'}
-        self.unsuccessful_shows = {k: v for k, v in self.shows.items() if v.get('category') == 'unsuccessful'}
+        # Load grosses data and classify shows by financial performance
+        self.classify_shows_by_performance()
 
-        print(f"📊 Initialized analysis:")
-        print(f"  • Successful campaigns: {len(self.successful_shows)}")
-        print(f"  • Unsuccessful campaigns: {len(self.unsuccessful_shows)}")
+    def classify_shows_by_performance(self):
+        """Classify shows as successful/unsuccessful based on box office data."""
+        grosses_file = Path("data/grosses/broadway_grosses_2024_2025.csv")
+
+        if not grosses_file.exists():
+            print("⚠️  No grosses data found - using manual categories from config")
+            self.successful_shows = {k: v for k, v in self.shows.items() if v.get('category') == 'successful'}
+            self.unsuccessful_shows = {k: v for k, v in self.shows.items() if v.get('category') == 'unsuccessful'}
+            print(f"📊 Initialized analysis:")
+            print(f"  • Successful campaigns: {len(self.successful_shows)}")
+            print(f"  • Unsuccessful campaigns: {len(self.unsuccessful_shows)}")
+            return
+
+        # Load and aggregate grosses data
+        grosses_df = pd.read_csv(grosses_file)
+
+        # Calculate performance metrics by show
+        show_performance = grosses_df.groupby('show_id').agg({
+            'gross': ['sum', 'mean'],
+            'capacity_percent': 'mean',
+            'week_ending': 'count'  # weeks on Broadway
+        }).reset_index()
+
+        show_performance.columns = ['show_id', 'total_gross', 'avg_weekly_gross', 'avg_capacity', 'weeks_tracked']
+
+        # Calculate composite success score
+        # Normalize each metric to 0-1 range, then average
+        show_performance['gross_score'] = (show_performance['total_gross'] - show_performance['total_gross'].min()) / (show_performance['total_gross'].max() - show_performance['total_gross'].min())
+        show_performance['capacity_score'] = show_performance['avg_capacity'] / 100.0
+        show_performance['longevity_score'] = (show_performance['weeks_tracked'] - show_performance['weeks_tracked'].min()) / (show_performance['weeks_tracked'].max() - show_performance['weeks_tracked'].min())
+
+        # Composite score: weighted average
+        show_performance['success_score'] = (
+            show_performance['gross_score'] * 0.5 +  # 50% weight on total gross
+            show_performance['capacity_score'] * 0.3 +  # 30% weight on capacity
+            show_performance['longevity_score'] * 0.2   # 20% weight on longevity
+        )
+
+        # Classify: top 33% = successful, bottom 33% = unsuccessful
+        top_threshold = show_performance['success_score'].quantile(0.67)
+        bottom_threshold = show_performance['success_score'].quantile(0.33)
+
+        successful_ids = set(show_performance[show_performance['success_score'] >= top_threshold]['show_id'])
+        unsuccessful_ids = set(show_performance[show_performance['success_score'] <= bottom_threshold]['show_id'])
+
+        self.successful_shows = {k: v for k, v in self.shows.items() if k in successful_ids}
+        self.unsuccessful_shows = {k: v for k, v in self.shows.items() if k in unsuccessful_ids}
+
+        print(f"📊 Initialized analysis (data-driven classification):")
+        print(f"  • Total shows with grosses data: {len(show_performance)}")
+        print(f"  • Successful campaigns (top 33%): {len(self.successful_shows)}")
+        print(f"  • Unsuccessful campaigns (bottom 33%): {len(self.unsuccessful_shows)}")
+        print(f"  • Middle tier (excluded from comparison): {len(show_performance) - len(successful_ids) - len(unsuccessful_ids)}")
+
+        # Save classification for reference
+        classification = show_performance.merge(
+            pd.DataFrame([(k, v['name']) for k, v in self.shows.items()], columns=['show_id', 'show_name']),
+            on='show_id', how='left'
+        )
+        classification['category'] = classification['show_id'].apply(
+            lambda x: 'successful' if x in successful_ids else ('unsuccessful' if x in unsuccessful_ids else 'middle')
+        )
+        classification = classification.sort_values('success_score', ascending=False)
+
+        classification_path = self.output_dir / "show_classification_by_grosses.csv"
+        classification.to_csv(classification_path, index=False)
+        print(f"  💾 Saved classification: {classification_path}")
 
     def extract_comprehensive_metrics(self, df: pd.DataFrame, show_name: str, category: str) -> Dict[str, Any]:
         """
@@ -182,7 +245,7 @@ class BroadwayMarketingScience:
         return {
             'top_10_authors_pct': top_10_pct,
             'top_subreddit_concentration': top_subreddit_pct,
-            'community_diversity_score': 100 - top_10_authors_pct,  # Lower concentration = more diverse
+            'community_diversity_score': 100 - top_10_pct,  # Lower concentration = more diverse
             'cross_platform_reach': df['subreddit'].nunique()
         }
 
@@ -336,9 +399,21 @@ class BroadwayMarketingScience:
         if not success_factors:
             print("\n⚠ No statistically significant differences found with medium+ effect sizes")
             print("This may indicate:")
-            print("  • Insufficient sample size")
+            print("  • Insufficient sample size (3 successful vs 7 unsuccessful shows)")
             print("  • Similar marketing approaches")
             print("  • Need for more granular metrics")
+
+            print("\n📊 Top Observed Differences (regardless of statistical significance):")
+            print("Note: These may not be statistically significant due to small sample size\n")
+
+            # Show top 5 differences by effect size
+            top_diffs = statistical_results.head(5)
+            for _, row in top_diffs.iterrows():
+                direction = "higher" if row['difference'] > 0 else "lower"
+                print(f"• {row['metric'].replace('_', ' ').title()}:")
+                print(f"  Successful: {row['successful_mean']:.1f} | Unsuccessful: {row['unsuccessful_mean']:.1f}")
+                print(f"  Difference: {abs(row['pct_difference']):.0f}% {direction} ({row['effect_size']} effect)")
+                print(f"  p-value: {row['p_value']:.3f} {'✓ significant' if row['significant'] else '(not significant)'}\n")
 
         return success_factors
 
@@ -355,12 +430,26 @@ class BroadwayMarketingScience:
         # Top 5 differentiating factors
         top_factors = statistical_results.head(5)
 
-        for _, row in top_factors.iterrows():
-            if row['difference'] > 0 and row['significant']:
-                metric = row['metric'].replace('_', ' ').title()
-                rec = f"Focus on increasing {metric} - successful shows averaged {row['successful_mean']:.1f} vs {row['unsuccessful_mean']:.1f} for unsuccessful shows"
-                recommendations.append(rec)
-                print(f"\n→ {rec}")
+        if success_factors:
+            # If we have statistically significant factors, use them
+            for _, row in top_factors.iterrows():
+                if row['difference'] > 0 and row['significant']:
+                    metric = row['metric'].replace('_', ' ').title()
+                    rec = f"Focus on increasing {metric} - successful shows averaged {row['successful_mean']:.1f} vs {row['unsuccessful_mean']:.1f} for unsuccessful shows"
+                    recommendations.append(rec)
+                    print(f"\n→ {rec}")
+        else:
+            # If no significant factors, provide directional guidance
+            print("\n⚠️ Note: Limited sample size (3 vs 7 shows) prevents strong statistical conclusions.")
+            print("However, here are observed patterns to investigate further:\n")
+
+            for _, row in top_factors.iterrows():
+                if row['difference'] > 0:  # Only positive differences
+                    metric = row['metric'].replace('_', ' ').title()
+                    rec = f"Investigate {metric} - successful shows averaged {row['successful_mean']:.1f} vs {row['unsuccessful_mean']:.1f}"
+                    recommendations.append(rec)
+                    print(f"→ {rec}")
+                    print(f"  (Effect size: {row['effect_size']}, p={row['p_value']:.3f})")
 
         return recommendations
 
