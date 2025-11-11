@@ -200,6 +200,40 @@ class GoogleTrendsCollector:
         return weekly
 
 
+def auto_generate_queries(show_name: str) -> List[str]:
+    """
+    Automatically generate Google Trends queries from show name.
+
+    Tries various search patterns that audiences typically use:
+    - "[Show] Broadway"
+    - "[Show] musical"
+    - "[Show] tickets"
+    - "[Show]"
+
+    Args:
+        show_name: Name of the show
+
+    Returns:
+        List of unique queries to try
+    """
+    queries = [
+        f"{show_name} Broadway",
+        f"{show_name} musical",
+        f"{show_name} tickets",
+        show_name
+    ]
+
+    # Remove duplicates while preserving order
+    seen = set()
+    unique_queries = []
+    for q in queries:
+        if q not in seen:
+            seen.add(q)
+            unique_queries.append(q)
+
+    return unique_queries
+
+
 def collect_google_trends(
     shows_config: List[Dict[str, Any]],
     start_date: str,
@@ -210,7 +244,7 @@ def collect_google_trends(
     Main function to collect Google Trends for all shows.
 
     Args:
-        shows_config: List of show configs with 'name' and 'queries' fields
+        shows_config: List of show configs with 'name' and optional 'google_queries' fields
         start_date: Start date (YYYY-MM-DD)
         end_date: End date (YYYY-MM-DD)
         output_dir: Directory for raw data
@@ -220,8 +254,8 @@ def collect_google_trends(
 
     Example:
         >>> shows = [
-        ...     {'name': 'Maybe Happy Ending', 'queries': ['Maybe Happy Ending tickets', 'Maybe Happy Ending Broadway']},
-        ...     {'name': 'John Proctor', 'queries': ['John Proctor is the Villain tickets']}
+        ...     {'name': 'Maybe Happy Ending', 'google_queries': ['Maybe Happy Ending tickets', 'Maybe Happy Ending Broadway']},
+        ...     {'name': 'John Proctor'}  # Will auto-generate queries
         ... ]
         >>> df = collect_google_trends(shows, '2024-01-01', '2024-12-31')
     """
@@ -231,10 +265,15 @@ def collect_google_trends(
 
     for show_config in shows_config:
         show_name = show_config['name']
-        queries = show_config.get('queries', [])
+        queries = show_config.get('google_queries')
 
         if not queries:
-            logger.warning(f"No queries defined for {show_name}, skipping Google Trends")
+            # Auto-generate queries from show name
+            queries = auto_generate_queries(show_name)
+            logger.info(f"Auto-generated queries for {show_name}: {queries}")
+
+        if not queries:
+            logger.warning(f"Could not generate queries for {show_name}, skipping Google Trends")
             continue
 
         logger.info(f"\n{'='*70}")
