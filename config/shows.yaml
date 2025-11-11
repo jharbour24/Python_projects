@@ -1,0 +1,202 @@
+# Broadway Shows Configuration
+# Each show includes metadata for data collection across platforms
+# Fields marked with TODO require manual verification
+
+shows:
+  # CMM Depth Cohort: Shows with strong cultural movement characteristics
+  hamilton:
+    name: "Hamilton"
+    cohort: "cmm_depth"
+    instagram_handle: "hamiltonmusical"
+    tiktok_hashtags:
+      - "hamilton"
+      - "hamiltonmusical"
+      - "hamiltok"
+    reddit_queries:
+      - "Hamilton musical"
+      - "Hamilton Broadway"
+    aliases:
+      - "Hamilton An American Musical"
+    opening_date: "2015-08-06"  # Broadway opening
+    preview_start: "2015-07-13"
+    notes: "Transferred from Public Theater; dominant cultural phenomenon"
+
+  beetlejuice:
+    name: "Beetlejuice"
+    cohort: "cmm_depth"
+    instagram_handle: "beetlejuicebway"
+    tiktok_hashtags:
+      - "beetlejuicemusical"
+      - "beetlejuicebway"
+      - "beetleheads"
+    reddit_queries:
+      - "Beetlejuice musical"
+      - "Beetlejuice Broadway"
+    aliases:
+      - "Beetlejuice The Musical"
+    opening_date: "2019-04-25"
+    preview_start: "2019-03-28"
+    notes: "Strong TikTok presence; returned after pandemic"
+
+  hadestown:
+    name: "Hadestown"
+    cohort: "cmm_depth"
+    instagram_handle: "hadestown"
+    tiktok_hashtags:
+      - "hadestown"
+      - "hadestownmusical"
+      - "hadestok"
+    reddit_queries:
+      - "Hadestown musical"
+      - "Hadestown Broadway"
+    aliases:
+      - "Hadestown Musical"
+    opening_date: "2019-04-17"
+    preview_start: "2019-03-22"
+    notes: "Tony winner 2019; strong word-of-mouth"
+
+  six:
+    name: "Six"
+    cohort: "cmm_depth"
+    instagram_handle: "sixonbroadway"
+    tiktok_hashtags:
+      - "sixthemusical"
+      - "sixbway"
+      - "sixqueens"
+    reddit_queries:
+      - "Six musical"
+      - "Six Broadway"
+    aliases:
+      - "Six The Musical"
+    opening_date: "2021-10-03"
+    preview_start: "2021-09-17"
+    notes: "Pop concert format; viral social media presence"
+
+  maybe_happy_ending:
+    name: "Maybe Happy Ending"
+    cohort: "cmm_depth"
+    instagram_handle: "maybehappyendingbway"  # TODO: verify
+    tiktok_hashtags:
+      - "maybehappyending"
+      - "maybehappyendingmusical"
+    reddit_queries:
+      - "Maybe Happy Ending musical"
+      - "Maybe Happy Ending Broadway"
+    aliases:
+      - "Maybe Happy Ending Musical"
+    opening_date: "2024-11-12"  # TODO: verify - show is recent
+    preview_start: "2024-10-16"  # TODO: verify
+    notes: "Korean import; intimate sci-fi romance; limited data window"
+
+  oh_mary:
+    name: "Oh Mary!"
+    cohort: "cmm_depth"
+    instagram_handle: "ohmaryonbroadway"
+    tiktok_hashtags:
+      - "ohmary"
+      - "ohmarybroadway"
+      - "ohmarymusical"
+    reddit_queries:
+      - "Oh Mary Broadway"
+      - "Oh Mary play"
+    aliases:
+      - "Oh, Mary!"
+      - "Oh Mary"
+    opening_date: "2024-07-11"
+    preview_start: "2024-06-26"
+    notes: "Comedy hit; transferred from off-Broadway; Cole Escola vehicle"
+
+  # Broad-Appeal Cohort: Traditional marketing-driven shows
+  betty_boop:
+    name: "Betty Boop"
+    cohort: "broad_appeal"
+    instagram_handle: "bettybooponbroadway"  # TODO: verify - show may not have opened
+    tiktok_hashtags:
+      - "bettyboop"
+      - "bettyboopmusical"
+    reddit_queries:
+      - "Betty Boop musical"
+      - "Betty Boop Broadway"
+    aliases:
+      - "Betty Boop The Musical"
+    opening_date: null  # TODO: Show was announced but may not have opened
+    preview_start: null
+    notes: "IP-based; verify production status - may be pre-Broadway or canceled"
+
+  smash:
+    name: "Smash"
+    cohort: "broad_appeal"
+    instagram_handle: "smashmusicalbway"  # TODO: verify
+    tiktok_hashtags:
+      - "smashmusical"
+      - "smashbway"
+    reddit_queries:
+      - "Smash musical"
+      - "Smash Broadway"
+    aliases:
+      - "Smash The Musical"
+    opening_date: null  # TODO: Show announced for Broadway but verify if opened
+    preview_start: null
+    notes: "Based on NBC series; verify production status"
+
+  bad_cinderella:
+    name: "Bad Cinderella"
+    cohort: "broad_appeal"
+    instagram_handle: "badcinderellabway"
+    tiktok_hashtags:
+      - "badcinderella"
+      - "badcinderellabway"
+    reddit_queries:
+      - "Bad Cinderella musical"
+      - "Bad Cinderella Broadway"
+    aliases:
+      - "Bad Cinderella Musical"
+      - "Cinderella ALW"
+    opening_date: "2023-03-23"
+    preview_start: "2023-02-17"
+    notes: "Andrew Lloyd Webber; closed quickly; critical underperformer"
+
+  spamalot:
+    name: "Spamalot"
+    cohort: "broad_appeal"
+    instagram_handle: "spamalotmusical"
+    tiktok_hashtags:
+      - "spamalot"
+      - "spamalotmusical"
+    reddit_queries:
+      - "Spamalot revival"
+      - "Spamalot Broadway"
+    aliases:
+      - "Spamalot Revival"
+      - "Monty Python's Spamalot"
+    opening_date: "2023-11-16"  # Revival opening
+    preview_start: "2023-10-31"
+    notes: "Revival of 2005 Tony winner; Python IP; star-driven casting"
+
+# Global data collection settings
+collection:
+  rate_limits:
+    instagram: 1.0  # seconds between requests
+    tiktok: 1.5
+    reddit: 2.0
+    trends: 0.5
+    grosses: 1.0
+    prices: 2.0
+    discounts: 1.0
+
+  user_agents:
+    - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    - "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+
+  cache_expiry_days: 7
+
+  timeline:
+    weeks_before_opening: 4
+    weeks_after_opening: 12
+
+# Data quality flags
+quality_notes: |
+  - Betty Boop and Smash opening dates need verification
+  - Maybe Happy Ending is very recent (Fall 2024); limited post-opening data
+  - Hamilton data window starts 2015; earlier social data may be sparse
+  - BroadwayWorld grosses may not exist for shows that didn't open
