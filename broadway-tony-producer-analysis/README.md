@@ -119,37 +119,32 @@ python scrape_producers.py
 
 ### Step 3: Collect Weekly Grosses Data
 
-**Option A: Automatic (not fully implemented)**
 ```bash
 python get_grosses.py
 ```
 
-This will attempt to scrape grosses from public sources (currently limited).
+**What it does:**
+- Scrapes weekly grosses from Broadway World (2010-present)
+- Collects gross revenue, attendance, capacity%, ticket prices
+- Includes comprehensive theater name normalization
+- Computes week-over-week changes
+- Creates `data/raw/broadway_world_grosses_full.csv`
+- Creates `data/processed/weekly_grosses_preliminary.csv`
 
-**Option B: Manual (recommended)**
+**Expected output:** 50,000+ weekly records covering hundreds of shows
 
-1. Obtain weekly grosses data from:
-   - Broadway World grosses archives
-   - Playbill grosses pages (may require manual extraction)
-   - The Numbers (https://www.the-numbers.com/broadway)
+**Data collected:**
+- Weekly gross revenue
+- Attendance and capacity percentage
+- Average and top ticket prices
+- Number of performances
+- Theater name and seating capacity
 
-2. Format as CSV with columns:
-   - `show_title` (str)
-   - `week_ending_date` (date, ISO format)
-   - `weekly_gross` (float, dollar amount)
-   - `capacity_pct` (float, 0-100, optional)
-   - `avg_ticket_price` (float, optional)
+**Expected runtime:** 15-30 minutes (scraping from 2010-present with rate limiting)
 
-3. Save to: `data/raw/grosses_raw.csv`
+**Progress tracking:** The scraper logs progress every 10 weeks
 
-4. Run:
-   ```bash
-   python get_grosses.py
-   ```
-
-See `data/raw/grosses_raw_TEMPLATE.csv` for expected format.
-
-**Note:** Without grosses data, the analysis will skip the panel regression section.
+**Note:** This is a long-running scraper. It will scrape ~780 weeks of data (15 years). Be patient!
 
 ---
 
@@ -245,37 +240,32 @@ One row per show (for hazard models). Key columns:
 
 ---
 
-## Manual Intervention Required
+## Optional Enhancements
 
-The pipeline is designed to be as automated as possible, but some tasks require manual work:
+The core pipeline is fully automated, but these optional enhancements can improve analysis quality:
 
-### 1. **Weekly Grosses Data** (Step 3)
-   - **Why:** Public grosses data is not readily scrapable
-   - **Action:** Obtain CSV from Broadway World, Playbill, or The Numbers
-   - **Format:** See `data/raw/grosses_raw_TEMPLATE.csv`
-
-### 2. **NYT Review Scores** (Optional enhancement)
+### 1. **NYT Review Scores** (Improves quality controls)
    - **Why:** Requires sentiment analysis or manual coding
    - **Action:**
      - Scrape NYT theater reviews or use NYT API
      - Code as +1 (positive), 0 (mixed), -1 (negative)
      - Add to `shows.csv` as `nyt_review_score` and `critic_pick`
-   - **Impact:** Improves model controls
+   - **Impact:** Better controls for show quality in models
 
-### 3. **Opening/Closing Dates** (Optional enhancement)
+### 2. **Opening/Closing Dates** (Enables survival analysis)
    - **Why:** IBDB scraping for dates not fully implemented
    - **Action:** Enhance `scrape_producers.py` or add separate IBDB metadata scraper
    - **Impact:** Enables proper survival analysis and run length calculations
 
-### 4. **Theatre Metadata** (Optional enhancement)
-   - **Why:** Not yet scraped
-   - **Action:** Add IBDB scraper for theatre name, size, location
+### 3. **Theatre Metadata** (Better venue controls)
+   - **Why:** Theatre names are captured, but size/location not fully linked
+   - **Action:** Add IBDB scraper for complete theatre metadata
    - **Impact:** Allows controlling for venue characteristics
 
-### 5. **Show Category (Musical vs Play)** (Optional enhancement)
-   - **Why:** Can be inferred from Tony categories but not yet implemented
-   - **Action:** Parse category from Tony data or IBDB
-   - **Impact:** Enables subsample analysis (musicals vs plays)
+### 4. **Show Category Refinement** (Better subsample analysis)
+   - **Why:** Musical vs Play is captured from grosses data, but not validated
+   - **Action:** Cross-validate with Tony categories and IBDB
+   - **Impact:** More accurate subsample analysis (musicals vs plays)
 
 ---
 
@@ -343,9 +333,13 @@ To change the analysis period:
   - Increase rate limiting delay in `config.py`
   - Consider manual data entry for key shows
 
-### Problem: Grosses data not loading
-- **Cause:** Manual CSV not provided or wrong format
-- **Solution:** Check `data/raw/grosses_raw.csv` exists and has required columns
+### Problem: Grosses scraper fails or returns no data
+- **Cause:** Broadway World website structure changed or connection issues
+- **Solution:**
+  - Check internet connection
+  - Verify Broadway World is accessible: https://www.broadwayworld.com/json_grosses.cfm
+  - Check error messages in logs
+  - If Broadway World is down, wait and retry later
 
 ### Problem: Analysis notebook cells fail
 - **Cause:** Missing data or dependencies

@@ -61,32 +61,15 @@ jupyter notebook tony_producers_analysis.ipynb
 
 Then run all cells (Cell → Run All).
 
-## Important Notes
+## Expected Runtime
 
-### Weekly Grosses Data (Optional but Recommended)
+- **Tony scraping:** 30-60 seconds
+- **Producer scraping:** 5-10 minutes (rate limited)
+- **Grosses scraping:** 15-30 minutes (scraping 2010-present from Broadway World)
+- **Master dataset building:** <30 seconds
+- **Total: ~25-45 minutes**
 
-The pipeline works without grosses data, but for complete analysis:
-
-1. Obtain weekly grosses CSV from:
-   - Broadway World (https://www.broadwayworld.com/grosses)
-   - The Numbers (https://www.the-numbers.com/broadway)
-   - Other public source
-
-2. Format as CSV with columns:
-   - `show_title`, `week_ending_date`, `weekly_gross`
-   - (See `data/raw/grosses_raw_TEMPLATE.csv` for example)
-
-3. Save to: `data/raw/grosses_raw.csv`
-
-4. Re-run: `python data/get_grosses.py && python data/build_master.py`
-
-### Expected Runtime
-
-- Tony scraping: 30-60 seconds
-- Producer scraping: 5-10 minutes (rate limited)
-- Grosses processing: <10 seconds
-- Master dataset building: <30 seconds
-- **Total: ~10-15 minutes**
+**Note:** The grosses scraper is the longest step. It scrapes ~780 weeks of data with progress logging every 10 weeks. Be patient!
 
 ### What You'll Get
 
@@ -114,10 +97,11 @@ After running the pipeline:
 - Check `data/raw/producers_raw.csv` for which shows succeeded
 - You can manually add producer counts if needed
 
-### "Grosses data not available"
-- This is expected if you haven't provided manual data
-- Pipeline will skip grosses analysis
-- See note above on obtaining grosses data
+### "Broadway World scraper slow or timing out"
+- This is normal - the scraper processes ~780 weeks of data
+- Check progress in logs (updates every 10 weeks)
+- If timeout occurs, check internet connection
+- If Broadway World is down, wait and retry later
 
 ### Jupyter notebook won't open
 ```bash
