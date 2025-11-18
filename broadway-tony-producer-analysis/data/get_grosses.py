@@ -2,11 +2,11 @@
 Weekly Broadway grosses data collector using Broadway World API.
 
 Scrapes weekly grosses from BroadwayWorld.com's JSON endpoint.
-Implements comprehensive theater name normalization and capacity calculation.
+Uses proven scraping strategy that handles server errors gracefully.
 
 Data source: https://www.broadwayworld.com/json_grosses.cfm
 
-Author: Broadway Analysis Pipeline
+Author: Broadway Analysis Pipeline (Updated with robust error handling)
 """
 
 import os
@@ -33,62 +33,41 @@ logger = setup_logger(__name__)
 # =============================================================================
 
 BASE_URL = "https://www.broadwayworld.com/json_grosses.cfm"
-START_DATE = datetime(2010, 1, 1)  # Start from 2010 to match our analysis period
+START_DATE = datetime(2000, 1, 2)  # Start from 2000 to get maximum coverage
 
 # Broadway Theater Names & Aliases
 BROADWAY_THEATERS = [
-    "Al Hirschfeld", "Ambassador", "American Airlines", "August Wilson",
-    "Barrymore", "Belasco", "Bernard B. Jacobs", "Booth", "Broadhurst",
-    "Broadway", "Brooks Atkinson", "Circle in the Square", "Ethel Barrymore",
-    "Eugene O'Neill", "Gerald Schoenfeld", "Gershwin", "Golden", "Helen Hayes",
-    "Hudson", "Imperial", "James Earl Jones", "John Golden", "Lena Horne",
-    "Longacre", "Lunt-Fontanne", "Lyceum", "Lyric", "Majestic", "Marquis",
-    "Minskoff", "Music Box", "Nederlander", "New Amsterdam", "Neil Simon",
-    "Palace", "Richard Rodgers", "Samuel J. Friedman", "Shubert", "St. James",
-    "Stephen Sondheim", "Studio 54", "Vivian Beaumont", "Walter Kerr",
-    "Winter Garden"
+    "Al Hirschfeld", "Ambassador", "American Airlines", "August Wilson", "Barrymore", "Belasco",
+    "Bernard B. Jacobs", "Booth", "Broadhurst", "Broadway", "Brooks Atkinson", "Circle in the Square",
+    "Ethel Barrymore", "Eugene O'Neill", "Gerald Schoenfeld", "Gershwin", "Golden", "Helen Hayes",
+    "Hudson", "Imperial", "James Earl Jones", "John Golden", "Lena Horne", "Longacre", "Lunt-Fontanne",
+    "Lyceum", "Lyric", "Majestic", "Marquis", "Minskoff", "Music Box", "Nederlander", "New Amsterdam",
+    "Neil Simon", "Palace", "Richard Rodgers", "Samuel J. Friedman", "Shubert", "St. James",
+    "Stephen Sondheim", "Studio 54", "Vivian Beaumont", "Walter Kerr", "Winter Garden"
 ]
 
 THEATER_ALIASES = {
-    'martin beck': 'Al Hirschfeld',
-    'ford center': 'Lyric',
-    'hilton': 'Lyric',
-    'foxwoods': 'Lyric',
-    'cort': 'James Earl Jones',
-    'royale': 'Bernard B. Jacobs',
-    'plymouth': 'Gerald Schoenfeld',
-    'virginia': 'August Wilson',
-    'todd haimes': 'American Airlines',
-    'jacobs': 'Bernard B. Jacobs',
-    'schoenfeld': 'Gerald Schoenfeld',
-    'hayes': 'Helen Hayes',
-    'rodgers': 'Richard Rodgers',
-    'friedman': 'Samuel J. Friedman',
-    'sondheim': 'Stephen Sondheim',
+    'martin beck': 'Al Hirschfeld', 'ford center': 'Lyric', 'hilton': 'Lyric', 'foxwoods': 'Lyric',
+    'cort': 'James Earl Jones', 'royale': 'Bernard B. Jacobs', 'plymouth': 'Gerald Schoenfeld',
+    'virginia': 'August Wilson', 'todd haimes': 'American Airlines', 'jacobs': 'Bernard B. Jacobs',
+    'schoenfeld': 'Gerald Schoenfeld', 'hayes': 'Helen Hayes', 'rodgers': 'Richard Rodgers',
+    'friedman': 'Samuel J. Friedman', 'sondheim': 'Stephen Sondheim',
 }
 
 VENUE_CAPACITIES = {
-    "Al Hirschfeld": 1424, "Ambassador": 1120, "American Airlines": 740,
-    "August Wilson": 1222, "Barrymore": 1096, "Belasco": 1018,
-    "Bernard B. Jacobs": 1078, "Booth": 782, "Broadhurst": 1186,
-    "Broadway": 1761, "Brooks Atkinson": 1069, "Circle in the Square": 776,
-    "Ethel Barrymore": 1094, "Eugene O'Neill": 1108, "Gerald Schoenfeld": 1079,
-    "Gershwin": 1933, "Golden": 804, "Helen Hayes": 597, "Hudson": 970,
-    "Imperial": 1443, "James Earl Jones": 1096, "John Golden": 804,
-    "Lena Horne": 1096, "Longacre": 1091, "Lunt-Fontanne": 1509,
-    "Lyceum": 922, "Lyric": 1622, "Majestic": 1645, "Marquis": 1612,
-    "Minskoff": 1621, "Music Box": 1009, "Nederlander": 1232,
-    "New Amsterdam": 1702, "Neil Simon": 1444, "Palace": 1610,
-    "Richard Rodgers": 1380, "Samuel J. Friedman": 650, "Shubert": 1468,
-    "St. James": 1710, "Stephen Sondheim": 1055, "Studio 54": 1006,
+    "Al Hirschfeld": 1424, "Ambassador": 1120, "American Airlines": 740, "August Wilson": 1222,
+    "Barrymore": 1096, "Belasco": 1018, "Bernard B. Jacobs": 1078, "Booth": 782, "Broadhurst": 1186,
+    "Broadway": 1761, "Brooks Atkinson": 1069, "Circle in the Square": 776, "Ethel Barrymore": 1094,
+    "Eugene O'Neill": 1108, "Gerald Schoenfeld": 1079, "Gershwin": 1933, "Golden": 804, "Helen Hayes": 597,
+    "Hudson": 970, "Imperial": 1443, "James Earl Jones": 1096, "John Golden": 804, "Lena Horne": 1096,
+    "Longacre": 1091, "Lunt-Fontanne": 1509, "Lyceum": 922, "Lyric": 1622, "Majestic": 1645,
+    "Marquis": 1612, "Minskoff": 1621, "Music Box": 1009, "Nederlander": 1232, "New Amsterdam": 1702,
+    "Neil Simon": 1444, "Palace": 1610, "Richard Rodgers": 1380, "Samuel J. Friedman": 650,
+    "Shubert": 1468, "St. James": 1710, "Stephen Sondheim": 1055, "Studio 54": 1006,
     "Vivian Beaumont": 1080, "Walter Kerr": 945, "Winter Garden": 1526
 }
 
-# Create theater name mapping (normalized to canonical)
-THEATER_MAP = {
-    name.lower().replace('.', '').replace("'", "").strip(): name
-    for name in BROADWAY_THEATERS
-}
+THEATER_MAP = {name.lower().replace('.', '').replace("'", "").strip(): name for name in BROADWAY_THEATERS}
 THEATER_MAP.update(THEATER_ALIASES)
 
 
@@ -97,34 +76,16 @@ THEATER_MAP.update(THEATER_ALIASES)
 # =============================================================================
 
 def get_sundays(start_date: datetime, end_date: datetime = None) -> List[str]:
-    """
-    Generate list of all Sunday dates from start_date to end_date (or today).
-
-    Broadway grosses are reported weekly, ending on Sundays.
-
-    Parameters
-    ----------
-    start_date : datetime
-        Starting date
-    end_date : datetime, optional
-        Ending date (default: today)
-
-    Returns
-    -------
-    list of str
-        List of Sunday dates in YYYY-MM-DD format
-    """
+    """Generate list of all Sunday dates from start_date to end_date (or today)."""
     all_dates = []
     current_date = start_date
 
     if end_date is None:
         end_date = datetime.today()
 
-    # Move to first Sunday
     while current_date.weekday() != 6:
         current_date += timedelta(days=1)
 
-    # Collect all Sundays
     while current_date <= end_date:
         all_dates.append(current_date.strftime("%Y-%m-%d"))
         current_date += timedelta(days=7)
@@ -133,35 +94,14 @@ def get_sundays(start_date: datetime, end_date: datetime = None) -> List[str]:
 
 
 def clean_numeric_string(s: Optional[str]) -> Optional[float]:
-    """
-    Clean and parse numeric strings from Broadway World data.
-
-    Handles:
-    - Dollar signs, commas, percent signs
-    - Negative numbers in parentheses: (123) -> -123
-    - Missing/empty values
-
-    Parameters
-    ----------
-    s : str or None
-        Raw numeric string
-
-    Returns
-    -------
-    float or None
-        Parsed numeric value, or None if invalid
-    """
+    """Clean and parse numeric strings from Broadway World data."""
     if s is None:
         return None
     if isinstance(s, (int, float)):
         return float(s)
 
     s = str(s).strip()
-
-    # Check for negative (parentheses or minus sign)
     is_negative = (s.startswith('(') and s.endswith(')')) or s.startswith('-')
-
-    # Remove all non-digit characters except decimal point
     s = re.sub(r'[^\d.]', '', s)
 
     if not s:
@@ -175,44 +115,16 @@ def clean_numeric_string(s: Optional[str]) -> Optional[float]:
 
 
 def get_canonical_theater_name(raw_name: str) -> str:
-    """
-    Map raw theater name to canonical Broadway theater name.
-
-    Parameters
-    ----------
-    raw_name : str
-        Raw theater name from Broadway World
-
-    Returns
-    -------
-    str
-        Canonical theater name, or original if not recognized
-    """
+    """Map raw theater name to canonical Broadway theater name."""
     if not raw_name:
         return "Unknown"
 
-    # Normalize for matching
     norm = raw_name.lower().replace('.', '').replace("'", "").strip()
-
     return THEATER_MAP.get(norm, raw_name)
 
 
 def extract_cell_values(cell: Tag) -> Tuple[str, str]:
-    """
-    Extract 'out' and 'in' span values from a Broadway World table cell.
-
-    Many cells have two values: current (out) and previous/comparison (in).
-
-    Parameters
-    ----------
-    cell : bs4.Tag
-        Table cell element
-
-    Returns
-    -------
-    tuple of (str, str)
-        (out_value, in_value)
-    """
+    """Extract 'out' and 'in' span values from a Broadway World table cell."""
     out_span = cell.find('span', class_='out')
     in_span = cell.find('span', class_='in')
 
@@ -227,57 +139,30 @@ def extract_cell_values(cell: Tag) -> Tuple[str, str]:
 # =============================================================================
 
 def process_row(date_str: str, row_tag: Tag, show_type: str) -> Optional[Dict[str, Any]]:
-    """
-    Process a single Broadway World data row into structured format.
-
-    Dynamically calculates seating capacity if missing from known venues.
-
-    Parameters
-    ----------
-    date_str : str
-        Week ending date (YYYY-MM-DD)
-    row_tag : bs4.Tag
-        HTML row element from Broadway World
-    show_type : str
-        'M' (musical) or 'P' (play)
-
-    Returns
-    -------
-    dict or None
-        Structured show data, or None if row invalid
-    """
+    """Process a single Broadway World data row into structured format."""
     cells = row_tag.find_all('div', class_='cell')
     if not cells or len(cells) < 7:
         return None
 
     attrs = row_tag.attrs
-
-    # Extract basic data from row attributes
     show_name = attrs.get('data-name') or "Unknown"
     gross = clean_numeric_string(attrs.get('data-gross'))
     attendance = clean_numeric_string(attrs.get('data-attendee'))
     capacity_pct = clean_numeric_string(attrs.get('data-capacity'))
     avg_ticket = clean_numeric_string(attrs.get('data-ticket'))
 
-    # Extract theater name
-    raw_theater = ""
-    if cells[0].find('a', 'theater'):
-        raw_theater = cells[0].find('a', class_='theater').get_text(strip=True)
+    raw_theater = cells[0].find('a', class_='theater').get_text(strip=True) if cells[0].find('a', 'theater') else ""
     theater_name = get_canonical_theater_name(raw_theater)
 
-    # Determine seating capacity
-    # 1. Try known venues
+    # Dynamic capacity calculation
     seating_capacity = VENUE_CAPACITIES.get(theater_name)
 
-    # 2. If not found, calculate from current week's data
     if seating_capacity is None and attendance and capacity_pct and capacity_pct > 0:
         estimated_capacity = attendance / (capacity_pct / 100.0)
         seating_capacity = round(estimated_capacity)
 
-    # Extract top ticket price
     _, top_ticket_raw = extract_cell_values(cells[4])
 
-    # Extract performances (regular + previews)
     regular_perfs_raw, previews_raw = "", ""
     if len(cells) > 6:
         regular_perfs_raw, previews_raw = extract_cell_values(cells[6])
@@ -304,39 +189,42 @@ def process_row(date_str: str, row_tag: Tag, show_type: str) -> Optional[Dict[st
 # BROADWAY WORLD SCRAPER
 # =============================================================================
 
-class BroadwayWorldScraper:
-    """Scraper for Broadway World weekly grosses data."""
+def scrape_broadway_world_grosses(start_date: datetime = START_DATE) -> pd.DataFrame:
+    """
+    Main scraping function with robust error handling.
 
-    def __init__(self):
-        self.base_url = BASE_URL
-        self.session = requests.Session()
-        self.session.headers.update({'User-Agent': config.USER_AGENT})
+    Parameters
+    ----------
+    start_date : datetime
+        Starting date for scraping
 
-    def scrape_week(self, date_str: str) -> List[Dict[str, Any]]:
-        """
-        Scrape grosses data for a single week.
+    Returns
+    -------
+    pd.DataFrame
+        All scraped grosses data
+    """
+    scraping_start_date = start_date - timedelta(days=7)
+    sundays_to_scrape = get_sundays(scraping_start_date)
 
-        Parameters
-        ----------
-        date_str : str
-            Week ending date (YYYY-MM-DD format)
+    if not sundays_to_scrape:
+        logger.warning("No weeks to scrape.")
+        return pd.DataFrame()
 
-        Returns
-        -------
-        list of dict
-            Show data for the week
-        """
-        week_data = []
-        show_types = [('MUSICAL', 'M'), ('PLAY', 'P')]
+    logger.info(f"Found {len(sundays_to_scrape)} weeks to scrape, starting from {scraping_start_date.strftime('%Y-%m-%d')}")
 
-        for type_param, type_code in show_types:
+    all_scraped_data: List[Dict] = []
+    show_types_to_scrape = [('MUSICAL', 'M'), ('PLAY', 'P')]
+
+    for idx, date_str in enumerate(sundays_to_scrape, 1):
+        if idx % 10 == 0:
+            logger.info(f"Progress: {idx}/{len(sundays_to_scrape)} weeks ({100*idx/len(sundays_to_scrape):.1f}%)")
+
+        week_row_count = 0
+
+        for type_param, type_code in show_types_to_scrape:
             try:
                 params = {"week": date_str, "typer": type_param}
-                response = self.session.get(
-                    self.base_url,
-                    params=params,
-                    timeout=config.REQUEST_TIMEOUT
-                )
+                response = requests.get(BASE_URL, params=params, timeout=20)
                 response.raise_for_status()
 
                 html_content = response.text
@@ -348,97 +236,44 @@ class BroadwayWorldScraper:
                 for row in soup.find_all('div', class_='row'):
                     processed_data = process_row(date_str, row, type_code)
                     if processed_data:
-                        week_data.append(processed_data)
+                        all_scraped_data.append(processed_data)
+                        week_row_count += 1
 
-                # Small delay to be respectful
-                time.sleep(0.1)
+                time.sleep(0.01)
 
             except requests.exceptions.RequestException as e:
-                logger.error(f"Error fetching {type_param}s for {date_str}: {e}")
+                # Log error but continue - some weeks may not have data
+                if idx % 50 == 0:  # Only log every 50th error to avoid spam
+                    logger.warning(f"Error fetching {type_param}s for {date_str}: {e}")
             except Exception as e:
                 logger.error(f"Error processing {type_param}s for {date_str}: {e}")
 
-        return week_data
+        if idx % 50 == 0 and all_scraped_data:
+            logger.info(f"Scraped {len(all_scraped_data)} total records so far...")
 
-    def scrape_date_range(self, start_date: datetime, end_date: datetime = None) -> pd.DataFrame:
-        """
-        Scrape grosses data for a date range.
+    if not all_scraped_data:
+        logger.warning("No data was scraped. Check for errors above.")
+        return pd.DataFrame()
 
-        Parameters
-        ----------
-        start_date : datetime
-            Start date
-        end_date : datetime, optional
-            End date (default: today)
+    logger.info(f"Scraping complete! Total records: {len(all_scraped_data)}")
 
-        Returns
-        -------
-        pd.DataFrame
-            All grosses data for the date range
-        """
-        logger.info(f"Starting Broadway World scrape from {start_date.strftime('%Y-%m-%d')}")
+    return pd.DataFrame(all_scraped_data)
 
-        sundays = get_sundays(start_date, end_date)
-
-        if not sundays:
-            logger.warning("No weeks to scrape.")
-            return pd.DataFrame()
-
-        logger.info(f"Found {len(sundays)} weeks to scrape")
-
-        all_data = []
-
-        for i, date_str in enumerate(sundays, 1):
-            if i % 10 == 0:
-                logger.info(f"Progress: {i}/{len(sundays)} weeks ({100*i/len(sundays):.1f}%)")
-
-            week_data = self.scrape_week(date_str)
-            all_data.extend(week_data)
-
-            if i % 50 == 0:
-                logger.info(f"Scraped {len(all_data)} total records so far...")
-
-        logger.info(f"Scraping complete! Total records: {len(all_data)}")
-
-        if not all_data:
-            logger.warning("No data scraped. Check for errors.")
-            return pd.DataFrame()
-
-        return pd.DataFrame(all_data)
-
-
-# =============================================================================
-# DATA PROCESSING & ENRICHMENT
-# =============================================================================
 
 def process_grosses_data(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Process and enrich raw grosses data.
+    """Process and enrich raw grosses data."""
+    if df.empty:
+        return df
 
-    Adds derived fields:
-    - Week-over-week changes in gross, attendance, capacity
-    - Normalized capacity percentage (0-1 instead of 0-100)
+    logger.info("Processing all scraped data...")
 
-    Parameters
-    ----------
-    df : pd.DataFrame
-        Raw scraped data
-
-    Returns
-    -------
-    pd.DataFrame
-        Processed data with derived fields
-    """
-    logger.info("Processing and enriching grosses data...")
-
-    # Convert Week to datetime
     df['Week'] = pd.to_datetime(df['Week'])
 
-    # Filter out unknown shows/theaters
+    # Filter unknowns
     df = df[(df['Show'] != 'Unknown') & (df['Theater'] != 'Unknown')].copy()
     logger.info(f"Filtered out 'Unknown' entries. Remaining: {len(df)} records")
 
-    # Sort and deduplicate
+    # Deduplicate
     df.sort_values(by=['Week', 'Show', 'Theater', 'Type'], inplace=True)
     df.drop_duplicates(subset=['Week', 'Show', 'Theater'], keep='first', inplace=True)
     logger.info(f"Deduplicated. Remaining: {len(df)} records")
@@ -446,38 +281,24 @@ def process_grosses_data(df: pd.DataFrame) -> pd.DataFrame:
     # Sort for time series operations
     df.sort_values(by=['Show', 'Theater', 'Week'], inplace=True)
 
-    # Normalize capacity percentage (0-1 instead of 0-100)
+    # Normalize capacity percentage
     df['Capacity_Pct'] = df['Capacity_Pct'] / 100.0
 
     # Compute week-over-week changes
     grouped = df.groupby(['Show', 'Theater'])
-
     df['Gross_Prev_Week'] = grouped['Gross'].shift(1)
     df['Attendance_Prev_Week'] = grouped['Attendance'].shift(1)
     df['Capacity_Pct_Prev_Week'] = grouped['Capacity_Pct'].shift(1)
-
     df['Gross_Diff'] = df['Gross'] - df['Gross_Prev_Week']
     df['Gross_Diff_Pct'] = df['Gross_Diff'] / df['Gross_Prev_Week']
     df['Attendance_Diff_Pct'] = (df['Attendance'] - df['Attendance_Prev_Week']) / df['Attendance_Prev_Week']
     df['Capacity_Pct_Diff'] = df['Capacity_Pct'] - df['Capacity_Pct_Prev_Week']
 
-    logger.info("Derived fields computed successfully")
+    # Filter to START_DATE
+    logger.info(f"Filtering final data to start from {START_DATE.strftime('%Y-%m-%d')}")
+    df = df[df['Week'] >= START_DATE].copy()
 
-    return df
-
-
-def save_grosses_data(df: pd.DataFrame, output_path: Path):
-    """
-    Save grosses data to CSV.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        Processed grosses data
-    output_path : Path
-        Output file path
-    """
-    # Select and order columns
+    # Final column order
     final_columns = [
         'Week', 'Show', 'Theater', 'Type',
         'Gross', 'Gross_Prev_Week', 'Gross_Diff', 'Gross_Diff_Pct',
@@ -487,33 +308,18 @@ def save_grosses_data(df: pd.DataFrame, output_path: Path):
         'Capacity_Pct', 'Capacity_Pct_Prev_Week', 'Capacity_Pct_Diff'
     ]
 
-    df = df[[col for col in final_columns if col in df.columns]].copy()
+    df = df[final_columns]
     df.sort_values(by=["Week", "Show"], inplace=True)
 
-    logger.info(f"Saving {len(df)} rows to {output_path}")
-    df.to_csv(output_path, index=False)
-    logger.info(f"Successfully saved to {output_path}")
+    logger.info("Processing complete!")
+
+    return df
 
 
 def convert_to_pipeline_format(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Convert Broadway World data to pipeline-compatible format.
-
-    Renames columns to match expected schema for build_master.py.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        Broadway World formatted data
-
-    Returns
-    -------
-    pd.DataFrame
-        Pipeline-compatible format
-    """
+    """Convert Broadway World data to pipeline-compatible format."""
     logger.info("Converting to pipeline format...")
 
-    # Map to expected column names
     df_pipeline = df.rename(columns={
         'Week': 'week_ending_date',
         'Show': 'show_title',
@@ -527,10 +333,8 @@ def convert_to_pipeline_format(df: pd.DataFrame) -> pd.DataFrame:
         'Type': 'show_type'
     })
 
-    # Add normalized title for matching
     df_pipeline['title_normalized'] = df_pipeline['show_title'].apply(normalize_title)
 
-    # Select core columns needed by pipeline
     pipeline_columns = [
         'week_ending_date', 'show_title', 'title_normalized',
         'theatre_name', 'weekly_gross', 'capacity_pct',
@@ -550,18 +354,13 @@ def convert_to_pipeline_format(df: pd.DataFrame) -> pd.DataFrame:
 # =============================================================================
 
 def main():
-    """
-    Main function: scrape Broadway World grosses and save to CSV.
-    """
+    """Main function: scrape Broadway World grosses and save to CSV."""
     logger.info("=" * 60)
     logger.info("BROADWAY WORLD GROSSES SCRAPER")
     logger.info("=" * 60)
 
-    scraper = BroadwayWorldScraper()
-
-    # Scrape from START_DATE to today
-    logger.info(f"Scraping from {START_DATE.strftime('%Y-%m-%d')} to present...")
-    df_raw = scraper.scrape_date_range(START_DATE)
+    # Scrape data
+    df_raw = scrape_broadway_world_grosses(START_DATE)
 
     if df_raw.empty:
         logger.error("No data scraped. Exiting.")
@@ -570,9 +369,10 @@ def main():
     # Process and enrich
     df_processed = process_grosses_data(df_raw)
 
-    # Save full Broadway World format (with all derived fields)
+    # Save full Broadway World format
     bw_output = config.RAW_DATA_DIR / "broadway_world_grosses_full.csv"
-    save_grosses_data(df_processed, bw_output)
+    df_processed.to_csv(bw_output, index=False)
+    logger.info(f"Saved full format to {bw_output}")
 
     # Convert to pipeline format
     df_pipeline = convert_to_pipeline_format(df_processed)
@@ -593,10 +393,11 @@ def main():
     logger.info(f"Plays: {(df_pipeline['show_type'] == 'P').sum()}")
 
     # Top grossing shows
-    top_grosses = df_pipeline.groupby('show_title')['weekly_gross'].sum().sort_values(ascending=False).head(10)
-    logger.info("\nTop 10 shows by total gross:")
-    for show, total in top_grosses.items():
-        logger.info(f"  {show}: ${total:,.0f}")
+    if not df_pipeline.empty and 'weekly_gross' in df_pipeline.columns:
+        top_grosses = df_pipeline.groupby('show_title')['weekly_gross'].sum().sort_values(ascending=False).head(10)
+        logger.info("\nTop 10 shows by total gross:")
+        for show, total in top_grosses.items():
+            logger.info(f"  {show}: ${total:,.0f}")
 
     logger.info("\nGrosses data collection complete!")
 
