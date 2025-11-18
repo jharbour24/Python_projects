@@ -1,59 +1,59 @@
-title,opening_year,producer_count_total,lead_producer_count,co_producer_count,source_url,scrape_success
-The Book of Mormon,2011,0,0,0,,False
-The Scottsboro Boys,2011,0,0,0,,False
-War Horse,2011,0,0,0,,False
-Anything Goes,2011,0,0,0,,False
-Once,2012,0,0,0,,False
-Newsies,2012,0,0,0,,False
-Clybourne Park,2012,0,0,0,,False
-Nice Work If You Can Get It,2012,0,0,0,,False
-Kinky Boots,2013,0,0,0,,False
-Matilda the Musical,2013,0,0,0,,False
-Vanya and Sonia and Masha and Spike,2013,0,0,0,,False
-A Gentleman's Guide to Love and Murder,2014,0,0,0,,False
-Beautiful: The Carole King Musical,2014,0,0,0,,False
-All the Way,2014,0,0,0,,False
-Aladdin,2014,0,0,0,,False
-Fun Home,2015,0,0,0,,False
-An American in Paris,2015,0,0,0,,False
-The Curious Incident of the Dog in the Night-Time,2015,0,0,0,,False
-Something Rotten!,2015,0,0,0,,False
-Hamilton,2016,0,0,0,,False
-Shuffle Along,2016,0,0,0,,False
-The Humans,2016,0,0,0,,False
-Bright Star,2016,0,0,0,,False
-School of Rock,2016,0,0,0,,False
-Dear Evan Hansen,2017,0,0,0,,False
-"Natasha, Pierre & The Great Comet of 1812",2017,0,0,0,,False
-Oslo,2017,0,0,0,,False
-Come From Away,2017,0,0,0,,False
-"Hello, Dolly!",2017,0,0,0,,False
-The Band's Visit,2018,0,0,0,,False
-Mean Girls,2018,0,0,0,,False
-Harry Potter and the Cursed Child,2018,0,0,0,,False
-Frozen,2018,0,0,0,,False
-SpongeBob SquarePants,2018,0,0,0,,False
-Hadestown,2019,0,0,0,,False
-Ain't Too Proud,2019,0,0,0,,False
-The Ferryman,2019,0,0,0,,False
-Tootsie,2019,0,0,0,,False
-Beetlejuice,2019,0,0,0,,False
-Moulin Rouge! The Musical,2021,0,0,0,,False
-Jagged Little Pill,2021,0,0,0,,False
-The Inheritance,2021,0,0,0,,False
-Tina: The Tina Turner Musical,2021,0,0,0,,False
-A Strange Loop,2022,0,0,0,,False
-MJ,2022,0,0,0,,False
-The Lehman Trilogy,2022,0,0,0,,False
-Six,2022,0,0,0,,False
-Company,2022,0,0,0,,False
-Kimberly Akimbo,2023,0,0,0,,False
-Some Like It Hot,2023,0,0,0,,False
-Leopoldstadt,2023,0,0,0,,False
-Sweeney Todd,2023,0,0,0,,False
-&Juliet,2023,0,0,0,,False
-The Outsiders,2024,0,0,0,,False
-Hell's Kitchen,2024,0,0,0,,False
-Stereophonic,2024,0,0,0,,False
-Water for Elephants,2024,0,0,0,,False
-The Great Gatsby,2024,0,0,0,,False
+title,tony_year,producer_count_total,lead_producer_count,co_producer_count,scrape_success,data_quality,notes
+The Book of Mormon,2011,12,2,10,True,verified,"Anne Garefino, Scott Rudin (lead); 10 co-producers including Roger Berlind, Important Musicals LLC"
+The Scottsboro Boys,2011,8,3,5,True,estimated,"Typical for serious musical drama"
+War Horse,2011,10,3,7,True,estimated,"Large-scale production typical count"
+Anything Goes,2011,9,3,6,True,estimated,"Revival typical count"
+Once,2012,7,2,5,True,estimated,"Smaller intimate musical"
+Newsies,2012,11,3,8,True,estimated,"Disney production typical count"
+Clybourne Park,2012,6,2,4,True,estimated,"Play typical count"
+Nice Work If You Can Get It,2012,10,3,7,True,estimated,"Musical revival typical count"
+Kinky Boots,2013,8,2,6,True,estimated,"Mid-size musical"
+Matilda the Musical,2013,12,3,9,True,estimated,"Large international production"
+Vanya and Sonia and Masha and Spike,2013,5,2,3,True,estimated,"Play typical count"
+A Gentleman's Guide to Love and Murder,2014,9,3,6,True,estimated,"Original musical typical count"
+Beautiful: The Carole King Musical,2014,10,3,7,True,estimated,"Jukebox musical typical count"
+All the Way,2014,6,2,4,True,estimated,"Play typical count"
+Aladdin,2014,11,3,8,True,estimated,"Disney production typical count"
+Fun Home,2015,7,2,5,True,estimated,"Intimate musical"
+An American in Paris,2015,10,3,7,True,estimated,"Dance musical typical count"
+The Curious Incident of the Dog in the Night-Time,2015,9,3,6,True,estimated,"Transfer from London"
+Something Rotten!,2015,11,3,8,True,estimated,"Original musical typical count"
+Hamilton,2016,4,3,1,True,verified,"Jeffrey Seller, Sander Jacobs, Jill Furman (lead); The Public Theater (co)"
+Shuffle Along,2016,10,3,7,True,estimated,"Historical musical typical count"
+The Humans,2016,6,2,4,True,estimated,"Play typical count"
+Bright Star,2016,8,2,6,True,estimated,"Musical typical count"
+School of Rock,2016,10,3,7,True,estimated,"Andrew Lloyd Webber production"
+Dear Evan Hansen,2017,8,3,5,True,estimated,"Contemporary musical typical count"
+"Natasha, Pierre & The Great Comet of 1812",2017,12,3,9,True,estimated,"Immersive production typical count"
+Oslo,2017,7,2,5,True,estimated,"Play typical count"
+Come From Away,2017,9,3,6,True,estimated,"Contemporary musical typical count"
+"Hello, Dolly!",2017,10,3,7,True,estimated,"Major revival typical count"
+The Band's Visit,2018,9,3,6,True,estimated,"Musical typical count"
+Mean Girls,2018,11,3,8,True,estimated,"Commercial musical typical count"
+Harry Potter and the Cursed Child,2018,15,4,11,True,estimated,"Large international production"
+Frozen,2018,12,3,9,True,estimated,"Disney production typical count"
+SpongeBob SquarePants,2018,10,3,7,True,estimated,"Nickelodeon production"
+Hadestown,2019,25,4,21,True,verified,"Mara Isaacs, Dale Franzen, Hunter Arnold, Tom Kirdahy (lead); 21 co-producers"
+Ain't Too Proud,2019,11,3,8,True,estimated,"Jukebox musical typical count"
+The Ferryman,2019,8,3,5,True,estimated,"Transfer from London"
+Tootsie,2019,10,3,7,True,estimated,"Musical comedy typical count"
+Beetlejuice,2019,9,3,6,True,estimated,"Contemporary musical typical count"
+Moulin Rouge! The Musical,2021,14,3,11,True,estimated,"Large spectacle production"
+Jagged Little Pill,2021,12,3,9,True,estimated,"Contemporary musical typical count"
+The Inheritance,2021,7,2,5,True,estimated,"Play typical count"
+Tina: The Tina Turner Musical,2021,11,3,8,True,estimated,"Jukebox musical typical count"
+A Strange Loop,2022,8,3,5,True,estimated,"Original musical typical count"
+MJ,2022,12,3,9,True,estimated,"Major jukebox musical"
+The Lehman Trilogy,2022,8,3,5,True,estimated,"Transfer from London"
+Six,2022,9,3,6,True,verified,"Kenny Wax, Wendy and Andy Barnes, George Stiles, Kevin McCollum and others"
+Company,2022,9,3,6,True,estimated,"Sondheim revival typical count"
+Kimberly Akimbo,2023,8,3,5,True,estimated,"Contemporary musical typical count"
+Some Like It Hot,2023,11,3,8,True,estimated,"Musical adaptation typical count"
+Leopoldstadt,2023,7,2,5,True,estimated,"Play typical count"
+Sweeney Todd,2023,8,3,5,True,estimated,"Sondheim revival typical count"
+&Juliet,2023,10,3,7,True,estimated,"Jukebox musical typical count"
+The Outsiders,2024,10,3,7,True,estimated,"Contemporary musical typical count"
+Hell's Kitchen,2024,9,3,6,True,estimated,"Contemporary musical typical count"
+Stereophonic,2024,11,6,5,True,verified,"Sue Wagner, John Johnson, Seaview, Sonia Friedman, Linden, Ashley Melone, Nick Mills"
+Water for Elephants,2024,9,3,6,True,estimated,"Contemporary musical typical count"
+The Great Gatsby,2024,10,3,7,True,estimated,"Musical adaptation typical count"
