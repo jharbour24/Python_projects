@@ -174,71 +174,124 @@ class SeleniumProducerScraper:
 
         try:
             self.driver.get(show_url)
-            time.sleep(2)
+            time.sleep(3)  # Increased wait time
 
-            # Look for "Produced by" section
-            # IBDB typically has this in a div or section
-            page_text = self.driver.page_source
+            # Get page source and parse with BeautifulSoup
+            from bs4 import BeautifulSoup
+            html = self.driver.page_source
+            soup = BeautifulSoup(html, 'html.parser')
 
-            # Try to find producer section with various selectors
-            producer_elements = self.driver.find_elements(By.XPATH,
-                "//*[contains(text(), 'Produced by') or contains(text(), 'Producer')]")
+            # Strategy 1: Look for "Produced by" in page text
+            produced_by_elements = soup.find_all(string=re.compile(r'Produced by', re.IGNORECASE))
 
-            if not producer_elements:
-                logger.warning(f"No producer information found on page: {show_url}")
-                return result
+            if produced_by_elements:
+                for elem in produced_by_elements:
+                    parent = elem.parent
+                    # Look for next sibling or child with producer names
+                    producer_container = parent.find_next_sibling() or parent.find_next()
 
-            # Get the parent element that contains the producer list
-            for elem in producer_elements:
-                try:
-                    # Get text from parent or sibling elements
-                    parent = elem.find_element(By.XPATH, "..")
-                    producer_text = parent.text
+                    if producer_container:
+                        producer_text = producer_container.get_text(separator='\n', strip=True)
+                        if producer_text and len(producer_text) > 5:
+                            logger.info(f"Found producer text (Strategy 1): {producer_text[:100]}...")
+                            result = self._parse_producer_text(producer_text, result)
+                            if result['scrape_success']:
+                                return result
 
-                    if producer_text and len(producer_text) > 10:
-                        logger.info(f"Found producer text: {producer_text[:100]}...")
+            # Strategy 2: Look for specific IBDB data structures (tables, divs with producer class)
+            for class_name in ['staff-role', 'production-staff', 'credits', 'staff-list']:
+                producer_sections = soup.find_all(class_=class_name)
+                for section in producer_sections:
+                    section_text = section.get_text(separator='\n', strip=True)
+                    if re.search(r'produc', section_text, re.IGNORECASE):
+                        logger.info(f"Found producer section (Strategy 2 - {class_name}): {section_text[:100]}...")
+                        result = self._parse_producer_text(section_text, result)
+                        if result['scrape_success']:
+                            return result
 
-                        # Parse the producer text
-                        lead_producers = []
-                        co_producers = []
+            # Strategy 3: Look in tables (IBDB often uses tables for credits)
+            tables = soup.find_all('table')
+            for table in tables:
+                table_text = table.get_text(separator='\n', strip=True)
+                if re.search(r'produc', table_text, re.IGNORECASE):
+                    logger.info(f"Found producers in table (Strategy 3): {table_text[:200]}...")
+                    result = self._parse_producer_text(table_text, result)
+                    if result['scrape_success']:
+                        return result
 
-                        # Check for explicit sections
-                        if re.search(r'lead producer', producer_text, re.IGNORECASE):
-                            sections = re.split(r'\n\s*(?=Lead Producer|Co-Producer)', producer_text, flags=re.IGNORECASE)
-                            for section in sections:
-                                if re.match(r'lead producer', section, re.IGNORECASE):
-                                    section_text = re.sub(r'^lead producer[s]?\s*:?\s*', '', section, flags=re.IGNORECASE)
-                                    lead_producers.extend(parse_producer_list(section_text))
-                                elif re.match(r'co-?producer', section, re.IGNORECASE):
-                                    section_text = re.sub(r'^co-?producer[s]?\s*:?\s*', '', section, flags=re.IGNORECASE)
-                                    co_producers.extend(parse_producer_list(section_text))
-                        else:
-                            # No explicit distinction
-                            all_producers = parse_producer_list(producer_text)
-                            lead_producers = all_producers
-                            co_producers = []
+            # Strategy 4: Broad search - any element containing "producer"
+            all_text = soup.get_text(separator='\n')
+            lines = all_text.split('\n')
 
-                        result['producers_list'] = lead_producers + co_producers
-                        result['lead_producers_list'] = lead_producers
-                        result['co_producers_list'] = co_producers
-                        result['producer_count_total'] = len(result['producers_list'])
-                        result['lead_producer_count'] = len(lead_producers)
-                        result['co_producer_count'] = len(co_producers)
-                        result['scrape_success'] = True
+            producer_section_lines = []
+            in_producer_section = False
 
-                        logger.info(f"Found {result['producer_count_total']} producers "
-                                  f"({result['lead_producer_count']} lead, {result['co_producer_count']} co-producers)")
-
-                        break
-
-                except Exception as e:
-                    logger.debug(f"Error parsing producer element: {e}")
+            for line in lines:
+                if re.search(r'produced?\s+by', line, re.IGNORECASE):
+                    in_producer_section = True
                     continue
 
+                if in_producer_section:
+                    if line.strip() and not re.search(r'(director|design|music|choreograph)', line, re.IGNORECASE):
+                        producer_section_lines.append(line.strip())
+                    elif len(producer_section_lines) > 0 and re.search(r'(director|design|music)', line, re.IGNORECASE):
+                        break  # End of producer section
+
+                    if len(producer_section_lines) > 20:  # Safety limit
+                        break
+
+            if producer_section_lines:
+                producer_text = '\n'.join(producer_section_lines)
+                logger.info(f"Found producers (Strategy 4 - line parsing): {producer_text[:100]}...")
+                result = self._parse_producer_text(producer_text, result)
+                if result['scrape_success']:
+                    return result
+
+            logger.warning(f"No producer information found on page: {show_url}")
             return result
 
         except Exception as e:
             logger.error(f"Error scraping producers from {show_url}: {e}")
+            return result
+
+    def _parse_producer_text(self, producer_text: str, result: Dict) -> Dict:
+        """Parse producer text and update result dictionary."""
+        try:
+            lead_producers = []
+            co_producers = []
+
+            # Check for explicit sections
+            if re.search(r'lead producer', producer_text, re.IGNORECASE):
+                sections = re.split(r'\n\s*(?=Lead Producer|Co-Producer)', producer_text, flags=re.IGNORECASE)
+                for section in sections:
+                    if re.match(r'lead producer', section, re.IGNORECASE):
+                        section_text = re.sub(r'^lead producer[s]?\s*:?\s*', '', section, flags=re.IGNORECASE)
+                        lead_producers.extend(parse_producer_list(section_text))
+                    elif re.match(r'co-?producer', section, re.IGNORECASE):
+                        section_text = re.sub(r'^co-?producer[s]?\s*:?\s*', '', section, flags=re.IGNORECASE)
+                        co_producers.extend(parse_producer_list(section_text))
+            else:
+                # No explicit distinction
+                all_producers = parse_producer_list(producer_text)
+                lead_producers = all_producers
+                co_producers = []
+
+            result['producers_list'] = lead_producers + co_producers
+            result['lead_producers_list'] = lead_producers
+            result['co_producers_list'] = co_producers
+            result['producer_count_total'] = len(result['producers_list'])
+            result['lead_producer_count'] = len(lead_producers)
+            result['co_producer_count'] = len(co_producers)
+            result['scrape_success'] = result['producer_count_total'] > 0
+
+            if result['scrape_success']:
+                logger.info(f"Parsed {result['producer_count_total']} producers "
+                          f"({result['lead_producer_count']} lead, {result['co_producer_count']} co-producers)")
+
+            return result
+
+        except Exception as e:
+            logger.error(f"Error parsing producer text: {e}")
             return result
 
 
