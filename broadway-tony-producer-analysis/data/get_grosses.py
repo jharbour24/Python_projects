@@ -224,7 +224,14 @@ def scrape_broadway_world_grosses(start_date: datetime = START_DATE) -> pd.DataF
         for type_param, type_code in show_types_to_scrape:
             try:
                 params = {"week": date_str, "typer": type_param}
-                response = requests.get(BASE_URL, params=params, timeout=20)
+                headers = {
+                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                    'Accept-Language': 'en-US,en;q=0.9',
+                    'Referer': 'https://www.broadwayworld.com/',
+                    'Connection': 'keep-alive',
+                }
+                response = requests.get(BASE_URL, params=params, headers=headers, timeout=20)
                 response.raise_for_status()
 
                 html_content = response.text
