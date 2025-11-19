@@ -91,11 +91,28 @@ class ComprehensiveBroadwayScraper:
             logger.info("⚠️  The browser will navigate to Hadestown page - don't close it!")
             test_url = "https://www.ibdb.com/broadway-production/hadestown-520711"
 
-            self.driver.get(test_url)
-            logger.info("Waiting for page to load (8 seconds)...")
-            time.sleep(8)
+            # Check if window is still alive
+            try:
+                current_url = self.driver.current_url
+                logger.info(f"Browser is at: {current_url}")
+            except Exception as e:
+                logger.error(f"Browser window already closed before navigation: {e}")
+                return False
 
-            html = self.driver.page_source
+            logger.info(f"Navigating to: {test_url}")
+            self.driver.get(test_url)
+
+            logger.info("Waiting for page to load (10 seconds)...")
+            time.sleep(10)
+
+            # Check window is still alive after navigation
+            try:
+                html = self.driver.page_source
+            except Exception as e:
+                logger.error(f"Cannot get page source - window may have closed: {e}")
+                return False
+
+            logger.info(f"Page loaded - {len(html)} characters")
 
             if "Sorry, you have been blocked" in html or "Just a moment" in html:
                 logger.error("✗ Cloudflare is blocking")
@@ -106,10 +123,13 @@ class ComprehensiveBroadwayScraper:
                 return True
 
             logger.warning("⚠ Page loaded but content unclear")
+            logger.info(f"First 500 chars: {html[:500]}")
             return False
 
         except Exception as e:
             logger.error(f"Error testing bypass: {e}")
+            import traceback
+            logger.error(traceback.format_exc())
             return False
 
     def get_all_broadway_shows(self, start_year: int = 2010) -> List[Dict]:
