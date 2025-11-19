@@ -27,7 +27,7 @@ def main():
     logger.info("Previous count: 25 (4 lead, 21 co) - INCORRECT")
     logger.info("="*60)
 
-    hadestown_url = "https://www.ibdb.com/broadway-production/hadestown-504445"
+    hadestown_url = "https://www.ibdb.com/broadway-production/hadestown-520711"
 
     try:
         logger.info("\nInitializing scraper...")

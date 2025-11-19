@@ -52,7 +52,7 @@ def test_basic_scraping():
     try:
         logger.info("\nTesting IBDB access (Hadestown page)...")
         logger.info("⚠ DO NOT close the browser window that opens!")
-        url = "https://www.ibdb.com/broadway-production/hadestown-504445"
+        url = "https://www.ibdb.com/broadway-production/hadestown-520711"
 
         driver.get(url)
         time.sleep(8)  # Wait longer for page load and Cloudflare

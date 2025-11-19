@@ -82,7 +82,7 @@ class ComprehensiveBroadwayScraper:
         """Test if Cloudflare bypass is working."""
         try:
             logger.info("Testing Cloudflare bypass...")
-            test_url = "https://www.ibdb.com/broadway-production/Hamilton-499521"
+            test_url = "https://www.ibdb.com/broadway-production/hadestown-520711"
 
             self.driver.get(test_url)
             time.sleep(5)
@@ -93,7 +93,7 @@ class ComprehensiveBroadwayScraper:
                 logger.error("✗ Cloudflare is blocking")
                 return False
 
-            if "Produced by" in html or "Hamilton" in html:
+            if "Produced by" in html or "Hadestown" in html:
                 logger.info("✓ Cloudflare bypass successful")
                 return True
 
