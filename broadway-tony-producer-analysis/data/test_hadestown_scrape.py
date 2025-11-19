@@ -42,6 +42,36 @@ def main():
         logger.info(f"\nScraping Hadestown: {hadestown_url}")
         result = scraper.scrape_producers_detailed(hadestown_url)
 
+        # Save HTML for debugging
+        if not result['scrape_success']:
+            debug_path = Path(__file__).parent / 'raw' / 'hadestown_debug.html'
+            logger.info(f"\nSaving page HTML for debugging: {debug_path}")
+
+            # Re-fetch to save HTML
+            from scrape_all_broadway_shows import ComprehensiveBroadwayScraper
+            scraper2 = ComprehensiveBroadwayScraper()
+            scraper2.driver.get(hadestown_url)
+            import time
+            time.sleep(4)
+            html = scraper2.driver.page_source
+
+            debug_path.parent.mkdir(exist_ok=True)
+            with open(debug_path, 'w', encoding='utf-8') as f:
+                f.write(html)
+
+            logger.info(f"HTML saved. Check the file to see page structure.")
+
+            # Also show snippet of text
+            from bs4 import BeautifulSoup
+            soup = BeautifulSoup(html, 'html.parser')
+            text = soup.get_text()
+            logger.info(f"\nFirst 3000 characters of page text:")
+            logger.info("-" * 60)
+            logger.info(text[:3000])
+            logger.info("-" * 60)
+
+            scraper2.driver.quit()
+
         # Display results
         logger.info("\n" + "="*60)
         logger.info("RESULTS")
