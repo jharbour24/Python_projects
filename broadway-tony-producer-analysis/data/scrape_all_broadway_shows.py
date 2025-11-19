@@ -55,15 +55,21 @@ class ComprehensiveBroadwayScraper:
         try:
             # Initialize undetected Chrome - simplest method for compatibility
             # Let undetected-chromedriver handle all the stealth setup automatically
-            logger.info("Starting Chrome... (DO NOT close the browser window)")
+            logger.info("=" * 60)
+            logger.info("⚠️  IMPORTANT: A Chrome window will open")
+            logger.info("⚠️  DO NOT CLOSE IT - the scraper needs it!")
+            logger.info("⚠️  It will close automatically when done")
+            logger.info("=" * 60)
+
             self.driver = uc.Chrome()
 
-            # Wait a moment for browser to fully initialize
-            time.sleep(2)
+            # Wait for browser to fully initialize
+            logger.info("Chrome opened - waiting for it to stabilize...")
+            time.sleep(3)
 
             self.wait = WebDriverWait(self.driver, 10)
 
-            logger.info("✓ Undetected ChromeDriver initialized")
+            logger.info("✓ ChromeDriver ready")
 
         except Exception as e:
             logger.error(f"Failed to initialize ChromeDriver: {e}")
@@ -81,11 +87,13 @@ class ComprehensiveBroadwayScraper:
     def test_cloudflare_bypass(self) -> bool:
         """Test if Cloudflare bypass is working."""
         try:
-            logger.info("Testing Cloudflare bypass...")
+            logger.info("\nTesting Cloudflare bypass on IBDB...")
+            logger.info("⚠️  The browser will navigate to Hadestown page - don't close it!")
             test_url = "https://www.ibdb.com/broadway-production/hadestown-520711"
 
             self.driver.get(test_url)
-            time.sleep(5)
+            logger.info("Waiting for page to load (8 seconds)...")
+            time.sleep(8)
 
             html = self.driver.page_source
 
