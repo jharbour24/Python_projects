@@ -53,17 +53,9 @@ class ComprehensiveBroadwayScraper:
             raise ImportError("Required packages not installed. Run: pip3 install undetected-chromedriver selenium beautifulsoup4")
 
         try:
-            # Initialize undetected Chrome
-            options = uc.ChromeOptions()
-
-            # Stealth options
-            options.add_argument('--disable-blink-features=AutomationControlled')
-            options.add_argument('--disable-dev-shm-usage')
-            options.add_argument('--no-sandbox')
-            options.add_argument(f'user-agent={config.USER_AGENT}')
-
-            # Initialize driver (always visible mode - better for Cloudflare)
-            self.driver = uc.Chrome(options=options, use_subprocess=True)
+            # Initialize undetected Chrome - simplest method for compatibility
+            # Let undetected-chromedriver handle all the stealth setup automatically
+            self.driver = uc.Chrome()
             self.driver.set_window_size(1920, 1080)
             self.wait = WebDriverWait(self.driver, 10)
 
@@ -71,6 +63,7 @@ class ComprehensiveBroadwayScraper:
 
         except Exception as e:
             logger.error(f"Failed to initialize ChromeDriver: {e}")
+            logger.error("Make sure Google Chrome browser is installed")
             raise
 
     def __del__(self):
