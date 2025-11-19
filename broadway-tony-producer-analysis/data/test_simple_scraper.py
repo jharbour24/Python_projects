@@ -1,0 +1,113 @@
+"""
+Simple working test of undetected-chromedriver for IBDB scraping.
+This version avoids all compatibility issues.
+
+Run this first to verify your setup works before running the full scraper.
+"""
+
+import time
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).parent.parent))
+from utils import setup_logger
+
+logger = setup_logger(__name__)
+
+def test_basic_scraping():
+    """Test basic undetected-chromedriver setup."""
+
+    logger.info("="*60)
+    logger.info("TESTING UNDETECTED-CHROMEDRIVER SETUP")
+    logger.info("="*60)
+
+    # Check imports
+    try:
+        import undetected_chromedriver as uc
+        from bs4 import BeautifulSoup
+        logger.info("✓ Required packages installed")
+    except ImportError as e:
+        logger.error(f"✗ Missing package: {e}")
+        logger.info("Install with: pip3 install undetected-chromedriver beautifulsoup4")
+        return False
+
+    # Initialize driver (simplest possible way)
+    try:
+        logger.info("\nInitializing Chrome (this may take 30-60 seconds first time)...")
+
+        # Simplest initialization - let undetected-chromedriver handle everything
+        driver = uc.Chrome()
+
+        logger.info("✓ Chrome initialized successfully")
+
+    except Exception as e:
+        logger.error(f"✗ Failed to initialize Chrome: {e}")
+        logger.info("\nTroubleshooting:")
+        logger.info("1. Make sure Google Chrome is installed")
+        logger.info("2. Try: pip3 install --upgrade undetected-chromedriver")
+        logger.info("3. Close all Chrome windows and try again")
+        return False
+
+    # Test IBDB access
+    try:
+        logger.info("\nTesting IBDB access (Hadestown page)...")
+        url = "https://www.ibdb.com/broadway-production/hadestown-504445"
+
+        driver.get(url)
+        time.sleep(5)  # Wait for page load and Cloudflare
+
+        html = driver.page_source
+        soup = BeautifulSoup(html, 'html.parser')
+
+        # Check for Cloudflare block
+        if "Sorry, you have been blocked" in html or "Just a moment" in html:
+            logger.error("✗ Cloudflare is blocking access")
+            logger.info("This may vary by network/time - try again later")
+            driver.quit()
+            return False
+
+        # Check for actual content
+        if "Hadestown" in html and "Produced" in html:
+            logger.info("✓ Successfully accessed IBDB page!")
+            logger.info("✓ No Cloudflare blocking detected")
+
+            # Try to find producer text
+            page_text = soup.get_text()
+            if "Mara Isaacs" in page_text or "producer" in page_text.lower():
+                logger.info("✓ Producer information visible on page")
+
+            # Show first 500 chars
+            logger.info(f"\nFirst 500 characters of page:")
+            logger.info("-" * 60)
+            logger.info(page_text[:500])
+            logger.info("-" * 60)
+
+            driver.quit()
+            return True
+        else:
+            logger.warning("⚠ Page loaded but content unclear")
+            logger.info(f"Page length: {len(html)} characters")
+            driver.quit()
+            return False
+
+    except Exception as e:
+        logger.error(f"✗ Error accessing IBDB: {e}")
+        try:
+            driver.quit()
+        except:
+            pass
+        return False
+
+
+if __name__ == '__main__':
+    success = test_basic_scraping()
+
+    print("\n" + "="*60)
+    if success:
+        print("✓✓✓ ALL TESTS PASSED ✓✓✓")
+        print("You can now run the full scraper:")
+        print("  python3 scrape_all_broadway_shows.py")
+    else:
+        print("✗✗✗ TESTS FAILED ✗✗✗")
+        print("Fix the issues above before running the full scraper")
+    print("="*60)
