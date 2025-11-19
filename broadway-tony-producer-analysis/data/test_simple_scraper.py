@@ -66,27 +66,50 @@ def test_basic_scraping():
             driver.quit()
             return False
 
-        # Check for actual content
-        if "Hadestown" in html and "Produced" in html:
-            logger.info("✓ Successfully accessed IBDB page!")
-            logger.info("✓ No Cloudflare blocking detected")
+        # Check what's actually on the page
+        page_text = soup.get_text()
 
-            # Try to find producer text
+        # Show first 2000 chars to see what we got
+        logger.info(f"\nFirst 2000 characters of page:")
+        logger.info("-" * 60)
+        logger.info(page_text[:2000])
+        logger.info("-" * 60)
+
+        # Check for Cloudflare challenge page
+        if "Checking your browser" in page_text or "Cloudflare" in page_text[:500]:
+            logger.warning("⚠ Cloudflare challenge page detected")
+            logger.info("Waiting 10 seconds for challenge to complete...")
+            time.sleep(10)
+
+            # Try again after waiting
+            html = driver.page_source
+            soup = BeautifulSoup(html, 'html.parser')
             page_text = soup.get_text()
-            if "Mara Isaacs" in page_text or "producer" in page_text.lower():
+
+        # Check for actual content
+        if "Hadestown" in html or "Hadestown" in page_text:
+            logger.info("✓ Successfully accessed IBDB page!")
+            logger.info("✓ Found Hadestown in page content")
+
+            # Check for producer info
+            if "Produced" in html or "producer" in page_text.lower():
                 logger.info("✓ Producer information visible on page")
 
-            # Show first 500 chars
-            logger.info(f"\nFirst 500 characters of page:")
-            logger.info("-" * 60)
-            logger.info(page_text[:500])
-            logger.info("-" * 60)
+                # Find producer section
+                if "Mara Isaacs" in page_text:
+                    logger.info("✓ Found Mara Isaacs (lead producer of Hadestown)")
 
             driver.quit()
             return True
         else:
-            logger.warning("⚠ Page loaded but content unclear")
+            logger.warning("⚠ Page loaded but Hadestown content not found")
             logger.info(f"Page length: {len(html)} characters")
+            logger.info(f"Text length: {len(page_text)} characters")
+
+            # Check what we did get
+            if "404" in page_text or "not found" in page_text.lower():
+                logger.error("Page returned 404 - URL may be wrong")
+
             driver.quit()
             return False
 
