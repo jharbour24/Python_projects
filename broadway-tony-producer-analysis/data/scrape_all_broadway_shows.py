@@ -59,16 +59,14 @@ class ComprehensiveBroadwayScraper:
             # Initialize undetected Chrome
             options = uc.ChromeOptions()
 
-            if headless:
-                options.add_argument('--headless=new')
-
             # Stealth options
             options.add_argument('--disable-blink-features=AutomationControlled')
             options.add_argument('--disable-dev-shm-usage')
             options.add_argument('--no-sandbox')
             options.add_argument(f'user-agent={config.USER_AGENT}')
 
-            self.driver = uc.Chrome(options=options, version_main=None)
+            # Pass headless directly to Chrome (not as option)
+            self.driver = uc.Chrome(options=options, headless=headless, version_main=None)
             self.driver.set_window_size(1920, 1080)
             self.wait = WebDriverWait(self.driver, 10)
 
