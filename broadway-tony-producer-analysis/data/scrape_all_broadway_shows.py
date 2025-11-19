@@ -55,8 +55,12 @@ class ComprehensiveBroadwayScraper:
         try:
             # Initialize undetected Chrome - simplest method for compatibility
             # Let undetected-chromedriver handle all the stealth setup automatically
+            logger.info("Starting Chrome... (DO NOT close the browser window)")
             self.driver = uc.Chrome()
-            self.driver.set_window_size(1920, 1080)
+
+            # Wait a moment for browser to fully initialize
+            time.sleep(2)
+
             self.wait = WebDriverWait(self.driver, 10)
 
             logger.info("✓ Undetected ChromeDriver initialized")
