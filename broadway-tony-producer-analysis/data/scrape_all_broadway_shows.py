@@ -132,6 +132,71 @@ class ComprehensiveBroadwayScraper:
             logger.error(traceback.format_exc())
             return False
 
+    def search_ibdb(self, title: str) -> Optional[str]:
+        """
+        Search IBDB for a show and return its URL.
+
+        Parameters
+        ----------
+        title : str
+            Show title to search
+
+        Returns
+        -------
+        str or None
+            URL of the show page, or None if not found
+        """
+        try:
+            from urllib.parse import quote_plus
+
+            # Try direct URL construction first
+            # IBDB URLs are like: /broadway-production/Show-Name-ID
+            # We'll construct a guess and see if it works
+            normalized_title = title.replace(' ', '+').replace("'", "")
+            direct_url = f"https://www.ibdb.com/broadway-production/{quote_plus(title)}"
+
+            logger.info(f"  Trying direct URL for '{title}'...")
+            self.driver.get(direct_url)
+            time.sleep(4)
+
+            html = self.driver.page_source
+
+            # Check if we found a real page (not 404)
+            if "Page Not Found" not in html and "404" not in html and title.lower() in html.lower():
+                logger.info(f"  ✓ Found via direct URL")
+                return direct_url
+
+            # Otherwise, use search
+            search_url = f"https://www.ibdb.com/search?q={quote_plus(title)}&type=production"
+            logger.info(f"  Searching IBDB...")
+
+            self.driver.get(search_url)
+            time.sleep(4)
+
+            html = self.driver.page_source
+            soup = BeautifulSoup(html, 'html.parser')
+
+            # Find first production link
+            production_links = soup.find_all('a', href=re.compile(r'/broadway-production/'))
+
+            if production_links:
+                first_link = production_links[0]
+                href = first_link.get('href')
+
+                # Make sure it's a full URL
+                if href.startswith('/'):
+                    href = f"https://www.ibdb.com{href}"
+
+                logger.info(f"  ✓ Found via search")
+                return href
+            else:
+                logger.warning(f"  ✗ No results found")
+                return None
+
+        except Exception as e:
+            logger.error(f"  Error searching for {title}: {e}")
+            return None
+
     def get_all_broadway_shows(self, start_year: int = 2010) -> List[Dict]:
         """
         Get complete list of all Broadway shows since start_year.
