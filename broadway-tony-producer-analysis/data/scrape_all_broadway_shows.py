@@ -61,21 +61,15 @@ class ComprehensiveBroadwayScraper:
             logger.info("⚠️  It will close automatically when done")
             logger.info("=" * 60)
 
-            # Use subprocess mode for better stability on Mac
-            self.driver = uc.Chrome(use_subprocess=True)
+            self.driver = uc.Chrome()
 
-            # Wait for browser to fully initialize
+            # Wait a moment for browser to fully initialize
             logger.info("Chrome opened - waiting for it to stabilize...")
-            time.sleep(5)
-
-            # Navigate to a simple page first to "wake up" the browser
-            logger.info("Initializing browser with test page...")
-            self.driver.get("about:blank")
-            time.sleep(2)
+            time.sleep(3)
 
             self.wait = WebDriverWait(self.driver, 10)
 
-            logger.info("✓ ChromeDriver ready")
+            logger.info("✓ Undetected ChromeDriver initialized")
 
         except Exception as e:
             logger.error(f"Failed to initialize ChromeDriver: {e}")
