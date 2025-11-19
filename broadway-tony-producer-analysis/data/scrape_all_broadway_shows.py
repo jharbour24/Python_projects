@@ -217,7 +217,15 @@ class ComprehensiveBroadwayScraper:
 
         try:
             self.driver.get(show_url)
-            time.sleep(4)
+
+            # Wait longer for JavaScript to load the actual content
+            time.sleep(8)
+
+            # Scroll down to trigger lazy-loaded content
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(2)
+            self.driver.execute_script("window.scrollTo(0, 0);")
+            time.sleep(2)
 
             html = self.driver.page_source
             soup = BeautifulSoup(html, 'html.parser')
