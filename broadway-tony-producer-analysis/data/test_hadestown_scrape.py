@@ -31,7 +31,7 @@ def main():
 
     try:
         logger.info("\nInitializing scraper...")
-        scraper = ComprehensiveBroadwayScraper(headless=False)
+        scraper = ComprehensiveBroadwayScraper()
 
         # Test Cloudflare bypass first
         if not scraper.test_cloudflare_bypass():

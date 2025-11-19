@@ -43,14 +43,11 @@ except ImportError:
 class ComprehensiveBroadwayScraper:
     """Scraper to get ALL Broadway shows and accurate producer data."""
 
-    def __init__(self, headless: bool = False):
+    def __init__(self):
         """
         Initialize comprehensive scraper.
 
-        Parameters
-        ----------
-        headless : bool
-            Run browser in headless mode (less reliable for Cloudflare bypass)
+        Always runs in visible (non-headless) mode for better Cloudflare bypass.
         """
         if not UNDETECTED_AVAILABLE:
             raise ImportError("Required packages not installed. Run: pip3 install undetected-chromedriver selenium beautifulsoup4")
@@ -65,8 +62,8 @@ class ComprehensiveBroadwayScraper:
             options.add_argument('--no-sandbox')
             options.add_argument(f'user-agent={config.USER_AGENT}')
 
-            # Pass headless directly to Chrome (not as option)
-            self.driver = uc.Chrome(options=options, headless=headless, version_main=None)
+            # Initialize driver (always visible mode - better for Cloudflare)
+            self.driver = uc.Chrome(options=options, use_subprocess=True)
             self.driver.set_window_size(1920, 1080)
             self.wait = WebDriverWait(self.driver, 10)
 
@@ -406,7 +403,7 @@ def main():
     # Initialize scraper
     try:
         logger.info("\nInitializing ChromeDriver (may take 30-60s first time)...")
-        scraper = ComprehensiveBroadwayScraper(headless=False)
+        scraper = ComprehensiveBroadwayScraper()
 
         # Test Cloudflare bypass
         if not scraper.test_cloudflare_bypass():
