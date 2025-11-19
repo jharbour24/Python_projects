@@ -356,30 +356,50 @@ class ComprehensiveBroadwayScraper:
         # Remove section headers
         text = re.sub(r'(Produced by|Producer[s]?|Lead Producer[s]?|Co-Producer[s]?|Associate Producer[s]?|Executive Producer[s]?)\s*:?\s*', '', text, flags=re.IGNORECASE)
 
-        # Split by common delimiters
-        # Producers are usually separated by: commas, semicolons, "and", newlines
-        parts = re.split(r'[,;\n]|\s+and\s+', text)
+        # Split by newlines first (primary delimiter on IBDB)
+        lines = text.split('\n')
 
-        for part in parts:
-            part = part.strip()
+        for line in lines:
+            line = line.strip()
 
-            # Skip empty or very short strings
-            if len(part) < 3:
+            # Skip empty lines
+            if len(line) < 3:
                 continue
 
-            # Skip common non-name text
+            # STOP if we hit production history text
+            stop_patterns = [
+                r'received its .* Premiere',
+                r'Additional development',
+                r'World Premiere',
+                r'Off-Broadway',
+                r'originally produced',
+                r'first produced',
+            ]
+
+            should_stop = False
+            for pattern in stop_patterns:
+                if re.search(pattern, line, re.IGNORECASE):
+                    should_stop = True
+                    break
+
+            if should_stop:
+                # Stop parsing - we've moved past producer credits
+                break
+
+            # Skip common non-producer text
             skip_patterns = [
                 r'^by$',
                 r'^for$',
                 r'^in association with',
                 r'^presented by',
                 r'^\d+$',  # Just numbers
-                r'^(directed|choreograph|music|book|lyrics|design|cast)',  # Other credits
+                r'^\d{4}$',  # Just years
+                r'^(directed|choreograph|music|book|lyrics|design|cast|scenic|lighting|costume|sound)',  # Other credits
             ]
 
             should_skip = False
             for pattern in skip_patterns:
-                if re.search(pattern, part, re.IGNORECASE):
+                if re.search(pattern, line, re.IGNORECASE):
                     should_skip = True
                     break
 
@@ -387,16 +407,16 @@ class ComprehensiveBroadwayScraper:
                 continue
 
             # Clean up the name
-            part = re.sub(r'\s+', ' ', part)  # Normalize whitespace
-            part = part.strip('.,;:-()[]{}')  # Remove surrounding punctuation
+            line = re.sub(r'\s+', ' ', line)  # Normalize whitespace
+            line = line.strip('.,;:-()[]{}')  # Remove surrounding punctuation
 
             # Must have at least one letter
-            if not re.search(r'[a-zA-Z]', part):
+            if not re.search(r'[a-zA-Z]', line):
                 continue
 
             # Add to list if it looks like a name/organization
-            if len(part) >= 3:
-                producers.append(part)
+            if len(line) >= 3:
+                producers.append(line)
 
         return producers
 
