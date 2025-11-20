@@ -95,6 +95,11 @@ class BrowserIBDBScraper:
         result = {
             'show_name': show_name,
             'ibdb_url': None,
+            'num_lead_producers': 0,
+            'num_producers': 0,
+            'num_co_producers': 0,
+            'num_associate_producers': 0,
+            'num_produced_in_association_with': 0,
             'num_total_producers': None,
             'scrape_status': 'pending',
             'scrape_notes': ''
@@ -152,11 +157,16 @@ class BrowserIBDBScraper:
             # Step 4: Extract producer information using Selenium element finding
             producer_data = self.parse_producers_from_page(show_name)
 
-            if producer_data['num_total_producers'] is not None:
+            if producer_data['num_total_producers'] is not None and producer_data['num_total_producers'] > 0:
+                result['num_lead_producers'] = producer_data['num_lead_producers']
+                result['num_producers'] = producer_data['num_producers']
+                result['num_co_producers'] = producer_data['num_co_producers']
+                result['num_associate_producers'] = producer_data['num_associate_producers']
+                result['num_produced_in_association_with'] = producer_data['num_produced_in_association_with']
                 result['num_total_producers'] = producer_data['num_total_producers']
                 result['scrape_status'] = 'success'
                 result['scrape_notes'] = 'Successfully scraped'
-                self.logger.info(f"✓ SUCCESS: Found {producer_data['num_total_producers']} producers")
+                self.logger.info(f"✓ SUCCESS: Found {producer_data['num_total_producers']} total producers")
             else:
                 result['scrape_status'] = 'parse_failed'
                 result['scrape_notes'] = 'Could not find producer information on page'
@@ -174,107 +184,200 @@ class BrowserIBDBScraper:
         """
         Parse producer information directly from the current browser page using Selenium.
 
+        IBDB lists producers in different categories:
+        - Lead Producer(s)
+        - Produced by
+        - Co-Produced by
+        - Associate Producer(s)
+        - Produced in association with
+
         Args:
             show_name: Name of show (for logging)
 
         Returns:
-            Dictionary with producer count
+            Dictionary with producer counts by type
         """
-        producer_names = set()
+        lead_producers = set()
+        producers = set()
+        co_producers = set()
+        associate_producers = set()
+        produced_in_association_with = set()
+
+        def extract_names_from_text(text: str) -> set:
+            """Helper function to extract and clean producer names from text."""
+            if not text:
+                return set()
+
+            # Remove parenthetical notes before splitting
+            text = re.sub(r'\s*\([^)]+\)', '', text)
+
+            # Replace " and " with comma for consistent splitting
+            text = re.sub(r'\s+and\s+', ', ', text)
+
+            # Split by commas and semicolons
+            names = re.split(r'[,;]', text)
+
+            cleaned_names = set()
+            for name in names:
+                clean_name = name.strip()
+                clean_name = ' '.join(clean_name.split())
+
+                if clean_name and len(clean_name) > 2:
+                    # Filter out section headers and narrative text
+                    if not any(skip in clean_name.lower() for skip in [
+                        'credits', 'cast', 'orchestra', 'staff', 'opening night',
+                        'closing night', 'performances', 'theatres', 'directed',
+                        'choreograph', 'design', 'manager', 'world premiere',
+                        'was presented', 'received its'
+                    ]):
+                        cleaned_names.add(clean_name)
+
+            return cleaned_names
 
         try:
             # Get all text on the page
             page_text = self.driver.find_element(By.TAG_NAME, 'body').text
+            lines = page_text.split('\n')
 
-            # Look for "Produced by" section in the text
-            if 'Produced by' in page_text:
-                # Split by lines to find the section
-                lines = page_text.split('\n')
+            # Define producer patterns to search for
+            producer_patterns = {
+                'lead': r'Lead Producer[s]?:(.+?)(?:;|$)',
+                'standard': r'Produced by(.+?)(?:;|$)',
+                'co': r'Co-Produced by(.+?)(?:;|$)',
+                'associate': r'Associate Producer[s]?:(.+?)(?:;|$)',
+                'in_association': r'Produced in association with(.+?)(?:;|$)'
+            }
 
-                # Find the line with "Produced by"
-                for i, line in enumerate(lines):
-                    if 'Produced by' in line:
-                        # Extract the producer text (could be on same line or next lines)
-                        producer_text = line.replace('Produced by', '').strip()
+            # Search for each producer type
+            i = 0
+            while i < len(lines):
+                line = lines[i]
 
-                        # Sometimes producers span multiple lines, collect next lines until we hit a section header or narrative text
-                        j = i + 1
-                        while j < len(lines) and lines[j].strip():
-                            next_line = lines[j].strip()
+                # Check for Lead Producer
+                if re.search(r'Lead Producer[s]?:', line):
+                    self.logger.info(f"Found Lead Producer section")
+                    producer_text = re.sub(r'Lead Producer[s]?:', '', line).strip()
 
-                            # Stop if we hit another section header
-                            if any(section in next_line for section in [
-                                'Credits', 'Opening Night', 'Closing Night', 'Cast',
-                                'Theatres', 'Performances', 'Musical Numbers', 'Productions'
-                            ]):
-                                break
+                    # Collect continuation lines
+                    j = i + 1
+                    while j < len(lines) and lines[j].strip() and not self._is_stop_line(lines[j]):
+                        producer_text += ' ' + lines[j].strip()
+                        j += 1
 
-                            # Stop if we hit narrative text (premiere info, history, etc.)
-                            if any(narrative in next_line.lower() for narrative in [
-                                'world premiere', 'received its', 'was presented',
-                                'originally produced', 'first produced', 'premiered at'
-                            ]):
-                                break
+                    lead_producers = extract_names_from_text(producer_text)
+                    self.logger.info(f"  Lead Producers: {len(lead_producers)}")
+                    for p in lead_producers:
+                        self.logger.info(f"    → {p}")
+                    i = j
+                    continue
 
-                            # Stop if we hit crew/creative credits (not producers)
-                            if any(credit in next_line for credit in [
-                                'Directed by', 'Choreographed by', 'Choreography by',
-                                'Scenic Design', 'Costume Design', 'Lighting Design',
-                                'Sound Design', 'Music Director', 'Musical Director',
-                                'Conducted by', 'General Manager', 'Company Manager',
-                                'Stage Manager', 'Technical Supervisor'
-                            ]):
-                                break
+                # Check for standard "Produced by"
+                if line.strip().startswith('Produced by') and 'Co-Produced' not in line and 'in association' not in line:
+                    self.logger.info(f"Found Produced by section")
+                    producer_text = re.sub(r'Produced by', '', line).strip()
 
-                            # Stop if line contains dates or years (likely not producer names)
-                            if re.search(r'\d{4}|\d{1,2}/\d{1,2}', next_line):
-                                break
+                    # Collect continuation lines
+                    j = i + 1
+                    while j < len(lines) and lines[j].strip() and not self._is_stop_line(lines[j]):
+                        producer_text += ' ' + lines[j].strip()
+                        j += 1
 
-                            # Add this line to producer text
-                            producer_text += ' ' + next_line
-                            j += 1
+                    producers = extract_names_from_text(producer_text)
+                    self.logger.info(f"  Producers: {len(producers)}")
+                    for p in producers:
+                        self.logger.info(f"    → {p}")
+                    i = j
+                    continue
 
-                        self.logger.info(f"Raw producer text: {producer_text[:200]}...")
+                # Check for Co-Produced by
+                if 'Co-Produced by' in line:
+                    self.logger.info(f"Found Co-Produced by section")
+                    producer_text = re.sub(r'Co-Produced by', '', line).strip()
 
-                        # Parse the producer text
-                        if producer_text:
-                            # First, remove ALL parenthetical notes (before splitting)
-                            # This handles cases like "The Public Theater (Oskar Eustis, Artistic Director)"
-                            producer_text = re.sub(r'\s*\([^)]+\)', '', producer_text)
+                    # Collect continuation lines
+                    j = i + 1
+                    while j < len(lines) and lines[j].strip() and not self._is_stop_line(lines[j]):
+                        producer_text += ' ' + lines[j].strip()
+                        j += 1
 
-                            # Replace " and " with comma for consistent splitting
-                            producer_text = re.sub(r'\s+and\s+', ', ', producer_text)
+                    co_producers = extract_names_from_text(producer_text)
+                    self.logger.info(f"  Co-Producers: {len(co_producers)}")
+                    i = j
+                    continue
 
-                            # Split by commas
-                            potential_producers = [p.strip() for p in producer_text.split(',')]
+                # Check for Associate Producer
+                if re.search(r'Associate Producer[s]?:', line):
+                    self.logger.info(f"Found Associate Producer section")
+                    producer_text = re.sub(r'Associate Producer[s]?:', '', line).strip()
 
-                            for producer in potential_producers:
-                                clean_name = producer.strip()
+                    # Collect continuation lines
+                    j = i + 1
+                    while j < len(lines) and lines[j].strip() and not self._is_stop_line(lines[j]):
+                        producer_text += ' ' + lines[j].strip()
+                        j += 1
 
-                                # Remove extra whitespace
-                                clean_name = ' '.join(clean_name.split())
+                    associate_producers = extract_names_from_text(producer_text)
+                    self.logger.info(f"  Associate Producers: {len(associate_producers)}")
+                    i = j
+                    continue
 
-                                if clean_name and len(clean_name) > 2:
-                                    # Filter out section headers
-                                    if not any(skip in clean_name.lower() for skip in [
-                                        'credits', 'cast', 'orchestra', 'staff', 'opening night',
-                                        'closing night', 'performances', 'theatres'
-                                    ]):
-                                        producer_names.add(clean_name)
-                                        self.logger.info(f"  → Producer {len(producer_names)}: {clean_name}")
+                # Check for "Produced in association with"
+                if 'Produced in association with' in line or 'in association with' in line:
+                    self.logger.info(f"Found Produced in association with section")
+                    producer_text = re.sub(r'Produced in association with|in association with', '', line, flags=re.IGNORECASE).strip()
 
-                        break
+                    # Collect continuation lines
+                    j = i + 1
+                    while j < len(lines) and lines[j].strip() and not self._is_stop_line(lines[j]):
+                        producer_text += ' ' + lines[j].strip()
+                        j += 1
 
-            if producer_names:
-                self.logger.debug(f"Total unique producers found: {len(producer_names)}")
-                self.logger.debug(f"Producers: {', '.join(sorted(producer_names))}")
+                    produced_in_association_with = extract_names_from_text(producer_text)
+                    self.logger.info(f"  Produced in association with: {len(produced_in_association_with)}")
+                    i = j
+                    continue
+
+                i += 1
+
+            # Calculate totals
+            total_producers = len(lead_producers) + len(producers) + len(co_producers) + len(associate_producers) + len(produced_in_association_with)
+
+            self.logger.info(f"\n{'='*50}")
+            self.logger.info(f"TOTALS:")
+            self.logger.info(f"  Lead Producers: {len(lead_producers)}")
+            self.logger.info(f"  Producers: {len(producers)}")
+            self.logger.info(f"  Co-Producers: {len(co_producers)}")
+            self.logger.info(f"  Associate Producers: {len(associate_producers)}")
+            self.logger.info(f"  Produced in association with: {len(produced_in_association_with)}")
+            self.logger.info(f"  TOTAL: {total_producers}")
+            self.logger.info(f"{'='*50}\n")
 
         except Exception as e:
             self.logger.error(f"Error parsing producers: {e}")
 
         return {
-            'num_total_producers': len(producer_names) if producer_names else None
+            'num_lead_producers': len(lead_producers) if lead_producers else 0,
+            'num_producers': len(producers) if producers else 0,
+            'num_co_producers': len(co_producers) if co_producers else 0,
+            'num_associate_producers': len(associate_producers) if associate_producers else 0,
+            'num_produced_in_association_with': len(produced_in_association_with) if produced_in_association_with else 0,
+            'num_total_producers': total_producers if total_producers > 0 else None
         }
+
+    def _is_stop_line(self, line: str) -> bool:
+        """Check if a line indicates we should stop collecting producer names."""
+        stop_indicators = [
+            'Credits', 'Opening Night', 'Closing Night', 'Cast',
+            'Theatres', 'Performances', 'Musical Numbers',
+            'Directed by', 'Choreographed by', 'Choreography by',
+            'Scenic Design', 'Costume Design', 'Lighting Design',
+            'Sound Design', 'Music Director', 'Musical Director',
+            'Conducted by', 'General Manager', 'Company Manager',
+            'Stage Manager', 'Technical Supervisor',
+            'world premiere', 'received its', 'was presented'
+        ]
+
+        return any(indicator in line for indicator in stop_indicators)
 
     def parse_producers_from_html(self, html: str, show_name: str) -> Dict:
         """
@@ -409,8 +512,10 @@ def scrape_all_shows(input_csv: str, output_csv: str, browser='chrome', headless
         df_results = pd.DataFrame(results_list)
 
         # Reorder columns
-        column_order = ['show_id', 'show_name', 'ibdb_url', 'num_total_producers',
-                       'scrape_status', 'scrape_notes']
+        column_order = ['show_id', 'show_name', 'ibdb_url',
+                       'num_lead_producers', 'num_producers', 'num_co_producers',
+                       'num_associate_producers', 'num_produced_in_association_with',
+                       'num_total_producers', 'scrape_status', 'scrape_notes']
         df_results = df_results[column_order]
 
         df_results.to_csv(output_csv, index=False)
@@ -431,8 +536,10 @@ def scrape_all_shows(input_csv: str, output_csv: str, browser='chrome', headless
         # Save what we have so far
         if results_list:
             df_results = pd.DataFrame(results_list)
-            column_order = ['show_id', 'show_name', 'ibdb_url', 'num_total_producers',
-                           'scrape_status', 'scrape_notes']
+            column_order = ['show_id', 'show_name', 'ibdb_url',
+                           'num_lead_producers', 'num_producers', 'num_co_producers',
+                           'num_associate_producers', 'num_produced_in_association_with',
+                           'num_total_producers', 'scrape_status', 'scrape_notes']
             df_results = df_results[column_order]
             df_results.to_csv(checkpoint_csv or output_csv, index=False)
             logger.info(f"✓ Progress saved to: {checkpoint_csv or output_csv}")
