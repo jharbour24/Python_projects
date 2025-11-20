@@ -134,7 +134,10 @@ class ComprehensiveBroadwayScraper:
 
     def search_ibdb(self, title: str) -> Optional[str]:
         """
-        Search IBDB for a show and return its URL.
+        Search for a show on IBDB using Google search.
+
+        This is more reliable than trying to construct IBDB URLs or using
+        IBDB's internal search.
 
         Parameters
         ----------
@@ -149,52 +152,47 @@ class ComprehensiveBroadwayScraper:
         try:
             from urllib.parse import quote_plus
 
-            # Try direct URL construction first
-            # IBDB URLs are like: /broadway-production/Show-Name-ID
-            # We'll construct a guess and see if it works
-            normalized_title = title.replace(' ', '+').replace("'", "")
-            direct_url = f"https://www.ibdb.com/broadway-production/{quote_plus(title)}"
+            # Use Google to find the IBDB page
+            # Google is much better at finding the right page than we are!
+            google_query = f"{title} IBDB"
+            google_url = f"https://www.google.com/search?q={quote_plus(google_query)}"
 
-            logger.info(f"  Trying direct URL for '{title}'...")
-            self.driver.get(direct_url)
-            time.sleep(4)
-
-            html = self.driver.page_source
-
-            # Check if we found a real page (not 404)
-            if "Page Not Found" not in html and "404" not in html and title.lower() in html.lower():
-                logger.info(f"  ✓ Found via direct URL")
-                return direct_url
-
-            # Otherwise, use search
-            search_url = f"https://www.ibdb.com/search?q={quote_plus(title)}&type=production"
-            logger.info(f"  Searching IBDB...")
-
-            self.driver.get(search_url)
-            time.sleep(4)
+            logger.info(f"  Googling: '{google_query}'...")
+            self.driver.get(google_url)
+            time.sleep(3)  # Wait for Google results to load
 
             html = self.driver.page_source
             soup = BeautifulSoup(html, 'html.parser')
 
-            # Find first production link
-            production_links = soup.find_all('a', href=re.compile(r'/broadway-production/'))
+            # Find all links on the page
+            all_links = soup.find_all('a', href=True)
 
-            if production_links:
-                first_link = production_links[0]
-                href = first_link.get('href')
+            # Look for IBDB broadway-production links in Google results
+            for link in all_links:
+                href = link.get('href', '')
 
-                # Make sure it's a full URL
-                if href.startswith('/'):
-                    href = f"https://www.ibdb.com{href}"
+                # Google result links are often wrapped in /url?q= redirects
+                # Extract the actual URL
+                if '/url?q=' in href:
+                    # Extract the actual URL from Google's redirect
+                    actual_url = href.split('/url?q=')[1].split('&')[0]
+                    href = actual_url
 
-                logger.info(f"  ✓ Found via search")
-                return href
-            else:
-                logger.warning(f"  ✗ No results found")
-                return None
+                # Check if this is an IBDB broadway-production link
+                if 'ibdb.com/broadway-production/' in href:
+                    # Clean up the URL
+                    if href.startswith('http'):
+                        ibdb_url = href.split('&')[0]  # Remove tracking params
+                        logger.info(f"  ✓ Found via Google: {ibdb_url}")
+                        return ibdb_url
+
+            logger.warning(f"  ✗ No IBDB page found in Google results")
+            return None
 
         except Exception as e:
-            logger.error(f"  Error searching for {title}: {e}")
+            logger.error(f"  Error searching Google for {title}: {e}")
+            import traceback
+            logger.debug(traceback.format_exc())
             return None
 
     def get_all_broadway_shows(self, start_year: int = 2010) -> List[Dict]:
