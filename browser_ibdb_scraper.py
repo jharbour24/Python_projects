@@ -199,11 +199,11 @@ class BrowserIBDBScraper:
 
             # Find ALL producer-related text using a broad regex
             # This captures: Lead Producer, Produced by, Co-Produced by, Associate Producer, in association with
-            # Note: We allow semicolons in the match because they can appear inside parentheses
-            # Make the stop pattern optional with |$ to match until end of string if no stop pattern found
-            producer_pattern = r'(?:Lead Producer[s]?:|Produced by|Co-Produced by|Associate Producer[s]?:|in association with)\s+(.+?)(?:\n\n|Credits|Directed by|Written by|Choreograph|Scenic Design|Costume Design|Lighting Design|Sound Design|Music Director|Musical Director|General Management|Company Management|Opening Night|Closing Night|$)'
+            # Stop at the FIRST newline (not double newline) or stop words
+            # Use non-greedy match and stop at newline to avoid capturing narrative text
+            producer_pattern = r'(?:Lead Producer[s]?:|Produced by|Co-Produced by|Associate Producer[s]?:|in association with)\s+([^\n]+?)(?:\n|Credits|Directed by|Written by|Choreograph|Scenic Design|Costume Design|Lighting Design|Sound Design|Music Director|Musical Director|General Management|Company Management|Opening Night|Closing Night|$)'
 
-            matches = list(re.finditer(producer_pattern, page_text, re.IGNORECASE | re.DOTALL))
+            matches = list(re.finditer(producer_pattern, page_text, re.IGNORECASE))
 
             self.logger.info(f"Found {len(matches)} producer sections on page")
 
@@ -235,12 +235,14 @@ class BrowserIBDBScraper:
                         clean_name = ' '.join(clean_name.split())
 
                         if clean_name and len(clean_name) > 2:
-                            # Filter out narrative text
+                            # Filter out narrative text and credits
                             skip_patterns = [
                                 'written by', 'music by', 'lyrics by', 'book by',
+                                'inspired by', 'based on', 'arrangements by', 'orchestrations by',
+                                'music direction by', 'vocal arrangements', 'dance arrangements',
                                 'original music', 'originally produced', 'originally commissioned',
-                                'directed', 'choreograph', 'design', 'manager',
-                                'credits', 'cast', 'orchestra', 'staff',
+                                'directed', 'choreograph', 'design', 'manager', 'direction',
+                                'credits', 'cast', 'orchestra', 'staff', 'associate',
                                 'opening night', 'closing night', 'performances', 'theatres',
                                 'world premiere', 'was presented', 'received its'
                             ]
