@@ -149,10 +149,8 @@ class BrowserIBDBScraper:
             # Wait for page to load
             time.sleep(3)
 
-            # Step 4: Extract producer information
-            page_source = self.driver.page_source
-
-            producer_data = self.parse_producers_from_html(page_source, show_name)
+            # Step 4: Extract producer information using Selenium element finding
+            producer_data = self.parse_producers_from_page(show_name)
 
             if producer_data['num_total_producers'] is not None:
                 result['num_total_producers'] = producer_data['num_total_producers']
@@ -171,6 +169,88 @@ class BrowserIBDBScraper:
             result['scrape_notes'] = f'Error: {str(e)}'
             self.logger.error(f"Error scraping {show_name}: {e}")
             return result
+
+    def parse_producers_from_page(self, show_name: str) -> Dict:
+        """
+        Parse producer information directly from the current browser page using Selenium.
+
+        Args:
+            show_name: Name of show (for logging)
+
+        Returns:
+            Dictionary with producer count
+        """
+        producer_names = set()
+
+        try:
+            # Get all text on the page
+            page_text = self.driver.find_element(By.TAG_NAME, 'body').text
+
+            # Look for "Produced by" section in the text
+            if 'Produced by' in page_text:
+                # Split by lines to find the section
+                lines = page_text.split('\n')
+
+                # Find the line with "Produced by"
+                for i, line in enumerate(lines):
+                    if 'Produced by' in line:
+                        # Extract the producer text (could be on same line or next lines)
+                        producer_text = line.replace('Produced by', '').strip()
+
+                        # Sometimes producers span multiple lines, collect next lines until we hit a section header
+                        j = i + 1
+                        while j < len(lines) and lines[j].strip():
+                            next_line = lines[j].strip()
+
+                            # Stop if we hit another section
+                            if any(section in next_line for section in [
+                                'Credits', 'Opening Night', 'Closing Night', 'Cast',
+                                'Theatres', 'Performances', 'Musical Numbers', 'Productions'
+                            ]):
+                                break
+
+                            # Add this line to producer text
+                            producer_text += ' ' + next_line
+                            j += 1
+
+                        self.logger.info(f"Raw producer text: {producer_text[:200]}...")
+
+                        # Parse the producer text
+                        if producer_text:
+                            # Replace " and " with comma for consistent splitting
+                            producer_text = re.sub(r'\s+and\s+', ', ', producer_text)
+
+                            # Split by commas
+                            potential_producers = [p.strip() for p in producer_text.split(',')]
+
+                            for producer in potential_producers:
+                                # Remove parenthetical notes
+                                clean_name = re.sub(r'\s*\([^)]+\)', '', producer).strip()
+
+                                # Remove extra whitespace
+                                clean_name = ' '.join(clean_name.split())
+
+                                if clean_name and len(clean_name) > 2:
+                                    # Filter out section headers
+                                    if not any(skip in clean_name.lower() for skip in [
+                                        'credits', 'cast', 'orchestra', 'staff', 'opening night',
+                                        'closing night', 'performances', 'theatres'
+                                    ]):
+                                        producer_names.add(clean_name)
+                                        self.logger.info(f"  → Producer {len(producer_names)}: {clean_name}")
+
+                        break
+
+            if producer_names:
+                self.logger.debug(f"Total unique producers found: {len(producer_names)}")
+                self.logger.debug(f"Producers: {', '.join(sorted(producer_names))}")
+
+        except Exception as e:
+            self.logger.error(f"Error parsing producers: {e}")
+
+        return {
+            'num_total_producers': len(producer_names) if producer_names else None
+        }
 
     def parse_producers_from_html(self, html: str, show_name: str) -> Dict:
         """
