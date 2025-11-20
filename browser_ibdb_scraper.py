@@ -410,10 +410,9 @@ def scrape_all_shows(input_csv: str, output_csv: str, browser='chrome', headless
                 df_checkpoint = pd.DataFrame(results_list)
                 df_checkpoint.to_csv(checkpoint_csv, index=False)
 
-            # Pause between shows to be polite and avoid CAPTCHAs (8-15 seconds)
-            delay = random.uniform(8, 15)
-            logger.info(f"⏸  Waiting {delay:.1f} seconds before next show...")
-            time.sleep(delay)
+            # Pause between shows (4 seconds - user will handle CAPTCHAs manually)
+            logger.info(f"⏸  Waiting 4 seconds before next show...")
+            time.sleep(4)
 
         # Save final results
         df_results = pd.DataFrame(results_list)
