@@ -59,14 +59,14 @@ python3 scrape_producers_from_grosses.py
 ```
 
 This will:
-1. Load **304 shows** from `all_broadway_shows_2010_2025.csv` (comprehensive list)
+1. Load **535 shows** from `all_broadway_shows_2010_2025.csv` (comprehensive list - EVERY Broadway show since 2010)
 2. Use Google to find each show's IBDB page
 3. Scrape producer data
 4. Save to `raw/producers_all_shows_2010_2025.csv`
 
-**Note**: Currently in TEST MODE (first 10 shows only). Edit the script to set `test_mode = False` to scrape all 304 shows.
+**Note**: Currently in TEST MODE (first 10 shows only). Edit the script to set `test_mode = False` to scrape all 535 shows.
 
-**Important**: With 304 shows and ~5-6 seconds per show, the full scrape will take approximately 25-30 minutes.
+**Important**: With 535 shows and ~5-6 seconds per show, the full scrape will take approximately 45-55 minutes.
 
 ## What to Watch For
 
