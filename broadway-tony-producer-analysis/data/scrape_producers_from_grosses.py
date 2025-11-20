@@ -39,9 +39,50 @@ except ImportError:
 from scrape_all_broadway_shows import ComprehensiveBroadwayScraper
 
 
+def get_shows_from_comprehensive_list() -> List[Dict]:
+    """
+    Get list of ALL Broadway shows since 2010 from comprehensive list.
+
+    Returns
+    -------
+    list of dict
+        Shows with title and show_id
+    """
+    logger.info("Loading comprehensive Broadway show list (2010-2025)...")
+
+    # Load the comprehensive show list
+    show_list_path = Path(__file__).parent / 'raw' / 'all_broadway_shows_2010_2025.csv'
+
+    if not show_list_path.exists():
+        logger.error(f"Comprehensive show list not found at: {show_list_path}")
+        logger.info("Looking for alternative sources...")
+        # Fall back to weekly grosses if comprehensive list doesn't exist
+        return get_shows_from_grosses()
+
+    shows_df = pd.read_csv(show_list_path)
+    logger.info(f"Loaded {len(shows_df)} shows from comprehensive list")
+
+    # Create show list
+    shows = []
+    for idx, row in shows_df.iterrows():
+        title = row['show_title']
+        if pd.notna(title) and title.strip():
+            shows.append({
+                'title': title.strip(),
+                'show_id': create_show_id(title)
+            })
+
+    # Sort by title for easier tracking
+    shows = sorted(shows, key=lambda x: x['title'])
+
+    logger.info(f"Prepared {len(shows)} shows for scraping")
+    return shows
+
+
 def get_shows_from_grosses() -> List[Dict]:
     """
     Get list of shows from existing weekly grosses data.
+    (Fallback method if comprehensive list not available)
 
     Returns
     -------
@@ -110,7 +151,7 @@ def main():
     """Main scraping function."""
 
     logger.info("=" * 80)
-    logger.info("BROADWAY PRODUCER SCRAPER (FROM GROSSES DATA)")
+    logger.info("BROADWAY PRODUCER SCRAPER - ALL SHOWS 2010-2025")
     logger.info("=" * 80)
 
     if not UNDETECTED_AVAILABLE:
@@ -118,8 +159,8 @@ def main():
         logger.info("Install with: pip3 install undetected-chromedriver selenium beautifulsoup4")
         return
 
-    # Step 1: Get shows from grosses data
-    shows = get_shows_from_grosses()
+    # Step 1: Get shows from comprehensive list
+    shows = get_shows_from_comprehensive_list()
 
     if not shows:
         logger.error("No shows found - cannot proceed")
@@ -210,7 +251,7 @@ def main():
 
     # Save results
     results_df = pd.DataFrame(results)
-    output_path = Path(__file__).parent / 'raw' / 'producers_from_grosses.csv'
+    output_path = Path(__file__).parent / 'raw' / 'producers_all_shows_2010_2025.csv'
     results_df.to_csv(output_path, index=False)
 
     logger.info("\n" + "="*80)

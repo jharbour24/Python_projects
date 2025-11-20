@@ -23,6 +23,16 @@ def main():
     logger.info("TESTING GOOGLE-BASED IBDB SEARCH")
     logger.info("="*70)
 
+    # Show how many shows we have in the comprehensive list
+    import pandas as pd
+    from pathlib import Path
+
+    show_list_path = Path(__file__).parent / 'raw' / 'all_broadway_shows_2010_2025.csv'
+    if show_list_path.exists():
+        shows_df = pd.read_csv(show_list_path)
+        logger.info(f"\n📊 Comprehensive show list: {len(shows_df)} Broadway shows (2010-2025)")
+        logger.info(f"    This test will validate Google search works for finding IBDB pages\n")
+
     # Test shows - mix of easy and difficult titles
     test_shows = [
         "Hadestown",
