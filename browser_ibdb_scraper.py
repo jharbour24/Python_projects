@@ -106,7 +106,8 @@ class BrowserIBDBScraper:
             self.logger.info(f"{'='*70}")
 
             # Step 1: Search Google
-            search_query = f"{show_name} IBDB Broadway"
+            # Add year range to prioritize recent productions (2010-2025)
+            search_query = f"{show_name} IBDB Broadway 2010..2025"
             google_url = f"https://www.google.com/search?q={quote_plus(search_query)}"
 
             self.logger.info(f"Searching Google: {search_query}")
@@ -188,40 +189,52 @@ class BrowserIBDBScraper:
 
             # Find ALL producer-related text using a broad regex
             # This captures: Lead Producer, Produced by, Co-Produced by, Associate Producer, in association with
-            producer_pattern = r'(?:Lead Producer[s]?:|Produced by|Co-Produced by|Associate Producer[s]?:|in association with)\s+([^;\n]+?)(?:;|\n\n|Credits|Directed|Written|Choreograph|Scenic Design|Costume Design|Lighting Design|Sound Design|Music Director|Musical Director)'
+            # Note: We allow semicolons in the match because they can appear inside parentheses
+            producer_pattern = r'(?:Lead Producer[s]?:|Produced by|Co-Produced by|Associate Producer[s]?:|in association with)\s+(.+?)(?:\n\n|Credits|Directed|Written|Choreograph|Scenic Design|Costume Design|Lighting Design|Sound Design|Music Director|Musical Director|General Management|Company Management)'
 
             matches = re.finditer(producer_pattern, page_text, re.IGNORECASE)
 
             for match in matches:
                 producer_text = match.group(1)
 
-                # Remove parenthetical notes
-                producer_text = re.sub(r'\s*\([^)]+\)', '', producer_text)
+                # First remove ALL parenthetical notes (including those with semicolons inside)
+                # Use a loop to handle nested or multiple parentheticals
+                while '(' in producer_text:
+                    producer_text = re.sub(r'\([^)]*\)', '', producer_text)
 
-                # Replace " and " with comma
-                producer_text = re.sub(r'\s+and\s+', ', ', producer_text)
+                # Now split by semicolons (which separate different producer sections)
+                # Each section after semicolon might be a new category (e.g., "Produced by X; Associate Producer: Y")
+                sections = producer_text.split(';')
 
-                # Split by commas
-                names = producer_text.split(',')
+                for section in sections:
+                    # Skip sections that start with a producer category label (we'll catch those separately)
+                    if re.match(r'^\s*(?:Lead Producer|Co-Produced|Associate Producer|in association)', section, re.IGNORECASE):
+                        continue
 
-                for name in names:
-                    clean_name = name.strip()
-                    clean_name = ' '.join(clean_name.split())
+                    # Replace " and " with comma
+                    section = re.sub(r'\s+and\s+', ', ', section)
 
-                    if clean_name and len(clean_name) > 2:
-                        # Filter out narrative text
-                        skip_patterns = [
-                            'written by', 'music by', 'lyrics by', 'book by',
-                            'original music', 'originally produced', 'originally commissioned',
-                            'directed', 'choreograph', 'design', 'manager',
-                            'credits', 'cast', 'orchestra', 'staff',
-                            'opening night', 'closing night', 'performances', 'theatres',
-                            'world premiere', 'was presented', 'received its'
-                        ]
+                    # Split by commas
+                    names = section.split(',')
 
-                        if not any(skip in clean_name.lower() for skip in skip_patterns):
-                            all_producers.add(clean_name)
-                            self.logger.info(f"  → Producer {len(all_producers)}: {clean_name}")
+                    for name in names:
+                        clean_name = name.strip()
+                        clean_name = ' '.join(clean_name.split())
+
+                        if clean_name and len(clean_name) > 2:
+                            # Filter out narrative text
+                            skip_patterns = [
+                                'written by', 'music by', 'lyrics by', 'book by',
+                                'original music', 'originally produced', 'originally commissioned',
+                                'directed', 'choreograph', 'design', 'manager',
+                                'credits', 'cast', 'orchestra', 'staff',
+                                'opening night', 'closing night', 'performances', 'theatres',
+                                'world premiere', 'was presented', 'received its'
+                            ]
+
+                            if not any(skip in clean_name.lower() for skip in skip_patterns):
+                                all_producers.add(clean_name)
+                                self.logger.info(f"  → Producer {len(all_producers)}: {clean_name}")
 
             self.logger.info(f"\nTOTAL PRODUCERS: {len(all_producers)}")
 
