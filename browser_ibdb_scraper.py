@@ -197,16 +197,37 @@ class BrowserIBDBScraper:
                         # Extract the producer text (could be on same line or next lines)
                         producer_text = line.replace('Produced by', '').strip()
 
-                        # Sometimes producers span multiple lines, collect next lines until we hit a section header
+                        # Sometimes producers span multiple lines, collect next lines until we hit a section header or narrative text
                         j = i + 1
                         while j < len(lines) and lines[j].strip():
                             next_line = lines[j].strip()
 
-                            # Stop if we hit another section
+                            # Stop if we hit another section header
                             if any(section in next_line for section in [
                                 'Credits', 'Opening Night', 'Closing Night', 'Cast',
                                 'Theatres', 'Performances', 'Musical Numbers', 'Productions'
                             ]):
+                                break
+
+                            # Stop if we hit narrative text (premiere info, history, etc.)
+                            if any(narrative in next_line.lower() for narrative in [
+                                'world premiere', 'received its', 'was presented',
+                                'originally produced', 'first produced', 'premiered at'
+                            ]):
+                                break
+
+                            # Stop if we hit crew/creative credits (not producers)
+                            if any(credit in next_line for credit in [
+                                'Directed by', 'Choreographed by', 'Choreography by',
+                                'Scenic Design', 'Costume Design', 'Lighting Design',
+                                'Sound Design', 'Music Director', 'Musical Director',
+                                'Conducted by', 'General Manager', 'Company Manager',
+                                'Stage Manager', 'Technical Supervisor'
+                            ]):
+                                break
+
+                            # Stop if line contains dates or years (likely not producer names)
+                            if re.search(r'\d{4}|\d{1,2}/\d{1,2}', next_line):
                                 break
 
                             # Add this line to producer text
@@ -217,6 +238,10 @@ class BrowserIBDBScraper:
 
                         # Parse the producer text
                         if producer_text:
+                            # First, remove ALL parenthetical notes (before splitting)
+                            # This handles cases like "The Public Theater (Oskar Eustis, Artistic Director)"
+                            producer_text = re.sub(r'\s*\([^)]+\)', '', producer_text)
+
                             # Replace " and " with comma for consistent splitting
                             producer_text = re.sub(r'\s+and\s+', ', ', producer_text)
 
@@ -224,8 +249,7 @@ class BrowserIBDBScraper:
                             potential_producers = [p.strip() for p in producer_text.split(',')]
 
                             for producer in potential_producers:
-                                # Remove parenthetical notes
-                                clean_name = re.sub(r'\s*\([^)]+\)', '', producer).strip()
+                                clean_name = producer.strip()
 
                                 # Remove extra whitespace
                                 clean_name = ' '.join(clean_name.split())
