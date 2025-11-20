@@ -19,6 +19,7 @@ from urllib.parse import quote_plus
 
 import pandas as pd
 from selenium import webdriver
+from REVIVALS_DICTIONARY import BROADWAY_REVIVALS
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
@@ -28,24 +29,6 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 class BrowserIBDBScraper:
     """Scrapes IBDB using browser automation (Selenium)."""
-
-    # List of known revivals from 2010-2025
-    REVIVAL_SHOWS = {
-        'BYE BYE BIRDIE', 'CHICAGO', 'HAIR', 'FINIAN\'S RAINBOW', 'SOUTH PACIFIC',
-        'A LITTLE NIGHT MUSIC', 'LA BETE', 'RAGTIME', 'ANYTHING GOES', 'PORGY AND BESS',
-        'THE GERSHWINS\' PORGY AND BESS', 'ANNIE', 'THE MYSTERY OF EDWIN DROOD',
-        'PICNIC', 'THE GLASS MENAGERIE', 'CABARET', 'ON THE TOWN', 'THE KING AND I',
-        'SHE LOVES ME', 'FALSETTOS', 'LONG DAY\'S JOURNEY INTO NIGHT', 'HELLO, DOLLY!',
-        'ONCE ON THIS ISLAND', 'CAROUSEL', 'MY FAIR LADY', 'THE ICEMAN COMETH',
-        'KISS ME, KATE', 'OKLAHOMA!', 'WEST SIDE STORY', 'COMPANY', 'AMERICAN BUFFALO',
-        'THE MUSIC MAN', 'INTO THE WOODS', 'FUNNY GIRL', '1776', 'CAMELOT',
-        'SWEENEY TODD', 'MERRILY WE ROLL ALONG', 'PURLIE VICTORIOUS', 'GYPSY',
-        'A VIEW FROM THE BRIDGE', 'THE CRUCIBLE', 'A STREETCAR NAMED DESIRE',
-        'CAT ON A HOT TIN ROOF', 'DEATH OF A SALESMAN', 'THE ELEPHANT MAN',
-        'EVITA', 'HEDWIG AND THE ANGRY INCH', 'LES MISERABLES', 'THE THREEPENNY OPERA',
-        'MACBETH', 'ROMEO AND JULIET', 'ANYTHING GOES', 'GODSPELL', 'JESUS CHRIST SUPERSTAR',
-        'SUNSET BOULEVARD', 'APPROPRIATE', 'THE WIZ'
-    }
 
     def __init__(self, browser='chrome', headless=False):
         """
@@ -125,8 +108,15 @@ class BrowserIBDBScraper:
             self.logger.info(f"{'='*70}")
 
             # Step 1: Search Google
-            # Always add "revival" keyword to prioritize 2010-2025 productions
-            search_query = f"{show_name} IBDB Broadway revival 2010..2025"
+            # Check if show is a revival and include revival year in search
+            show_name_upper = show_name.upper()
+            if show_name_upper in BROADWAY_REVIVALS:
+                revival_year = BROADWAY_REVIVALS[show_name_upper]
+                search_query = f"{show_name} IBDB Broadway revival {revival_year} 2010..2025"
+                self.logger.info(f"✓ Detected revival from {revival_year}")
+            else:
+                search_query = f"{show_name} IBDB Broadway 2010..2025"
+
             google_url = f"https://www.google.com/search?q={quote_plus(search_query)}"
 
             self.logger.info(f"Searching Google: {search_query}")
@@ -134,11 +124,6 @@ class BrowserIBDBScraper:
 
             # Wait for page to load
             time.sleep(3)
-
-            # Check for CAPTCHA - give user time to solve it manually
-            self.logger.info("⏸  If you see a CAPTCHA, please solve it now...")
-            self.logger.info("⏸  Waiting 15 seconds for CAPTCHA/page load...")
-            time.sleep(15)
 
             # Step 2: Find and click first IBDB link
             ibdb_link = None
@@ -244,9 +229,9 @@ class BrowserIBDBScraper:
                 sections = producer_text.split(';')
 
                 for section in sections:
-                    # Skip sections that start with a producer category label (we'll catch those separately)
-                    if re.match(r'^\s*(?:Lead Producer|Co-Produced|Associate Producer|in association)', section, re.IGNORECASE):
-                        continue
+                    # Remove any leading producer category labels from the section
+                    # (e.g., "Co-Producer: John Smith" becomes "John Smith")
+                    section = re.sub(r'^\s*(?:Lead Producer[s]?:|Co-Produced by|Co-Producer[s]?:|Associate Producer[s]?:|in association with)\s*', '', section, flags=re.IGNORECASE)
 
                     # Replace " and " with comma
                     section = re.sub(r'\s+and\s+', ', ', section)
