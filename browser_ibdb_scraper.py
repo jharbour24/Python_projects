@@ -214,8 +214,8 @@ class BrowserIBDBScraper:
             # Replace " and " with comma for consistent splitting
             text = re.sub(r'\s+and\s+', ', ', text)
 
-            # Split by commas and semicolons
-            names = re.split(r'[,;]', text)
+            # Split by commas only (not semicolons - those separate sections)
+            names = text.split(',')
 
             cleaned_names = set()
             for name in names:
@@ -223,13 +223,18 @@ class BrowserIBDBScraper:
                 clean_name = ' '.join(clean_name.split())
 
                 if clean_name and len(clean_name) > 2:
-                    # Filter out section headers and narrative text
-                    if not any(skip in clean_name.lower() for skip in [
-                        'credits', 'cast', 'orchestra', 'staff', 'opening night',
-                        'closing night', 'performances', 'theatres', 'directed',
-                        'choreograph', 'design', 'manager', 'world premiere',
-                        'was presented', 'received its'
-                    ]):
+                    # Filter out narrative text and credits
+                    skip_patterns = [
+                        'written by', 'music by', 'lyrics by', 'book by',
+                        'original music', 'originally produced', 'originally commissioned',
+                        'directed', 'choreograph', 'design', 'manager',
+                        'credits', 'cast', 'orchestra', 'staff',
+                        'opening night', 'closing night', 'performances', 'theatres',
+                        'world premiere', 'was presented', 'received its',
+                        'associate producer:', 'co-produced by', 'produced in association'
+                    ]
+
+                    if not any(skip in clean_name.lower() for skip in skip_patterns):
                         cleaned_names.add(clean_name)
 
             return cleaned_names
@@ -248,96 +253,60 @@ class BrowserIBDBScraper:
                 'in_association': r'Produced in association with(.+?)(?:;|$)'
             }
 
-            # Search for each producer type
-            i = 0
-            while i < len(lines):
-                line = lines[i]
+            # Search for producer sections
+            # First, join all lines and look for semicolon-separated sections
+            full_text = '\n'.join(lines)
 
-                # Check for Lead Producer
-                if re.search(r'Lead Producer[s]?:', line):
-                    self.logger.info(f"Found Lead Producer section")
-                    producer_text = re.sub(r'Lead Producer[s]?:', '', line).strip()
+            # Find all producer sections using regex
+            # Handle both line-based and semicolon-separated formats
 
-                    # Collect continuation lines
-                    j = i + 1
-                    while j < len(lines) and lines[j].strip() and not self._is_stop_line(lines[j]):
-                        producer_text += ' ' + lines[j].strip()
-                        j += 1
+            # Lead Producer
+            lead_match = re.search(r'Lead Producer[s]?:\s*([^;\n]+?)(?:;|\n\n|Produced by|Co-Produced|Associate Producer|Credits|Directed)', full_text, re.IGNORECASE)
+            if lead_match:
+                self.logger.info(f"Found Lead Producer section")
+                lead_producers = extract_names_from_text(lead_match.group(1))
+                self.logger.info(f"  Lead Producers: {len(lead_producers)}")
+                for p in lead_producers:
+                    self.logger.info(f"    → {p}")
 
-                    lead_producers = extract_names_from_text(producer_text)
-                    self.logger.info(f"  Lead Producers: {len(lead_producers)}")
-                    for p in lead_producers:
-                        self.logger.info(f"    → {p}")
-                    i = j
-                    continue
+            # Standard "Produced by" (not "Co-Produced" or "in association")
+            produced_match = re.search(r'(?<!Co-)Produced by\s+([^;\n]+?)(?:;|\n\n|Co-Produced|Associate Producer|Produced in association|Credits|Directed)', full_text, re.IGNORECASE)
+            if produced_match:
+                self.logger.info(f"Found Produced by section")
+                producers = extract_names_from_text(produced_match.group(1))
+                self.logger.info(f"  Producers: {len(producers)}")
+                for p in producers:
+                    self.logger.info(f"    → {p}")
 
-                # Check for standard "Produced by"
-                if line.strip().startswith('Produced by') and 'Co-Produced' not in line and 'in association' not in line:
-                    self.logger.info(f"Found Produced by section")
-                    producer_text = re.sub(r'Produced by', '', line).strip()
+            # Co-Produced by
+            co_match = re.search(r'Co-Produced by\s+([^;\n]+?)(?:;|\n\n|Associate Producer|Produced in association|Credits|Directed)', full_text, re.IGNORECASE)
+            if co_match:
+                self.logger.info(f"Found Co-Produced by section")
+                co_producers = extract_names_from_text(co_match.group(1))
+                self.logger.info(f"  Co-Producers: {len(co_producers)}")
+                for p in co_producers:
+                    self.logger.info(f"    → {p}")
 
-                    # Collect continuation lines
-                    j = i + 1
-                    while j < len(lines) and lines[j].strip() and not self._is_stop_line(lines[j]):
-                        producer_text += ' ' + lines[j].strip()
-                        j += 1
+            # Associate Producer (can be inline like "Associate Producer: John Doe" or a section header)
+            # First check for inline mentions within the "Produced by" section
+            assoc_inline_matches = re.findall(r'Associate Producer[s]?:\s*([^,;\n]+)', full_text, re.IGNORECASE)
+            if assoc_inline_matches:
+                self.logger.info(f"Found Associate Producer(s) - inline")
+                for match in assoc_inline_matches:
+                    assoc_names = extract_names_from_text(match)
+                    associate_producers.update(assoc_names)
+                self.logger.info(f"  Associate Producers: {len(associate_producers)}")
+                for p in associate_producers:
+                    self.logger.info(f"    → {p}")
 
-                    producers = extract_names_from_text(producer_text)
-                    self.logger.info(f"  Producers: {len(producers)}")
-                    for p in producers:
-                        self.logger.info(f"    → {p}")
-                    i = j
-                    continue
-
-                # Check for Co-Produced by
-                if 'Co-Produced by' in line:
-                    self.logger.info(f"Found Co-Produced by section")
-                    producer_text = re.sub(r'Co-Produced by', '', line).strip()
-
-                    # Collect continuation lines
-                    j = i + 1
-                    while j < len(lines) and lines[j].strip() and not self._is_stop_line(lines[j]):
-                        producer_text += ' ' + lines[j].strip()
-                        j += 1
-
-                    co_producers = extract_names_from_text(producer_text)
-                    self.logger.info(f"  Co-Producers: {len(co_producers)}")
-                    i = j
-                    continue
-
-                # Check for Associate Producer
-                if re.search(r'Associate Producer[s]?:', line):
-                    self.logger.info(f"Found Associate Producer section")
-                    producer_text = re.sub(r'Associate Producer[s]?:', '', line).strip()
-
-                    # Collect continuation lines
-                    j = i + 1
-                    while j < len(lines) and lines[j].strip() and not self._is_stop_line(lines[j]):
-                        producer_text += ' ' + lines[j].strip()
-                        j += 1
-
-                    associate_producers = extract_names_from_text(producer_text)
-                    self.logger.info(f"  Associate Producers: {len(associate_producers)}")
-                    i = j
-                    continue
-
-                # Check for "Produced in association with"
-                if 'Produced in association with' in line or 'in association with' in line:
-                    self.logger.info(f"Found Produced in association with section")
-                    producer_text = re.sub(r'Produced in association with|in association with', '', line, flags=re.IGNORECASE).strip()
-
-                    # Collect continuation lines
-                    j = i + 1
-                    while j < len(lines) and lines[j].strip() and not self._is_stop_line(lines[j]):
-                        producer_text += ' ' + lines[j].strip()
-                        j += 1
-
-                    produced_in_association_with = extract_names_from_text(producer_text)
-                    self.logger.info(f"  Produced in association with: {len(produced_in_association_with)}")
-                    i = j
-                    continue
-
-                i += 1
+            # Produced in association with
+            in_assoc_match = re.search(r'(?:Produced )?in association with\s+([^;\n]+?)(?:;|\n\n|Credits|Directed|Written)', full_text, re.IGNORECASE)
+            if in_assoc_match:
+                self.logger.info(f"Found Produced in association with section")
+                produced_in_association_with = extract_names_from_text(in_assoc_match.group(1))
+                self.logger.info(f"  Produced in association with: {len(produced_in_association_with)}")
+                for p in produced_in_association_with:
+                    self.logger.info(f"    → {p}")
 
             # Calculate totals
             total_producers = len(lead_producers) + len(producers) + len(co_producers) + len(associate_producers) + len(produced_in_association_with)
