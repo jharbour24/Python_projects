@@ -187,12 +187,25 @@ class BrowserIBDBScraper:
             # Get all text on the page
             page_text = self.driver.find_element(By.TAG_NAME, 'body').text
 
+            # Debug: Check if "Produced by" exists on page
+            if 'Produced by' in page_text or 'produced by' in page_text.lower():
+                # Find the location and show context
+                idx = page_text.lower().find('produced by')
+                if idx > 0:
+                    context = page_text[max(0, idx-50):min(len(page_text), idx+200)]
+                    self.logger.info(f"Found 'Produced by' at position {idx}. Context: {context[:150]}...")
+            else:
+                self.logger.warning("'Produced by' not found on page!")
+
             # Find ALL producer-related text using a broad regex
             # This captures: Lead Producer, Produced by, Co-Produced by, Associate Producer, in association with
             # Note: We allow semicolons in the match because they can appear inside parentheses
-            producer_pattern = r'(?:Lead Producer[s]?:|Produced by|Co-Produced by|Associate Producer[s]?:|in association with)\s+(.+?)(?:\n\n|Credits|Directed|Written|Choreograph|Scenic Design|Costume Design|Lighting Design|Sound Design|Music Director|Musical Director|General Management|Company Management)'
+            # Make the stop pattern optional with |$ to match until end of string if no stop pattern found
+            producer_pattern = r'(?:Lead Producer[s]?:|Produced by|Co-Produced by|Associate Producer[s]?:|in association with)\s+(.+?)(?:\n\n|Credits|Directed by|Written by|Choreograph|Scenic Design|Costume Design|Lighting Design|Sound Design|Music Director|Musical Director|General Management|Company Management|Opening Night|Closing Night|$)'
 
-            matches = re.finditer(producer_pattern, page_text, re.IGNORECASE)
+            matches = list(re.finditer(producer_pattern, page_text, re.IGNORECASE | re.DOTALL))
+
+            self.logger.info(f"Found {len(matches)} producer sections on page")
 
             for match in matches:
                 producer_text = match.group(1)
