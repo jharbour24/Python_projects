@@ -70,14 +70,20 @@ def get_shows_from_grosses() -> List[Dict]:
 
     logger.info(f"Loaded {len(grosses_df)} weekly records")
 
-    # Get unique shows
-    if 'title' in grosses_df.columns:
-        title_col = 'title'
-    elif 'show_name' in grosses_df.columns:
-        title_col = 'show_name'
-    else:
+    # Get unique shows - check for different column names
+    possible_title_cols = ['title', 'show_title', 'show_name', 'show']
+    title_col = None
+
+    for col in possible_title_cols:
+        if col in grosses_df.columns:
+            title_col = col
+            break
+
+    if title_col is None:
         logger.error(f"No title column found. Columns: {grosses_df.columns.tolist()}")
         return []
+
+    logger.info(f"Using column: {title_col}")
 
     unique_shows = grosses_df[title_col].unique()
     logger.info(f"Found {len(unique_shows)} unique shows")
