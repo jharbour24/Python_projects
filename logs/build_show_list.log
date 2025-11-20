@@ -1,0 +1,171 @@
+2025-11-20 14:46:12 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:12 - __main__ - INFO - BUILDING COMPREHENSIVE BROADWAY SHOW LIST
+2025-11-20 14:46:12 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:12 - __main__ - INFO - Building show list for 2010-2025
+2025-11-20 14:46:12 - __main__ - INFO - Checking robots.txt...
+2025-11-20 14:46:13 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/robots.txt - May be blocked
+2025-11-20 14:46:13 - __main__ - WARNING - Could not fetch robots.txt - proceeding cautiously
+2025-11-20 14:46:13 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:13 - __main__ - INFO - Processing year: 2010
+2025-11-20 14:46:13 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:13 - __main__ - INFO - Scraping Broadway shows for year: 2010
+2025-11-20 14:46:13 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2010-2011 - May be blocked
+2025-11-20 14:46:13 - __main__ - WARNING - Failed to fetch season page for 2010
+2025-11-20 14:46:13 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:15 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:15 - __main__ - INFO - Processing year: 2011
+2025-11-20 14:46:15 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:15 - __main__ - INFO - Scraping Broadway shows for year: 2011
+2025-11-20 14:46:16 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2011-2012 - May be blocked
+2025-11-20 14:46:16 - __main__ - WARNING - Failed to fetch season page for 2011
+2025-11-20 14:46:16 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:18 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:18 - __main__ - INFO - Processing year: 2012
+2025-11-20 14:46:18 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:18 - __main__ - INFO - Scraping Broadway shows for year: 2012
+2025-11-20 14:46:19 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2012-2013 - May be blocked
+2025-11-20 14:46:19 - __main__ - WARNING - Failed to fetch season page for 2012
+2025-11-20 14:46:19 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:21 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:21 - __main__ - INFO - Processing year: 2013
+2025-11-20 14:46:21 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:21 - __main__ - INFO - Scraping Broadway shows for year: 2013
+2025-11-20 14:46:22 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2013-2014 - May be blocked
+2025-11-20 14:46:22 - __main__ - WARNING - Failed to fetch season page for 2013
+2025-11-20 14:46:22 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:24 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:24 - __main__ - INFO - Processing year: 2014
+2025-11-20 14:46:24 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:24 - __main__ - INFO - Scraping Broadway shows for year: 2014
+2025-11-20 14:46:25 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2014-2015 - May be blocked
+2025-11-20 14:46:25 - __main__ - WARNING - Failed to fetch season page for 2014
+2025-11-20 14:46:25 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:27 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:27 - __main__ - INFO - Processing year: 2015
+2025-11-20 14:46:27 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:27 - __main__ - INFO - Scraping Broadway shows for year: 2015
+2025-11-20 14:46:28 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2015-2016 - May be blocked
+2025-11-20 14:46:28 - __main__ - WARNING - Failed to fetch season page for 2015
+2025-11-20 14:46:28 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:30 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:30 - __main__ - INFO - Processing year: 2016
+2025-11-20 14:46:30 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:30 - __main__ - INFO - Scraping Broadway shows for year: 2016
+2025-11-20 14:46:31 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2016-2017 - May be blocked
+2025-11-20 14:46:31 - __main__ - WARNING - Failed to fetch season page for 2016
+2025-11-20 14:46:31 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:33 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:33 - __main__ - INFO - Processing year: 2017
+2025-11-20 14:46:33 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:33 - __main__ - INFO - Scraping Broadway shows for year: 2017
+2025-11-20 14:46:34 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2017-2018 - May be blocked
+2025-11-20 14:46:34 - __main__ - WARNING - Failed to fetch season page for 2017
+2025-11-20 14:46:34 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:36 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:36 - __main__ - INFO - Processing year: 2018
+2025-11-20 14:46:36 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:36 - __main__ - INFO - Scraping Broadway shows for year: 2018
+2025-11-20 14:46:37 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2018-2019 - May be blocked
+2025-11-20 14:46:37 - __main__ - WARNING - Failed to fetch season page for 2018
+2025-11-20 14:46:37 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:39 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:39 - __main__ - INFO - Processing year: 2019
+2025-11-20 14:46:39 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:39 - __main__ - INFO - Scraping Broadway shows for year: 2019
+2025-11-20 14:46:40 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2019-2020 - May be blocked
+2025-11-20 14:46:40 - __main__ - WARNING - Failed to fetch season page for 2019
+2025-11-20 14:46:40 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:42 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:42 - __main__ - INFO - Processing year: 2020
+2025-11-20 14:46:42 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:42 - __main__ - INFO - Scraping Broadway shows for year: 2020
+2025-11-20 14:46:43 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2020-2021 - May be blocked
+2025-11-20 14:46:43 - __main__ - WARNING - Failed to fetch season page for 2020
+2025-11-20 14:46:43 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:45 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:45 - __main__ - INFO - Processing year: 2021
+2025-11-20 14:46:45 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:45 - __main__ - INFO - Scraping Broadway shows for year: 2021
+2025-11-20 14:46:46 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2021-2022 - May be blocked
+2025-11-20 14:46:46 - __main__ - WARNING - Failed to fetch season page for 2021
+2025-11-20 14:46:46 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:48 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:48 - __main__ - INFO - Processing year: 2022
+2025-11-20 14:46:48 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:48 - __main__ - INFO - Scraping Broadway shows for year: 2022
+2025-11-20 14:46:49 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2022-2023 - May be blocked
+2025-11-20 14:46:49 - __main__ - WARNING - Failed to fetch season page for 2022
+2025-11-20 14:46:49 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:51 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:51 - __main__ - INFO - Processing year: 2023
+2025-11-20 14:46:51 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:51 - __main__ - INFO - Scraping Broadway shows for year: 2023
+2025-11-20 14:46:52 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2023-2024 - May be blocked
+2025-11-20 14:46:52 - __main__ - WARNING - Failed to fetch season page for 2023
+2025-11-20 14:46:52 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:54 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:54 - __main__ - INFO - Processing year: 2024
+2025-11-20 14:46:54 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:54 - __main__ - INFO - Scraping Broadway shows for year: 2024
+2025-11-20 14:46:55 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2024-2025 - May be blocked
+2025-11-20 14:46:55 - __main__ - WARNING - Failed to fetch season page for 2024
+2025-11-20 14:46:55 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:46:57 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:46:57 - __main__ - INFO - Processing year: 2025
+2025-11-20 14:46:57 - __main__ - INFO - ======================================================================
+2025-11-20 14:46:57 - __main__ - INFO - Scraping Broadway shows for year: 2025
+2025-11-20 14:46:58 - __main__ - ERROR - Access forbidden (403): https://www.ibdb.com/broadway-season/2025-2026 - May be blocked
+2025-11-20 14:46:58 - __main__ - WARNING - Failed to fetch season page for 2025
+2025-11-20 14:46:58 - __main__ - INFO - Total shows collected so far: 0
+2025-11-20 14:47:00 - __main__ - ERROR - No shows collected!
+2025-11-20 14:47:00 - __main__ - WARNING - Scraping yielded insufficient results - using fallback list
+2025-11-20 14:47:00 - __main__ - WARNING - Creating fallback list with known Broadway shows
+2025-11-20 14:47:00 - __main__ - INFO - Created fallback list with 173 shows
+2025-11-20 14:47:00 - __main__ - INFO - 
+✓ Saved 173 shows to: raw/all_broadway_shows_2010_2025.csv
+2025-11-20 14:47:00 - __main__ - INFO - 
+First 10 shows:
+2025-11-20 14:47:00 - __main__ - INFO -    show_id                       show_name
+0        1                        & Juliet
+1        2          A Behanding in Spokane
+2        3                    A Bronx Tale
+3        4  A Christmas Story, The Musical
+4        5          A Doll's House, Part 2
+5        6            A Little Night Music
+6        7                  A Strange Loop
+7        8          A View from the Bridge
+8        9                 Ain't Too Proud
+9       10                         Aladdin
+2025-11-20 14:47:00 - __main__ - INFO - 
+Last 10 shows:
+2025-11-20 14:47:00 - __main__ - INFO -      show_id                                  show_name
+163      164                      To Kill a Mockingbird
+164      165                           Tuck Everlasting
+165      166        Vanya and Sonia and Masha and Spike
+166      167                               Venus in Fur
+167      168                                   Waitress
+168      169                                  War Horse
+169      170                                     Wicked
+170      171                  Wolf Hall Parts One & Two
+171      172  Women on the Verge of a Nervous Breakdown
+172      173                 You Can't Take It with You
+2025-11-20 14:47:00 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:47:00 - __main__ - INFO - DONE: 173 Broadway shows ready for producer scraping
+2025-11-20 14:47:00 - __main__ - INFO - ======================================================================
