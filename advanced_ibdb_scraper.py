@@ -37,9 +37,62 @@ class AdvancedIBDBScraper:
         self.ibdb_base = "https://www.ibdb.com"
         self.logger.info("AdvancedIBDBScraper initialized with Cloudflare bypass")
 
+    def search_ibdb_directly(self, show_name: str) -> Optional[str]:
+        """
+        Search IBDB directly for a show's production page (bypasses Google).
+
+        Args:
+            show_name: Name of the Broadway show
+
+        Returns:
+            IBDB URL if found, None otherwise
+        """
+        self.logger.info(f"Searching IBDB directly for: {show_name}")
+
+        # Try direct URL construction first (many shows work with this pattern)
+        show_slug = show_name.lower().replace(' ', '-').replace("'", "").replace(":", "").replace("!", "")
+        direct_url = f"https://www.ibdb.com/broadway-production/{show_slug}"
+
+        self.rate_limiter.wait()
+
+        try:
+            response = self.scraper.get(direct_url, timeout=30)
+            if response.status_code == 200:
+                # Verify it's a real production page
+                if 'Produced by' in response.text or 'Production Staff' in response.text:
+                    self.logger.info(f"✓ Found IBDB URL (direct): {direct_url}")
+                    return direct_url
+        except Exception as e:
+            self.logger.debug(f"Direct URL attempt failed: {e}")
+
+        # If direct URL didn't work, try IBDB search
+        try:
+            search_url = f"https://www.ibdb.com/broadway-search?stext={quote_plus(show_name)}"
+
+            self.rate_limiter.wait()
+            response = self.scraper.get(search_url, timeout=30)
+
+            if response.status_code == 200:
+                soup = BeautifulSoup(response.text, 'html.parser')
+
+                # Look for production links
+                for link in soup.find_all('a', href=True):
+                    href = link['href']
+
+                    if '/broadway-production/' in href:
+                        full_url = href if href.startswith('http') else f"https://www.ibdb.com{href}"
+                        self.logger.info(f"✓ Found IBDB URL (search): {full_url}")
+                        return full_url
+
+        except Exception as e:
+            self.logger.warning(f"IBDB search failed: {e}")
+
+        self.logger.warning(f"No IBDB URL found for: {show_name}")
+        return None
+
     def search_google_for_ibdb(self, show_name: str) -> Optional[str]:
         """
-        Search Google for IBDB page of a show.
+        Search Google for IBDB page of a show (fallback method).
 
         Args:
             show_name: Name of the Broadway show
@@ -240,12 +293,17 @@ class AdvancedIBDBScraper:
         }
 
         try:
-            # Step 1: Search Google for IBDB URL
-            ibdb_url = self.search_google_for_ibdb(show_name)
+            # Step 1: Search for IBDB URL (try direct search first, then Google as fallback)
+            ibdb_url = self.search_ibdb_directly(show_name)
+
+            # Fallback to Google if direct search failed
+            if not ibdb_url:
+                self.logger.info("Direct IBDB search failed, trying Google...")
+                ibdb_url = self.search_google_for_ibdb(show_name)
 
             if not ibdb_url:
                 result['scrape_status'] = 'not_found'
-                result['scrape_notes'] = 'IBDB URL not found via Google search'
+                result['scrape_notes'] = 'IBDB URL not found via direct search or Google'
                 return result
 
             result['ibdb_url'] = ibdb_url

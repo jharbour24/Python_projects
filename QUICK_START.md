@@ -6,6 +6,24 @@
 
 ## 1. Get the Code (2 minutes)
 
+### Option A: Using Terminal/Command Prompt (Recommended)
+
+**Windows:**
+```bash
+cd Desktop
+git clone -b claude/broadway-tony-dataset-01Q2qbxaKfYdfo4zsXzTTrtt https://github.com/jharbour24/Python_projects.git
+cd Python_projects
+```
+
+**Mac:**
+```bash
+cd Desktop
+git clone -b claude/broadway-tony-dataset-01Q2qbxaKfYdfo4zsXzTTrtt https://github.com/jharbour24/Python_projects.git
+cd Python_projects
+```
+
+### Option B: Download from Website
+
 Go to: **https://github.com/jharbour24/Python_projects**
 
 Click the green `<> Code` button → Click `Download ZIP`
