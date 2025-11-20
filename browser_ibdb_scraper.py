@@ -414,6 +414,55 @@ def scrape_all_shows(input_csv: str, output_csv: str, browser='chrome', headless
             logger.info(f"⏸  Waiting 4 seconds before next show...")
             time.sleep(4)
 
+        # RETRY LOGIC: Retry failed shows up to 3 times
+        max_retries = 3
+        for retry_num in range(1, max_retries + 1):
+            # Find shows that failed
+            df_current = pd.DataFrame(results_list)
+            failed_shows = df_current[df_current['scrape_status'] != 'success']
+
+            if len(failed_shows) == 0:
+                logger.info("\n✓ All shows scraped successfully!")
+                break
+
+            logger.info("\n" + "="*70)
+            logger.info(f"RETRY ATTEMPT {retry_num}/{max_retries}")
+            logger.info("="*70)
+            logger.info(f"Retrying {len(failed_shows)} failed shows...")
+
+            # Retry each failed show
+            for idx, failed_row in failed_shows.iterrows():
+                show_name = failed_row['show_name']
+                show_id = failed_row['show_id']
+
+                logger.info(f"\n[RETRY {retry_num}] Retrying: {show_name}")
+                logger.info(f"  Previous status: {failed_row['scrape_status']}")
+                logger.info(f"  Previous note: {failed_row['scrape_notes']}")
+
+                # Scrape the show again
+                result = scraper.search_and_scrape(show_name)
+                result['show_id'] = show_id
+
+                # Update the result in results_list
+                for i, r in enumerate(results_list):
+                    if r['show_name'] == show_name:
+                        results_list[i] = result
+                        break
+
+                # Save checkpoint after each retry
+                if checkpoint_csv:
+                    df_checkpoint = pd.DataFrame(results_list)
+                    df_checkpoint.to_csv(checkpoint_csv, index=False)
+
+                # Pause between retries
+                logger.info(f"⏸  Waiting 4 seconds before next retry...")
+                time.sleep(4)
+
+            # After this retry round, check if we should continue
+            df_current = pd.DataFrame(results_list)
+            remaining_failed = len(df_current[df_current['scrape_status'] != 'success'])
+            logger.info(f"\n✓ Retry {retry_num} complete. Remaining failures: {remaining_failed}")
+
         # Save final results
         df_results = pd.DataFrame(results_list)
 
