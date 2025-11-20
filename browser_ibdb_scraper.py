@@ -95,11 +95,6 @@ class BrowserIBDBScraper:
         result = {
             'show_name': show_name,
             'ibdb_url': None,
-            'num_lead_producers': 0,
-            'num_producers': 0,
-            'num_co_producers': 0,
-            'num_associate_producers': 0,
-            'num_produced_in_association_with': 0,
             'num_total_producers': None,
             'scrape_status': 'pending',
             'scrape_notes': ''
@@ -158,11 +153,6 @@ class BrowserIBDBScraper:
             producer_data = self.parse_producers_from_page(show_name)
 
             if producer_data['num_total_producers'] is not None and producer_data['num_total_producers'] > 0:
-                result['num_lead_producers'] = producer_data['num_lead_producers']
-                result['num_producers'] = producer_data['num_producers']
-                result['num_co_producers'] = producer_data['num_co_producers']
-                result['num_associate_producers'] = producer_data['num_associate_producers']
-                result['num_produced_in_association_with'] = producer_data['num_produced_in_association_with']
                 result['num_total_producers'] = producer_data['num_total_producers']
                 result['scrape_status'] = 'success'
                 result['scrape_notes'] = 'Successfully scraped'
@@ -182,155 +172,64 @@ class BrowserIBDBScraper:
 
     def parse_producers_from_page(self, show_name: str) -> Dict:
         """
-        Parse producer information directly from the current browser page using Selenium.
-
-        IBDB lists producers in different categories:
-        - Lead Producer(s)
-        - Produced by
-        - Co-Produced by
-        - Associate Producer(s)
-        - Produced in association with
+        Parse ALL producers from IBDB page (counts all types together).
 
         Args:
             show_name: Name of show (for logging)
 
         Returns:
-            Dictionary with producer counts by type
+            Dictionary with total producer count
         """
-        lead_producers = set()
-        producers = set()
-        co_producers = set()
-        associate_producers = set()
-        produced_in_association_with = set()
-
-        def extract_names_from_text(text: str) -> set:
-            """Helper function to extract and clean producer names from text."""
-            if not text:
-                return set()
-
-            # Remove parenthetical notes before splitting
-            text = re.sub(r'\s*\([^)]+\)', '', text)
-
-            # Replace " and " with comma for consistent splitting
-            text = re.sub(r'\s+and\s+', ', ', text)
-
-            # Split by commas only (not semicolons - those separate sections)
-            names = text.split(',')
-
-            cleaned_names = set()
-            for name in names:
-                clean_name = name.strip()
-                clean_name = ' '.join(clean_name.split())
-
-                if clean_name and len(clean_name) > 2:
-                    # Filter out narrative text and credits
-                    skip_patterns = [
-                        'written by', 'music by', 'lyrics by', 'book by',
-                        'original music', 'originally produced', 'originally commissioned',
-                        'directed', 'choreograph', 'design', 'manager',
-                        'credits', 'cast', 'orchestra', 'staff',
-                        'opening night', 'closing night', 'performances', 'theatres',
-                        'world premiere', 'was presented', 'received its',
-                        'associate producer:', 'co-produced by', 'produced in association'
-                    ]
-
-                    if not any(skip in clean_name.lower() for skip in skip_patterns):
-                        cleaned_names.add(clean_name)
-
-            return cleaned_names
+        all_producers = set()
 
         try:
             # Get all text on the page
             page_text = self.driver.find_element(By.TAG_NAME, 'body').text
-            lines = page_text.split('\n')
 
-            # Define producer patterns to search for
-            producer_patterns = {
-                'lead': r'Lead Producer[s]?:(.+?)(?:;|$)',
-                'standard': r'Produced by(.+?)(?:;|$)',
-                'co': r'Co-Produced by(.+?)(?:;|$)',
-                'associate': r'Associate Producer[s]?:(.+?)(?:;|$)',
-                'in_association': r'Produced in association with(.+?)(?:;|$)'
-            }
+            # Find ALL producer-related text using a broad regex
+            # This captures: Lead Producer, Produced by, Co-Produced by, Associate Producer, in association with
+            producer_pattern = r'(?:Lead Producer[s]?:|Produced by|Co-Produced by|Associate Producer[s]?:|in association with)\s+([^;\n]+?)(?:;|\n\n|Credits|Directed|Written|Choreograph|Scenic Design|Costume Design|Lighting Design|Sound Design|Music Director|Musical Director)'
 
-            # Search for producer sections
-            # First, join all lines and look for semicolon-separated sections
-            full_text = '\n'.join(lines)
+            matches = re.finditer(producer_pattern, page_text, re.IGNORECASE)
 
-            # Find all producer sections using regex
-            # Handle both line-based and semicolon-separated formats
+            for match in matches:
+                producer_text = match.group(1)
 
-            # Lead Producer
-            lead_match = re.search(r'Lead Producer[s]?:\s*([^;\n]+?)(?:;|\n\n|Produced by|Co-Produced|Associate Producer|Credits|Directed)', full_text, re.IGNORECASE)
-            if lead_match:
-                self.logger.info(f"Found Lead Producer section")
-                lead_producers = extract_names_from_text(lead_match.group(1))
-                self.logger.info(f"  Lead Producers: {len(lead_producers)}")
-                for p in lead_producers:
-                    self.logger.info(f"    → {p}")
+                # Remove parenthetical notes
+                producer_text = re.sub(r'\s*\([^)]+\)', '', producer_text)
 
-            # Standard "Produced by" (not "Co-Produced" or "in association")
-            produced_match = re.search(r'(?<!Co-)Produced by\s+([^;\n]+?)(?:;|\n\n|Co-Produced|Associate Producer|Produced in association|Credits|Directed)', full_text, re.IGNORECASE)
-            if produced_match:
-                self.logger.info(f"Found Produced by section")
-                producers = extract_names_from_text(produced_match.group(1))
-                self.logger.info(f"  Producers: {len(producers)}")
-                for p in producers:
-                    self.logger.info(f"    → {p}")
+                # Replace " and " with comma
+                producer_text = re.sub(r'\s+and\s+', ', ', producer_text)
 
-            # Co-Produced by
-            co_match = re.search(r'Co-Produced by\s+([^;\n]+?)(?:;|\n\n|Associate Producer|Produced in association|Credits|Directed)', full_text, re.IGNORECASE)
-            if co_match:
-                self.logger.info(f"Found Co-Produced by section")
-                co_producers = extract_names_from_text(co_match.group(1))
-                self.logger.info(f"  Co-Producers: {len(co_producers)}")
-                for p in co_producers:
-                    self.logger.info(f"    → {p}")
+                # Split by commas
+                names = producer_text.split(',')
 
-            # Associate Producer (can be inline like "Associate Producer: John Doe" or a section header)
-            # First check for inline mentions within the "Produced by" section
-            assoc_inline_matches = re.findall(r'Associate Producer[s]?:\s*([^,;\n]+)', full_text, re.IGNORECASE)
-            if assoc_inline_matches:
-                self.logger.info(f"Found Associate Producer(s) - inline")
-                for match in assoc_inline_matches:
-                    assoc_names = extract_names_from_text(match)
-                    associate_producers.update(assoc_names)
-                self.logger.info(f"  Associate Producers: {len(associate_producers)}")
-                for p in associate_producers:
-                    self.logger.info(f"    → {p}")
+                for name in names:
+                    clean_name = name.strip()
+                    clean_name = ' '.join(clean_name.split())
 
-            # Produced in association with
-            in_assoc_match = re.search(r'(?:Produced )?in association with\s+([^;\n]+?)(?:;|\n\n|Credits|Directed|Written)', full_text, re.IGNORECASE)
-            if in_assoc_match:
-                self.logger.info(f"Found Produced in association with section")
-                produced_in_association_with = extract_names_from_text(in_assoc_match.group(1))
-                self.logger.info(f"  Produced in association with: {len(produced_in_association_with)}")
-                for p in produced_in_association_with:
-                    self.logger.info(f"    → {p}")
+                    if clean_name and len(clean_name) > 2:
+                        # Filter out narrative text
+                        skip_patterns = [
+                            'written by', 'music by', 'lyrics by', 'book by',
+                            'original music', 'originally produced', 'originally commissioned',
+                            'directed', 'choreograph', 'design', 'manager',
+                            'credits', 'cast', 'orchestra', 'staff',
+                            'opening night', 'closing night', 'performances', 'theatres',
+                            'world premiere', 'was presented', 'received its'
+                        ]
 
-            # Calculate totals
-            total_producers = len(lead_producers) + len(producers) + len(co_producers) + len(associate_producers) + len(produced_in_association_with)
+                        if not any(skip in clean_name.lower() for skip in skip_patterns):
+                            all_producers.add(clean_name)
+                            self.logger.info(f"  → Producer {len(all_producers)}: {clean_name}")
 
-            self.logger.info(f"\n{'='*50}")
-            self.logger.info(f"TOTALS:")
-            self.logger.info(f"  Lead Producers: {len(lead_producers)}")
-            self.logger.info(f"  Producers: {len(producers)}")
-            self.logger.info(f"  Co-Producers: {len(co_producers)}")
-            self.logger.info(f"  Associate Producers: {len(associate_producers)}")
-            self.logger.info(f"  Produced in association with: {len(produced_in_association_with)}")
-            self.logger.info(f"  TOTAL: {total_producers}")
-            self.logger.info(f"{'='*50}\n")
+            self.logger.info(f"\nTOTAL PRODUCERS: {len(all_producers)}")
 
         except Exception as e:
             self.logger.error(f"Error parsing producers: {e}")
 
         return {
-            'num_lead_producers': len(lead_producers) if lead_producers else 0,
-            'num_producers': len(producers) if producers else 0,
-            'num_co_producers': len(co_producers) if co_producers else 0,
-            'num_associate_producers': len(associate_producers) if associate_producers else 0,
-            'num_produced_in_association_with': len(produced_in_association_with) if produced_in_association_with else 0,
-            'num_total_producers': total_producers if total_producers > 0 else None
+            'num_total_producers': len(all_producers) if all_producers else None
         }
 
     def _is_stop_line(self, line: str) -> bool:
@@ -481,10 +380,8 @@ def scrape_all_shows(input_csv: str, output_csv: str, browser='chrome', headless
         df_results = pd.DataFrame(results_list)
 
         # Reorder columns
-        column_order = ['show_id', 'show_name', 'ibdb_url',
-                       'num_lead_producers', 'num_producers', 'num_co_producers',
-                       'num_associate_producers', 'num_produced_in_association_with',
-                       'num_total_producers', 'scrape_status', 'scrape_notes']
+        column_order = ['show_id', 'show_name', 'ibdb_url', 'num_total_producers',
+                       'scrape_status', 'scrape_notes']
         df_results = df_results[column_order]
 
         df_results.to_csv(output_csv, index=False)
@@ -505,10 +402,8 @@ def scrape_all_shows(input_csv: str, output_csv: str, browser='chrome', headless
         # Save what we have so far
         if results_list:
             df_results = pd.DataFrame(results_list)
-            column_order = ['show_id', 'show_name', 'ibdb_url',
-                           'num_lead_producers', 'num_producers', 'num_co_producers',
-                           'num_associate_producers', 'num_produced_in_association_with',
-                           'num_total_producers', 'scrape_status', 'scrape_notes']
+            column_order = ['show_id', 'show_name', 'ibdb_url', 'num_total_producers',
+                           'scrape_status', 'scrape_notes']
             df_results = df_results[column_order]
             df_results.to_csv(checkpoint_csv or output_csv, index=False)
             logger.info(f"✓ Progress saved to: {checkpoint_csv or output_csv}")
