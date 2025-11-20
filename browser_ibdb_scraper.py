@@ -28,6 +28,24 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 class BrowserIBDBScraper:
     """Scrapes IBDB using browser automation (Selenium)."""
 
+    # List of known revivals from 2010-2025
+    REVIVAL_SHOWS = {
+        'BYE BYE BIRDIE', 'CHICAGO', 'HAIR', 'FINIAN\'S RAINBOW', 'SOUTH PACIFIC',
+        'A LITTLE NIGHT MUSIC', 'LA BETE', 'RAGTIME', 'ANYTHING GOES', 'PORGY AND BESS',
+        'THE GERSHWINS\' PORGY AND BESS', 'ANNIE', 'THE MYSTERY OF EDWIN DROOD',
+        'PICNIC', 'THE GLASS MENAGERIE', 'CABARET', 'ON THE TOWN', 'THE KING AND I',
+        'SHE LOVES ME', 'FALSETTOS', 'LONG DAY\'S JOURNEY INTO NIGHT', 'HELLO, DOLLY!',
+        'ONCE ON THIS ISLAND', 'CAROUSEL', 'MY FAIR LADY', 'THE ICEMAN COMETH',
+        'KISS ME, KATE', 'OKLAHOMA!', 'WEST SIDE STORY', 'COMPANY', 'AMERICAN BUFFALO',
+        'THE MUSIC MAN', 'INTO THE WOODS', 'FUNNY GIRL', '1776', 'CAMELOT',
+        'SWEENEY TODD', 'MERRILY WE ROLL ALONG', 'PURLIE VICTORIOUS', 'GYPSY',
+        'A VIEW FROM THE BRIDGE', 'THE CRUCIBLE', 'A STREETCAR NAMED DESIRE',
+        'CAT ON A HOT TIN ROOF', 'DEATH OF A SALESMAN', 'THE ELEPHANT MAN',
+        'EVITA', 'HEDWIG AND THE ANGRY INCH', 'LES MISERABLES', 'THE THREEPENNY OPERA',
+        'MACBETH', 'ROMEO AND JULIET', 'ANYTHING GOES', 'GODSPELL', 'JESUS CHRIST SUPERSTAR',
+        'SUNSET BOULEVARD', 'APPROPRIATE', 'THE WIZ'
+    }
+
     def __init__(self, browser='chrome', headless=False):
         """
         Initialize the browser-based scraper.
@@ -107,7 +125,14 @@ class BrowserIBDBScraper:
 
             # Step 1: Search Google
             # Add year range to prioritize recent productions (2010-2025)
-            search_query = f"{show_name} IBDB Broadway 2010..2025"
+            # Add "revival" keyword for known revivals to find the correct production
+            show_name_upper = show_name.upper()
+            if show_name_upper in self.REVIVAL_SHOWS:
+                search_query = f"{show_name} IBDB Broadway revival 2010..2025"
+                self.logger.info(f"✓ Detected revival - adding 'revival' to search")
+            else:
+                search_query = f"{show_name} IBDB Broadway 2010..2025"
+
             google_url = f"https://www.google.com/search?q={quote_plus(search_query)}"
 
             self.logger.info(f"Searching Google: {search_query}")
