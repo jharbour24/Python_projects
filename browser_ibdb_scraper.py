@@ -11,6 +11,7 @@ This approach mimics human behavior and is harder to block than pure HTTP reques
 """
 
 import logging
+import random
 import re
 import time
 from typing import Dict, Optional
@@ -131,8 +132,13 @@ class BrowserIBDBScraper:
             self.logger.info(f"Searching Google: {search_query}")
             self.driver.get(google_url)
 
-            # Wait a bit for page to load
-            time.sleep(2)
+            # Wait for page to load
+            time.sleep(3)
+
+            # Check for CAPTCHA - give user time to solve it manually
+            self.logger.info("⏸  If you see a CAPTCHA, please solve it now...")
+            self.logger.info("⏸  Waiting 15 seconds for CAPTCHA/page load...")
+            time.sleep(15)
 
             # Step 2: Find and click first IBDB link
             ibdb_link = None
@@ -165,8 +171,8 @@ class BrowserIBDBScraper:
             self.driver.get(ibdb_link)
             result['ibdb_url'] = ibdb_link
 
-            # Wait for page to load
-            time.sleep(3)
+            # Wait for page to load (longer to appear more human-like)
+            time.sleep(5)
 
             # Step 4: Extract producer information using Selenium element finding
             producer_data = self.parse_producers_from_page(show_name)
@@ -419,8 +425,10 @@ def scrape_all_shows(input_csv: str, output_csv: str, browser='chrome', headless
                 df_checkpoint = pd.DataFrame(results_list)
                 df_checkpoint.to_csv(checkpoint_csv, index=False)
 
-            # Pause between shows to be polite
-            time.sleep(3)
+            # Pause between shows to be polite and avoid CAPTCHAs (8-15 seconds)
+            delay = random.uniform(8, 15)
+            logger.info(f"⏸  Waiting {delay:.1f} seconds before next show...")
+            time.sleep(delay)
 
         # Save final results
         df_results = pd.DataFrame(results_list)
