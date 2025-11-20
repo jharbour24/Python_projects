@@ -124,15 +124,8 @@ class BrowserIBDBScraper:
             self.logger.info(f"{'='*70}")
 
             # Step 1: Search Google
-            # Add year range to prioritize recent productions (2010-2025)
-            # Add "revival" keyword for known revivals to find the correct production
-            show_name_upper = show_name.upper()
-            if show_name_upper in self.REVIVAL_SHOWS:
-                search_query = f"{show_name} IBDB Broadway revival 2010..2025"
-                self.logger.info(f"✓ Detected revival - adding 'revival' to search")
-            else:
-                search_query = f"{show_name} IBDB Broadway 2010..2025"
-
+            # Always add "revival" keyword to prioritize 2010-2025 productions
+            search_query = f"{show_name} IBDB Broadway revival 2010..2025"
             google_url = f"https://www.google.com/search?q={quote_plus(search_query)}"
 
             self.logger.info(f"Searching Google: {search_query}")
