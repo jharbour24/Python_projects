@@ -107,8 +107,6 @@ def clean_data(df):
 
     # Convert numeric columns
     df['num_total_producers'] = pd.to_numeric(df['num_total_producers'], errors='coerce')
-    df['num_lead_producers'] = pd.to_numeric(df['num_lead_producers'], errors='coerce')
-    df['num_co_producers'] = pd.to_numeric(df['num_co_producers'], errors='coerce')
     df['tony_win'] = pd.to_numeric(df['tony_win'], errors='coerce')
 
     # Drop rows missing critical data
@@ -154,11 +152,6 @@ def descriptive_stats(df):
         logger.info(f"  Mean total producers: {winners['num_total_producers'].mean():.2f}")
         logger.info(f"  Median total producers: {winners['num_total_producers'].median():.1f}")
         logger.info(f"  Std dev: {winners['num_total_producers'].std():.2f}")
-
-        if 'num_lead_producers' in winners.columns:
-            lead_mean = winners['num_lead_producers'].mean()
-            if pd.notna(lead_mean):
-                logger.info(f"  Mean lead producers: {lead_mean:.2f}")
     else:
         logger.warning("  No Tony winners in dataset")
 
@@ -169,11 +162,6 @@ def descriptive_stats(df):
         logger.info(f"  Mean total producers: {non_winners['num_total_producers'].mean():.2f}")
         logger.info(f"  Median total producers: {non_winners['num_total_producers'].median():.1f}")
         logger.info(f"  Std dev: {non_winners['num_total_producers'].std():.2f}")
-
-        if 'num_lead_producers' in non_winners.columns:
-            lead_mean = non_winners['num_lead_producers'].mean()
-            if pd.notna(lead_mean):
-                logger.info(f"  Mean lead producers: {lead_mean:.2f}")
 
     # Difference
     if len(winners) > 0 and len(non_winners) > 0:

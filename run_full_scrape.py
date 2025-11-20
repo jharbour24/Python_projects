@@ -202,7 +202,7 @@ def run_full_scrape():
 
     # Reorder columns
     column_order = ['show_id', 'show_name', 'ibdb_url', 'num_total_producers',
-                   'num_lead_producers', 'num_co_producers', 'scrape_status', 'scrape_notes']
+                   'scrape_status', 'scrape_notes']
     results_df = results_df[[col for col in column_order if col in results_df.columns]]
 
     # Save final results

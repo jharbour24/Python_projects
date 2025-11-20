@@ -70,7 +70,7 @@ If automated scraping doesn't work, follow manual collection guide:
 - **535 Broadway shows** (2010-2025) - full list from user
 - **Advanced scraper** with Cloudflare bypass (cloudscraper)
 - **Google search integration** to find IBDB URLs
-- **Producer parsing** (distinguishes lead vs. co-producers)
+- **Producer parsing** (counts all producers listed under "Produced by")
 - **Full scraping script** with checkpointing, progress tracking
 - **Complete analysis pipeline**:
   - Logistic regression (`tony_win ~ num_total_producers`)
@@ -129,9 +129,9 @@ Python_projects/
 
 **Sample data**:
 ```csv
-show_name,ibdb_url,num_total_producers,num_lead_producers,num_co_producers
-HAMILTON,https://www.ibdb.com/...,4,2,2
-HADESTOWN,https://www.ibdb.com/...,45,3,42
+show_name,ibdb_url,num_total_producers,scrape_status
+HAMILTON,https://www.ibdb.com/...,4,ok
+HADESTOWN,https://www.ibdb.com/...,45,ok
 ...
 ```
 
@@ -155,10 +155,11 @@ Shows with more producers are [more/less/equally] likely to win Tony Awards.
 
 ### Methodology
 - **Population**: 535 Broadway shows (2010-2025)
-- **Predictors**: Producer counts (total, lead, co-)
+- **Predictors**: Total producer count per show
 - **Outcome**: Tony win (Best Musical, Best Play, Best Revival)
 - **Analysis**: Logistic regression with statistical tests
 - **Interpretation**: Odds ratios, confidence intervals, effect sizes
+- **Note**: IBDB lists all producers together without distinguishing types
 
 ### Limitations
 - Correlation ≠ causation (producer count may proxy for budget/resources)
@@ -173,9 +174,11 @@ Shows with more producers are [more/less/equally] likely to win Tony Awards.
 
 1. **Google Search**: Find IBDB production page for each show
 2. **Cloudscraper**: Bypass Cloudflare protection
-3. **Parse HTML**: Extract producer names and roles
-4. **Classify**: Distinguish lead vs. co-producers
+3. **Parse HTML**: Extract all producer names from "Produced by" section
+4. **Count**: Total unique producers per show
 5. **Save**: CSV with producer counts
+
+**Note**: IBDB doesn't differentiate producer types (all listed under "Produced by")
 
 ### Rate Limiting
 

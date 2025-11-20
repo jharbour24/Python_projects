@@ -98,20 +98,22 @@ class AdvancedIBDBScraper:
         """
         Parse producer information from IBDB production page HTML.
 
+        IBDB lists all producers together under "Produced by" without distinguishing
+        types (e.g., "Produced by Jeffrey Seller, Sander Jacobs, Jill Furman and
+        The Public Theater..."). We simply count all entities listed.
+
         Args:
             html: HTML content of IBDB page
             show_name: Name of show (for logging)
 
         Returns:
-            Dictionary with producer counts and details
+            Dictionary with producer count and details
         """
         self.logger.info(f"Parsing producers for: {show_name}")
 
         result = {
             'producer_names': [],
             'num_total_producers': 0,
-            'num_lead_producers': 0,
-            'num_co_producers': 0,
             'parse_status': 'unknown',
             'parse_notes': ''
         }
@@ -119,70 +121,55 @@ class AdvancedIBDBScraper:
         try:
             soup = BeautifulSoup(html, 'html.parser')
 
-            # IBDB structure: Look for producer credits
-            # Common patterns:
-            # - "Produced by" or "Producer" labels
-            # - Credits section with role labels
-            # - Person links (href="/person/...")
-
             producer_names = set()
-            lead_producer_names = set()
-            co_producer_names = set()
 
-            # Strategy 1: Find all person links and check nearby text for producer roles
-            person_links = soup.find_all('a', href=re.compile(r'/person/'))
+            # Strategy 1: Find "Produced by" text and extract the producer list
+            # Look for text containing "Produced by" followed by names
+            page_text = soup.get_text()
+
+            # Find the "Produced by" section
+            produced_by_match = re.search(r'Produced by\s+(.+?)(?:\n\n|Credits|Cast|Orchestra|Production Staff|$)',
+                                         page_text, re.DOTALL | re.IGNORECASE)
+
+            if produced_by_match:
+                producer_text = produced_by_match.group(1)
+
+                # Split by commas and "and" - these separate individual producers
+                # First replace " and " with comma for consistent splitting
+                producer_text = re.sub(r'\s+and\s+', ', ', producer_text)
+
+                # Split by comma
+                potential_producers = [p.strip() for p in producer_text.split(',')]
+
+                for producer in potential_producers:
+                    # Clean up: remove parenthetical notes (like role descriptions)
+                    # Example: "The Public Theater (Oskar Eustis, Artistic Director...)"
+                    # becomes "The Public Theater"
+                    clean_name = re.sub(r'\s*\([^)]+\)', '', producer).strip()
+
+                    # Skip if empty or too short
+                    if clean_name and len(clean_name) > 2:
+                        # Skip common non-producer text
+                        skip_terms = ['artistic director', 'executive director', 'managing director',
+                                    'general manager', 'producer', 'production']
+
+                        if not any(term in clean_name.lower() for term in skip_terms if term == clean_name.lower()):
+                            producer_names.add(clean_name)
+
+            # Strategy 2: Look for person/company links in producer context
+            # This catches cases where parsing from text might miss formatting
+            person_links = soup.find_all('a', href=re.compile(r'/person/|/organization/'))
 
             for link in person_links:
-                # Get surrounding context
                 parent = link.find_parent(['div', 'p', 'li', 'td', 'tr'])
-                if not parent:
-                    continue
+                if parent:
+                    context_text = parent.get_text().lower()
 
-                context_text = parent.get_text().lower()
-
-                # Check if this person is listed as a producer
-                if 'produc' in context_text:
-                    person_name = link.get_text().strip()
-
-                    if person_name and len(person_name) > 1:
-                        producer_names.add(person_name)
-
-                        # Determine producer type from context
-                        if 'co-produc' in context_text or 'coproducer' in context_text:
-                            co_producer_names.add(person_name)
-                        elif 'associate produc' in context_text:
-                            co_producer_names.add(person_name)
-                        elif 'executive produc' in context_text:
-                            # Could be either lead or co-, conservatively count as co-
-                            co_producer_names.add(person_name)
-                        elif 'produced by' in context_text or re.search(r'\bproducer\b', context_text):
-                            lead_producer_names.add(person_name)
-
-            # Strategy 2: Look for structured producer sections
-            # Find headers that mention "Producer"
-            headers = soup.find_all(['h3', 'h4', 'h5', 'strong', 'b'])
-
-            for header in headers:
-                header_text = header.get_text().strip().lower()
-
-                if 'produc' in header_text:
-                    # Find next siblings or parent's siblings to get producer names
-                    container = header.find_parent(['div', 'section'])
-                    if container:
-                        names_in_section = container.find_all('a', href=re.compile(r'/person/'))
-
-                        for name_link in names_in_section:
-                            name = name_link.get_text().strip()
-                            if name and len(name) > 1:
-                                producer_names.add(name)
-
-                                # Check role type from header
-                                if 'co-produc' in header_text:
-                                    co_producer_names.add(name)
-                                elif 'associate' in header_text:
-                                    co_producer_names.add(name)
-                                else:
-                                    lead_producer_names.add(name)
+                    # Only include if in "produced by" context
+                    if 'produced by' in context_text or 'producer' in context_text:
+                        name = link.get_text().strip()
+                        if name and len(name) > 2:
+                            producer_names.add(name)
 
             # Strategy 3: Look for tables with production credits
             tables = soup.find_all('table')
@@ -195,29 +182,28 @@ class AdvancedIBDBScraper:
                     if len(cells) >= 2:
                         role_cell = cells[0].get_text().strip().lower()
 
-                        if 'produc' in role_cell:
-                            # Extract names from second cell
-                            name_links = cells[1].find_all('a', href=re.compile(r'/person/'))
+                        # Look for "produced by" or "producer" role
+                        if 'produced by' in role_cell or role_cell == 'producer':
+                            # Extract all names from the second cell
+                            names_text = cells[1].get_text()
 
-                            for name_link in name_links:
-                                name = name_link.get_text().strip()
-                                if name:
-                                    producer_names.add(name)
+                            # Split by commas and "and"
+                            names_text = re.sub(r'\s+and\s+', ', ', names_text)
+                            names = [n.strip() for n in names_text.split(',')]
 
-                                    if 'co-produc' in role_cell or 'associate' in role_cell:
-                                        co_producer_names.add(name)
-                                    else:
-                                        lead_producer_names.add(name)
+                            for name in names:
+                                # Clean parentheticals
+                                clean_name = re.sub(r'\s*\([^)]+\)', '', name).strip()
+                                if clean_name and len(clean_name) > 2:
+                                    producer_names.add(clean_name)
 
             # Update result
             result['producer_names'] = sorted(list(producer_names))
             result['num_total_producers'] = len(producer_names)
-            result['num_lead_producers'] = len(lead_producer_names)
-            result['num_co_producers'] = len(co_producer_names)
 
             if result['num_total_producers'] > 0:
                 result['parse_status'] = 'ok'
-                result['parse_notes'] = f'Found {result["num_total_producers"]} total producers'
+                result['parse_notes'] = f'Found {result["num_total_producers"]} producers'
                 self.logger.info(f"✓ Parsed {result['num_total_producers']} producers for {show_name}")
             else:
                 result['parse_status'] = 'no_producers_found'
@@ -249,8 +235,6 @@ class AdvancedIBDBScraper:
             'show_name': show_name,
             'ibdb_url': None,
             'num_total_producers': None,
-            'num_lead_producers': None,
-            'num_co_producers': None,
             'scrape_status': 'pending',
             'scrape_notes': ''
         }
@@ -285,8 +269,6 @@ class AdvancedIBDBScraper:
 
             # Merge results
             result['num_total_producers'] = producer_data['num_total_producers']
-            result['num_lead_producers'] = producer_data['num_lead_producers']
-            result['num_co_producers'] = producer_data['num_co_producers']
             result['scrape_status'] = producer_data['parse_status']
             result['scrape_notes'] = producer_data['parse_notes']
 
@@ -328,8 +310,6 @@ def test_specific_shows():
         logger.info(f"\nResults for {show_name}:")
         logger.info(f"  IBDB URL: {result['ibdb_url']}")
         logger.info(f"  Total producers: {result['num_total_producers']}")
-        logger.info(f"  Lead producers: {result['num_lead_producers']}")
-        logger.info(f"  Co-producers: {result['num_co_producers']}")
         logger.info(f"  Status: {result['scrape_status']}")
 
         if result['num_total_producers']:
