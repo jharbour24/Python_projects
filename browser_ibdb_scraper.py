@@ -439,21 +439,25 @@ def scrape_all_shows(input_csv: str, output_csv: str, browser='chrome', headless
             logger.info(f"⏸  Waiting 4 seconds before next show...")
             time.sleep(4)
 
-        # RETRY LOGIC: Retry failed shows up to 3 times
-        max_retries = 3
-        for retry_num in range(1, max_retries + 1):
+        # RETRY LOGIC: Keep retrying failed shows until all are successful
+        retry_num = 0
+        while True:
             # Find shows that failed
             df_current = pd.DataFrame(results_list)
             failed_shows = df_current[df_current['scrape_status'] != 'success']
 
             if len(failed_shows) == 0:
-                logger.info("\n✓ All shows scraped successfully!")
+                logger.info("\n" + "="*70)
+                logger.info("✓✓✓ ALL SHOWS SCRAPED SUCCESSFULLY! ✓✓✓")
+                logger.info("="*70)
                 break
 
+            retry_num += 1
             logger.info("\n" + "="*70)
-            logger.info(f"RETRY ATTEMPT {retry_num}/{max_retries}")
+            logger.info(f"RETRY ROUND {retry_num}")
             logger.info("="*70)
             logger.info(f"Retrying {len(failed_shows)} failed shows...")
+            logger.info(f"Success rate: {len(df_current[df_current['scrape_status'] == 'success'])}/{len(df_current)} ({len(df_current[df_current['scrape_status'] == 'success'])/len(df_current)*100:.1f}%)")
 
             # Retry each failed show
             for idx, failed_row in failed_shows.iterrows():
@@ -483,10 +487,18 @@ def scrape_all_shows(input_csv: str, output_csv: str, browser='chrome', headless
                 logger.info(f"⏸  Waiting 4 seconds before next retry...")
                 time.sleep(4)
 
-            # After this retry round, check if we should continue
+            # After this retry round, show progress
             df_current = pd.DataFrame(results_list)
             remaining_failed = len(df_current[df_current['scrape_status'] != 'success'])
-            logger.info(f"\n✓ Retry {retry_num} complete. Remaining failures: {remaining_failed}")
+            success_count = len(df_current[df_current['scrape_status'] == 'success'])
+            logger.info(f"\n✓ Retry round {retry_num} complete.")
+            logger.info(f"  Status: {success_count}/{len(df_current)} successful ({success_count/len(df_current)*100:.1f}%)")
+            logger.info(f"  Remaining failures: {remaining_failed}")
+
+            if remaining_failed > 0:
+                logger.info(f"\n→ Continuing to next retry round...")
+            else:
+                logger.info(f"\n✓ All shows scraped successfully!")
 
         # Save final results
         df_results = pd.DataFrame(results_list)
