@@ -107,7 +107,7 @@ BROADWAY_REVIVALS = {
     'PRIVATE LIVES': 2011,
     'THE ROAD TO MECCA': 2012,
     'A STREETCAR NAMED DESIRE': 2012,
-    'AN ENEMY OF THE PEOPLE': 2012,
+    'AN ENEMY OF THE PEOPLE': 2024,  # Updated to 2024 revival
     'CYRANO DE BERGERAC': 2012,
     'DEATH OF A SALESMAN': 2012,
     'GLENGARRY GLEN ROSS': 2012,
@@ -183,6 +183,7 @@ BROADWAY_REVIVALS = {
     'OTHELLO': 2024,
     'YELLOW FACE': 2024,
     'WAITING FOR GODOT': 2024,
+    'ROMEO + JULIET': 2024,  # 2024 revival with + in title
 }
 
 # Additional reference information

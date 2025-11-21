@@ -98,6 +98,9 @@ class BrowserIBDBScraper:
             'show_name': show_name,
             'ibdb_url': None,
             'num_total_producers': None,
+            'producer_names': None,
+            'production_year': None,
+            'num_performances': None,
             'scrape_status': 'pending',
             'scrape_notes': ''
         }
@@ -162,8 +165,13 @@ class BrowserIBDBScraper:
             # Step 4: Extract producer information using Selenium element finding
             producer_data = self.parse_producers_from_page(show_name)
 
+            # Update result with all extracted data
+            result['num_total_producers'] = producer_data.get('num_total_producers')
+            result['producer_names'] = producer_data.get('producer_names')
+            result['production_year'] = producer_data.get('production_year')
+            result['num_performances'] = producer_data.get('num_performances')
+
             if producer_data['num_total_producers'] is not None and producer_data['num_total_producers'] > 0:
-                result['num_total_producers'] = producer_data['num_total_producers']
                 result['scrape_status'] = 'success'
                 result['scrape_notes'] = 'Successfully scraped'
                 self.logger.info(f"✓ SUCCESS: Found {producer_data['num_total_producers']} total producers")
@@ -262,11 +270,28 @@ class BrowserIBDBScraper:
 
             self.logger.info(f"\nTOTAL PRODUCERS: {len(all_producers)}")
 
+            # Extract production year from page
+            production_year = None
+            year_match = re.search(r'Opening Night:\s*\w+\s+\d+,\s+(\d{4})', page_text)
+            if year_match:
+                production_year = int(year_match.group(1))
+                self.logger.info(f"Production Year: {production_year}")
+
+            # Extract number of performances
+            num_performances = None
+            perf_match = re.search(r'Performances:\s*(\d+)', page_text, re.IGNORECASE)
+            if perf_match:
+                num_performances = int(perf_match.group(1))
+                self.logger.info(f"Number of Performances: {num_performances}")
+
         except Exception as e:
             self.logger.error(f"Error parsing producers: {e}")
 
         return {
-            'num_total_producers': len(all_producers) if all_producers else None
+            'num_total_producers': len(all_producers) if all_producers else None,
+            'producer_names': '; '.join(sorted(all_producers)) if all_producers else None,
+            'production_year': production_year,
+            'num_performances': num_performances
         }
 
     def _is_stop_line(self, line: str) -> bool:
@@ -467,7 +492,8 @@ def scrape_all_shows(input_csv: str, output_csv: str, browser='chrome', headless
         df_results = pd.DataFrame(results_list)
 
         # Reorder columns
-        column_order = ['show_id', 'show_name', 'ibdb_url', 'num_total_producers',
+        column_order = ['show_id', 'show_name', 'ibdb_url', 'production_year',
+                       'num_total_producers', 'producer_names', 'num_performances',
                        'scrape_status', 'scrape_notes']
         df_results = df_results[column_order]
 
@@ -489,7 +515,8 @@ def scrape_all_shows(input_csv: str, output_csv: str, browser='chrome', headless
         # Save what we have so far
         if results_list:
             df_results = pd.DataFrame(results_list)
-            column_order = ['show_id', 'show_name', 'ibdb_url', 'num_total_producers',
+            column_order = ['show_id', 'show_name', 'ibdb_url', 'production_year',
+                           'num_total_producers', 'producer_names', 'num_performances',
                            'scrape_status', 'scrape_notes']
             df_results = df_results[column_order]
             df_results.to_csv(checkpoint_csv or output_csv, index=False)
