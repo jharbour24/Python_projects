@@ -390,10 +390,10 @@ def create_visualizations(df):
 
 def analyze_individual_producers(df):
     """
-    Analyze which specific producers have higher Tony win rates.
+    Analyze which specific producers have higher Tony win rates and longest-running shows.
 
     Args:
-        df: Clean DataFrame with producer_names column
+        df: Clean DataFrame with producer_names and num_performances columns
     """
     logger.info("\n" + "="*70)
     logger.info("INDIVIDUAL PRODUCER ANALYSIS")
@@ -403,7 +403,7 @@ def analyze_individual_producers(df):
         logger.warning("producer_names column not found - skipping individual producer analysis")
         return None
 
-    # Parse producer names and track their wins
+    # Parse producer names and track their wins and performances
     producer_stats = {}
 
     for _, row in df.iterrows():
@@ -413,14 +413,26 @@ def analyze_individual_producers(df):
         # Split by semicolon
         producers = [p.strip() for p in str(row['producer_names']).split(';') if p.strip()]
         tony_win = row['tony_win']
+        num_performances = row.get('num_performances', None)
 
         for producer in producers:
             if producer not in producer_stats:
-                producer_stats[producer] = {'wins': 0, 'total': 0, 'shows': []}
+                producer_stats[producer] = {
+                    'wins': 0,
+                    'total': 0,
+                    'shows': [],
+                    'total_performances': 0,
+                    'performance_counts': []
+                }
 
             producer_stats[producer]['total'] += 1
             producer_stats[producer]['wins'] += tony_win
             producer_stats[producer]['shows'].append(row['show_name'])
+
+            # Track performances if available
+            if num_performances is not None and not pd.isna(num_performances):
+                producer_stats[producer]['total_performances'] += num_performances
+                producer_stats[producer]['performance_counts'].append(num_performances)
 
     # Convert to DataFrame
     producer_df = pd.DataFrame([
@@ -429,6 +441,8 @@ def analyze_individual_producers(df):
             'total_shows': stats['total'],
             'tony_wins': stats['wins'],
             'win_rate': stats['wins'] / stats['total'] if stats['total'] > 0 else 0,
+            'total_performances': stats['total_performances'],
+            'avg_performances': stats['total_performances'] / len(stats['performance_counts']) if len(stats['performance_counts']) > 0 else 0,
             'shows': '; '.join(stats['shows'])
         }
         for name, stats in producer_stats.items()
@@ -441,10 +455,40 @@ def analyze_individual_producers(df):
     logger.info(f"\nTotal unique producers: {len(producer_df)}")
     logger.info(f"Producers with 3+ shows: {len(producer_df_filtered)}")
 
+    # TOP 5 BY TONY WIN RATE
+    logger.info("\n" + "="*70)
+    logger.info("TOP 5 PRODUCERS BY TONY WIN RATE (min 3 shows)")
+    logger.info("="*70)
+    for i, row in producer_df_filtered.head(5).iterrows():
+        logger.info(f"{i+1}. {row['producer_name']:50s} | {row['tony_wins']}/{row['total_shows']} wins ({row['win_rate']*100:.1f}%)")
+
     # Top 20 producers by win rate (with at least 3 shows)
     logger.info("\n--- TOP 20 PRODUCERS BY TONY WIN RATE (min 3 shows) ---")
     for i, row in producer_df_filtered.head(20).iterrows():
         logger.info(f"{row['producer_name']:50s} | {row['tony_wins']}/{row['total_shows']} wins ({row['win_rate']*100:.1f}%)")
+
+    # TOP 5 BY AVERAGE PERFORMANCES (longest running shows on average)
+    if 'num_performances' in df.columns:
+        producer_with_perf = producer_df[(producer_df['total_shows'] >= 3) & (producer_df['avg_performances'] > 0)].copy()
+        producer_with_perf = producer_with_perf.sort_values('avg_performances', ascending=False)
+
+        logger.info("\n" + "="*70)
+        logger.info("TOP 5 PRODUCERS BY AVERAGE PERFORMANCES (min 3 shows)")
+        logger.info("Longest running shows on average")
+        logger.info("="*70)
+        for i, row in producer_with_perf.head(5).iterrows():
+            logger.info(f"{i+1}. {row['producer_name']:50s} | Avg: {row['avg_performances']:.0f} perfs/show ({row['total_shows']} shows)")
+
+        # TOP 5 BY TOTAL PERFORMANCES (most performances collectively)
+        producer_by_total = producer_df[(producer_df['total_shows'] >= 3) & (producer_df['total_performances'] > 0)].copy()
+        producer_by_total = producer_by_total.sort_values('total_performances', ascending=False)
+
+        logger.info("\n" + "="*70)
+        logger.info("TOP 5 PRODUCERS BY TOTAL PERFORMANCES (min 3 shows)")
+        logger.info("Most performances across all shows collectively")
+        logger.info("="*70)
+        for i, row in producer_by_total.head(5).iterrows():
+            logger.info(f"{i+1}. {row['producer_name']:50s} | Total: {row['total_performances']:.0f} perfs ({row['total_shows']} shows)")
 
     # Most prolific producers (10+ shows)
     prolific = producer_df[producer_df['total_shows'] >= 10].sort_values('total_shows', ascending=False)
@@ -656,6 +700,56 @@ def create_enhanced_visualizations(df, yearly_stats, prediction_df, producer_df)
                            va='center', fontsize=9)
 
                 fig_path = output_dir / 'top_producers_win_rate.png'
+                plt.savefig(fig_path, dpi=150, bbox_inches='tight')
+                logger.info(f"✓ Saved: {fig_path}")
+                plt.close()
+
+        # Figure 3: Top producers by average performances
+        if producer_df is not None and 'avg_performances' in producer_df.columns:
+            top_avg_perf = producer_df[(producer_df['total_shows'] >= 3) & (producer_df['avg_performances'] > 0)].sort_values('avg_performances', ascending=False).head(10)
+
+            if len(top_avg_perf) > 0:
+                fig, ax = plt.subplots(figsize=(12, 8))
+
+                bars = ax.barh(range(len(top_avg_perf)), top_avg_perf['avg_performances'])
+                ax.set_yticks(range(len(top_avg_perf)))
+                ax.set_yticklabels(top_avg_perf['producer_name'])
+                ax.set_xlabel('Average Performances per Show', fontsize=12)
+                ax.set_title('Top 10 Producers by Average Show Length (3+ shows)', fontsize=14, fontweight='bold')
+                ax.grid(axis='x', alpha=0.3)
+
+                # Add value labels
+                for i, (idx, row) in enumerate(top_avg_perf.iterrows()):
+                    ax.text(row['avg_performances'] + 20, i,
+                           f"{row['avg_performances']:.0f} perfs ({row['total_shows']} shows)",
+                           va='center', fontsize=9)
+
+                fig_path = output_dir / 'top_producers_avg_performances.png'
+                plt.savefig(fig_path, dpi=150, bbox_inches='tight')
+                logger.info(f"✓ Saved: {fig_path}")
+                plt.close()
+
+        # Figure 4: Top producers by total performances
+        if producer_df is not None and 'total_performances' in producer_df.columns:
+            top_total_perf = producer_df[(producer_df['total_shows'] >= 3) & (producer_df['total_performances'] > 0)].sort_values('total_performances', ascending=False).head(10)
+
+            if len(top_total_perf) > 0:
+                fig, ax = plt.subplots(figsize=(12, 8))
+
+                bars = ax.barh(range(len(top_total_perf)), top_total_perf['total_performances'])
+                ax.set_yticks(range(len(top_total_perf)))
+                ax.set_yticklabels(top_total_perf['producer_name'])
+                ax.set_xlabel('Total Performances Across All Shows', fontsize=12)
+                ax.set_title('Top 10 Producers by Total Performances (3+ shows)', fontsize=14, fontweight='bold')
+                ax.grid(axis='x', alpha=0.3)
+
+                # Add value labels
+                for i, (idx, row) in enumerate(top_total_perf.iterrows()):
+                    ax.text(row['total_performances'] + 100, i,
+                           f"{row['total_performances']:.0f} perfs ({row['total_shows']} shows)",
+                           va='center', fontsize=9)
+
+                fig_path = output_dir / 'top_producers_total_performances.png'
                 plt.savefig(fig_path, dpi=150, bbox_inches='tight')
                 logger.info(f"✓ Saved: {fig_path}")
                 plt.close()
