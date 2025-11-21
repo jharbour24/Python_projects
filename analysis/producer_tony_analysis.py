@@ -31,6 +31,13 @@ from collections import Counter
 
 from utils import setup_logger
 
+# Import enhanced analysis functions
+from enhanced_analysis import (
+    add_show_financial_metrics,
+    create_producer_bubble_charts,
+    analyze_tony_wins_by_year
+)
+
 logger = setup_logger(__name__, log_file='logs/analysis.log')
 
 
@@ -1130,10 +1137,23 @@ def main():
         if has_producer_data:
             producer_df = analyze_individual_producers(df_clean)
 
+        # Add show-level financial metrics (ATP and avg weekly gross)
+        if grosses_df is not None:
+            df_clean = add_show_financial_metrics(df_clean, grosses_df)
+
         # Run financial analysis if grosses data is available
         financial_df = None
         if grosses_df is not None and has_producer_data:
             financial_df = analyze_producer_financials(df_clean, grosses_df)
+
+            # Create bubble charts for top 25 producers
+            logger.info("\nCreating producer bubble charts...")
+            create_producer_bubble_charts(df_clean, grosses_df, time_period='all')
+            create_producer_bubble_charts(df_clean, grosses_df, time_period='post_pandemic')
+
+        # Year-by-year Tony analysis (NEW shows only, by season)
+        if has_producer_data:
+            analyze_tony_wins_by_year(df_clean, grosses_df)
 
         yearly_result = None
         if has_producer_data:
@@ -1159,12 +1179,14 @@ def main():
         logger.info("✓✓✓ ANALYSIS COMPLETE ✓✓✓")
         logger.info("="*70)
         logger.info("\nResults saved to:")
-        logger.info("  - data/producer_tony_analysis.csv (analysis dataset)")
+        logger.info("  - data/producer_tony_analysis.csv (analysis dataset with ATP and weekly gross)")
         logger.info("  - analysis/results/producer_success_analysis.csv (individual producer stats)")
         logger.info("  - analysis/results/producer_financial_analysis.csv (financial metrics)")
+        logger.info("  - analysis/results/tony_wins_by_year.csv (year-by-year Tony analysis)")
         logger.info("  - analysis/results/yearly_producer_trends.csv (yearly trends)")
         logger.info("  - analysis/results/producer_count_predictions.csv (5-year forecast)")
-        logger.info("  - analysis/results/ (visualizations including financial charts)")
+        logger.info("  - analysis/results/producer_bubble_*.png (network charts for top 25 producers)")
+        logger.info("  - analysis/results/ (all visualizations including financial charts)")
         logger.info("  - logs/analysis.log (detailed output)")
 
         return 0
