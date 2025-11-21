@@ -400,12 +400,22 @@ def scrape_all_shows(input_csv: str, output_csv: str, browser='chrome', headless
 
     if checkpoint_csv:
         try:
-            df_checkpoint = pd.read_csv(checkpoint_csv)
+            df_checkpoint = pd.read_csv(checkpoint_csv, encoding='utf-8', errors='ignore')
             already_scraped = set(df_checkpoint['show_name'].tolist())
             results_list = df_checkpoint.to_dict('records')
             logger.info(f"✓ Loaded checkpoint: {len(already_scraped)} shows already scraped")
         except FileNotFoundError:
             logger.info("No checkpoint found, starting fresh")
+        except UnicodeDecodeError:
+            logger.warning("Checkpoint has encoding issues, trying with latin-1 encoding")
+            try:
+                df_checkpoint = pd.read_csv(checkpoint_csv, encoding='latin-1')
+                already_scraped = set(df_checkpoint['show_name'].tolist())
+                results_list = df_checkpoint.to_dict('records')
+                logger.info(f"✓ Loaded checkpoint: {len(already_scraped)} shows already scraped")
+            except Exception as e:
+                logger.error(f"Could not load checkpoint: {e}")
+                logger.info("Starting fresh instead")
 
     # Initialize scraper
     scraper = BrowserIBDBScraper(browser=browser, headless=headless)
