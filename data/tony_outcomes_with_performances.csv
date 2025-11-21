@@ -1,0 +1,536 @@
+show_id,show_name,tony_win,tony_category,tony_year,production_year,num_performances,scrape_status
+1,A BEHANDING IN SPOKANE,0,,,2010,108,success
+2,A FREE MAN OF COLOR,0,,,2010,61,success
+3,A LIFE IN THE THEATRE,0,,,2010,56,success
+4,A LITTLE NIGHT MUSIC,0,,,2010,425,success
+5,A VIEW FROM THE BRIDGE,1,Best Revival of a Play,2016.0,2016,115,success
+6,ALL ABOUT ME,0,,,2010,20,success
+7,AMERICAN IDIOT,0,,,2010,421,success
+8,BLOODY BLOODY ANDREW JACKSON,0,,,2010,94,success
+9,BRIEF ENCOUNTER,0,,,2010,119,success
+10,BURN THE FLOOR,0,,,2010,185,success
+11,BYE BYE BIRDIE,0,,,2010,117,success
+12,CHICAGO,0,,,1996,,not_found
+13,COLLECTED STORIES,0,,,2010,54,success
+14,COME FLY AWAY,0,,,2010,187,success
+15,DRIVING MISS DAISY,0,,,2011,180,success
+16,ELF,0,,,2010,57,success
+17,ELLING,0,,,2010,9,success
+18,ENRON,0,,,2010,15,success
+19,EVERYDAY RAPTURE,0,,,2010,84,success
+20,FELA!,0,,,2010,463,success
+21,FENCES,1,Best Revival of a Play,2010.0,2010,88,success
+22,FINIAN'S RAINBOW,0,,,2010,92,success
+23,GOD OF CARNAGE,0,,,2010,452,success
+24,HAIR,0,,,2010,519,success
+25,IN THE HEIGHTS,0,,,2008,1184,success
+26,IRVING BERLIN'S WHITE CHRISTMAS,0,,,2010,51,success
+27,JERSEY BOYS,0,,,2005,,not_found
+28,LA BETE,0,,,2011,101,success
+29,LEND ME A TENOR,0,,,2010,153,success
+30,LOMBARDI,0,,,2011,244,success
+31,LOOPED,0,,,2010,33,success
+32,MAMMA MIA!,0,,,2001,,not_found
+33,MARY POPPINS,0,,,2006,,not_found
+34,MILLION DOLLAR QUARTET,0,,,2010,489,success
+35,MRS. WARREN'S PROFESSION,0,,,2010,65,success
+36,NEXT FALL,0,,,2010,132,success
+37,NEXT TO NORMAL,0,,,2009,734,success
+38,PRESENT LAUGHTER,0,,,2010,70,success
+39,RACE,0,,,2010,297,success
+40,RAGTIME,0,,,2010,65,success
+41,RED,1,Best Play,2010.0,2010,101,success
+42,ROCK OF AGES,0,,,2009,2328,success
+43,SHREK THE MUSICAL,0,,,2010,441,success
+44,SONDHEIM ON SONDHEIM,0,,,2010,76,success
+45,SOUTH PACIFIC,0,,,2008,996,success
+46,SPIDER-MAN TURN OFF THE DARK,0,,,2011,1268,success
+47,SUPERIOR DONUTS,0,,,2010,108,success
+48,THE 39 STEPS,0,,,2010,771,success
+49,THE ADDAMS FAMILY,0,,,2010,722,success
+50,THE IMPORTANCE OF BEING EARNEST,0,,,2011,189,success
+51,THE LION KING,0,,,1997,,not_found
+52,THE MERCHANT OF VENICE,0,,,2010,73,success
+53,THE MIRACLE WORKER,0,,,2010,38,success
+54,THE PEE-WEE HERMAN SHOW,0,,,2010,62,success
+55,THE PHANTOM OF THE OPERA,0,,,1988,,not_found
+56,THE PITMEN PAINTERS,0,,,2010,,partial
+57,THE SCOTTSBORO BOYS,0,,,2010,49,success
+58,TIME STANDS STILL,0,,,2010,193,success
+59,WICKED,0,,,2003,,not_found
+60,WISHFUL DRINKING,0,,,2009,,not_found
+61,WOMEN ON THE VERGE OF A NERVOUS BREAKDOWN,0,,,2010,69,success
+62,AN EVENING WITH PATTI LUPONE AND MANDY PATINKIN,0,,,2011,63,success
+63,ANYTHING GOES,1,Best Revival of a Musical,2011.0,2011,521,success
+64,ARCADIA,0,,,2011,108,success
+65,BABY IT'S YOU!,0,,,2011,151,success
+66,BORN YESTERDAY,0,,,2011,73,success
+67,CATCH ME IF YOU CAN,0,,,2011,170,success
+68,CHINGLISH,0,,,2011,128,success
+69,FOLLIES,0,,,2011,152,success
+70,GHETTO KLOWN,0,,,2011,95,success
+71,GODSPELL,0,,,2011,264,success
+72,GOOD PEOPLE,0,,,2011,101,success
+73,HIGH,0,,,2011,5,success
+74,HOW TO SUCCEED IN BUSINESS WITHOUT REALLY TRYING,0,,,2011,473,success
+75,JERUSALEM,0,,,2011,141,success
+76,KATHY GRIFFIN WANTS A TONY,0,,,2011,10,success
+77,LYSISTRATA JONES,0,,,2011,30,success
+78,MAN AND BOY,0,,,2011,92,success
+79,MASTER CLASS,0,,,2011,67,success
+80,ON A CLEAR DAY YOU CAN SEE FOREVER,0,,,2011,57,success
+81,OTHER DESERT CITIES,0,,,2011,261,success
+82,PORGY AND BESS,1,Best Revival of a Musical,2012.0,2012,293,success
+83,RELATIVELY SPEAKING,0,,,2011,118,success
+84,SEMINAR,0,,,2011,216,success
+85,SISTER ACT,0,,,2011,561,success
+86,STICK FLY,0,,,2011,92,success
+87,THAT CHAMPIONSHIP SEASON,0,,,2011,97,success
+88,THE BOOK OF MORMON,1,Best Musical,2011.0,2011,,partial
+89,THE HOUSE OF BLUE LEAVES,0,,,2011,72,success
+90,THE MOTHERF**KER WITH THE HAT,0,,,2011,112,success
+91,THE MOUNTAINTOP,0,,,2011,109,success
+92,THE NORMAL HEART,1,Best Revival of a Play,2011.0,2011,86,success
+93,THE PEOPLE IN THE PICTURE,0,,,2011,60,success
+94,THE ROAD TO MECCA,0,,,2012,56,success
+95,VENUS IN FUR,0,,,2011,191,success
+96,WAR HORSE,1,Best Play,2011.0,2011,718,success
+97,WONDERLAND,0,,,2011,33,success
+98,A STREETCAR NAMED DESIRE,0,,,2012,105,success
+99,AN ENEMY OF THE PEOPLE,0,,,2012,,partial
+100,ANNIE,0,,,,,pending
+101,CAT ON A HOT TIN ROOF,0,,,,,pending
+102,CHAPLIN,0,,,,,pending
+103,CLYBOURNE PARK,1,Best Play,2012.0,,,pending
+104,CYRANO DE BERGERAC,0,,,,,pending
+105,DEAD ACCOUNTS,0,,,,,pending
+106,DEATH OF A SALESMAN,1,Best Revival of a Play,2012.0,,,pending
+107,DON'T DRESS FOR DINNER,0,,,,,pending
+108,END OF THE RAINBOW,0,,,,,pending
+109,EVITA,0,,,,,pending
+110,FRANKIE VALLI AND THE FOUR SEASONS ON BROADWAY,0,,,,,pending
+111,GLENGARRY GLEN ROSS,0,,,,,pending
+112,GOLDEN BOY,0,,,,,pending
+113,GORE VIDAL'S THE BEST MAN,0,,,,,pending
+114,GRACE,0,,,,,pending
+115,HARVEY,0,,,,,pending
+116,JESUS CHRIST SUPERSTAR,0,,,,,pending
+117,LEAP OF FAITH,0,,,,,pending
+118,MAGIC/BIRD,0,,,,,pending
+119,NEWSIES,0,,,,,pending
+120,NICE WORK IF YOU CAN GET IT,0,,,,,pending
+121,ONCE,1,Best Musical,2012.0,,,pending
+122,"ONE MAN, TWO GUVNORS",0,,,,,pending
+123,PETER AND THE STARCATCHER,0,,,,,pending
+124,PICNIC,0,,,,,pending
+125,PRIVATE LIVES,0,,,,,pending
+126,SCANDALOUS,0,,,,,pending
+127,SHATNER'S WORLD: WE JUST LIVE IN IT,0,,,,,pending
+128,THE ANARCHIST,0,,,,,pending
+129,THE COLUMNIST,0,,,,,pending
+130,THE HEIRESS,0,,,,,pending
+131,THE LYONS,0,,,,,pending
+132,THE MYSTERY OF EDWIN DROOD,0,,,,,pending
+133,THE OTHER PLACE,0,,,,,pending
+134,THE PERFORMERS,0,,,,,pending
+135,WHO'S AFRAID OF VIRGINIA WOOLF?,1,Best Revival of a Play,2013.0,,,pending
+136,WIT,0,,,,,pending
+137,700 SUNDAYS,0,,,,,pending
+138,A GENTLEMAN'S GUIDE TO LOVE AND MURDER,1,Best Musical,2014.0,,,pending
+139,A NIGHT WITH JANIS JOPLIN,0,,,,,pending
+140,A TIME TO KILL,0,,,,,pending
+141,AFTER MIDNIGHT,0,,,,,pending
+142,ANN,0,,,,,pending
+143,BETRAYAL,0,,,,,pending
+144,BIG FISH,0,,,,,pending
+145,BREAKFAST AT TIFFANY'S,0,,,,,pending
+146,CINDERELLA,0,,,,,pending
+147,FIRST DATE,0,,,,,pending
+148,FOREVER TANGO,0,,,,,pending
+149,HANDS ON A HARDBODY,0,,,,,pending
+150,I'LL EAT YOU LAST: A CHAT WITH SUE MENGERS,0,,,,,pending
+151,JEKYLL & HYDE,0,,,,,pending
+152,KINKY BOOTS,1,Best Musical,2013.0,,,pending
+153,LET IT BE,0,,,,,pending
+154,LUCKY GUY,0,,,,,pending
+155,MACBETH,0,,,,,pending
+156,MACHINAL,0,,,,,pending
+157,MANILOW ON BROADWAY,0,,,,,pending
+158,MOTOWN THE MUSICAL,0,,,,,pending
+159,ORPHANS,0,,,,,pending
+160,PIPPIN,1,Best Revival of a Musical,2013.0,,,pending
+161,ROMEO AND JULIET,0,,,,,pending
+162,SOUL DOCTOR,0,,,,,pending
+163,THE ASSEMBLED PARTIES,0,,,,,pending
+164,THE BIG KNIFE,0,,,,,pending
+165,THE GLASS MENAGERIE,0,,,,,pending
+166,THE NANCE,0,,,,,pending
+167,THE RASCALS: ONCE UPON A DREAM,0,,,,,pending
+168,THE SNOW GEESE,0,,,,,pending
+169,THE TESTAMENT OF MARY,0,,,,,pending
+170,THE TRIP TO BOUNTIFUL,0,,,,,pending
+171,THE WINSLOW BOY,0,,,,,pending
+172,VANYA AND SONIA AND MASHA AND SPIKE,1,Best Play,2013.0,,,pending
+173,A DELICATE BALANCE,0,,,,,pending
+174,A RAISIN IN THE SUN,1,Best Revival of a Play,2014.0,,,pending
+175,ACT ONE,0,,,,,pending
+176,ALADDIN,0,,,,,pending
+177,ALL THE WAY,1,Best Play,2014.0,,,pending
+178,BRONX BOMBERS,0,,,,,pending
+179,BULLETS OVER BROADWAY,0,,,,,pending
+180,CABARET,0,,,,,pending
+181,CASA VALENTINA,0,,,,,pending
+182,CONSTELLATIONS,0,,,,,pending
+183,DISGRACED,0,,,,,pending
+184,HEDWIG AND THE ANGRY INCH,1,Best Revival of a Musical,2014.0,,,pending
+185,HOLLER IF YA HEAR ME,0,,,,,pending
+186,HONEYMOON IN VEGAS,0,,,,,pending
+187,IF/THEN,0,,,,,pending
+188,IT'S ONLY A PLAY,0,,,,,pending
+189,LES MISÉRABLES,0,,,,,pending
+190,LOVE LETTERS,0,,,,,pending
+191,MOTHERS AND SONS,0,,,,,pending
+192,OF MICE AND MEN,0,,,,,pending
+193,ON THE TOWN,0,,,,,pending
+194,OUTSIDE MULLINGAR,0,,,,,pending
+195,ROCKY,0,,,,,pending
+196,SIDE SHOW,0,,,,,pending
+197,THE BRIDGES OF MADISON COUNTY,0,,,,,pending
+198,THE COUNTRY HOUSE,0,,,,,pending
+199,THE CRIPPLE OF INISHMAAN,0,,,,,pending
+200,THE CURIOUS INCIDENT OF THE DOG IN THE NIGHT-TIME,1,Best Play,2015.0,,,pending
+201,THE ELEPHANT MAN,0,,,,,pending
+202,THE LAST SHIP,0,,,,,pending
+203,THE REAL THING,0,,,,,pending
+204,THE REALISTIC JONESES,0,,,,,pending
+205,THE RIVER,0,,,,,pending
+206,THE VELOCITY OF AUTUMN,0,,,,,pending
+207,THIS IS OUR YOUTH,0,,,,,pending
+208,VIOLET,0,,,,,pending
+209,YOU CAN'T TAKE IT WITH YOU,0,,,,,pending
+210,AIRLINE HIGHWAY,0,,,,,pending
+211,ALLEGIANCE,0,,,,,pending
+212,AMAZING GRACE,0,,,,,pending
+213,AN ACT OF GOD,0,,,,,pending
+214,AN AMERICAN IN PARIS,0,,,,,pending
+215,CHINA DOLL,0,,,,,pending
+216,DAMES AT SEA,0,,,,,pending
+217,DOCTOR ZHIVAGO,0,,,,,pending
+218,FIDDLER ON THE ROOF,0,,,,,pending
+219,FINDING NEVERLAND,0,,,,,pending
+220,FISH IN THE DARK,0,,,,,pending
+221,FOOL FOR LOVE,0,,,,,pending
+222,FUN HOME,1,Best Musical,2015.0,,,pending
+223,GIGI,0,,,,,pending
+224,HAMILTON,1,Best Musical,2016.0,,,pending
+225,HAND TO GOD,0,,,,,pending
+226,IT SHOULDA BEEN YOU,0,,,,,pending
+227,KING CHARLES III,0,,,,,pending
+228,LIVING ON LOVE,0,,,,,pending
+229,LORD OF THE DANCE: DANGEROUS GAMES,0,,,,,pending
+230,MISERY,0,,,,,pending
+231,NOISES OFF,0,,,,,pending
+232,OLD TIMES,0,,,,,pending
+233,ON THE TWENTIETH CENTURY,0,,,,,pending
+234,PENN & TELLER ON BROADWAY,0,,,,,pending
+235,SCHOOL OF ROCK,0,,,,,pending
+236,SKYLIGHT,1,Best Revival of a Play,2015.0,,,pending
+237,SOMETHING ROTTEN!,0,,,,,pending
+238,SPRING AWAKENING,0,,,,,pending
+239,SYLVIA,0,,,,,pending
+240,THE AUDIENCE,0,,,,,pending
+241,THE COLOR PURPLE,1,Best Revival of a Musical,2016.0,,,pending
+242,THE GIN GAME,0,,,,,pending
+243,THE HEIDI CHRONICLES,0,,,,,pending
+244,THE KING AND I,1,Best Revival of a Musical,2015.0,,,pending
+245,THE VISIT,0,,,,,pending
+246,THÉRÈSE RAQUIN,0,,,,,pending
+247,ALTON BROWN LIVE: EAT YOUR SCIENCE,0,,,,,pending
+248,AMERICAN PSYCHO,0,,,,,pending
+249,BLACK TO THE FUTURE,0,,,,,pending
+250,BLACKBIRD,0,,,,,pending
+251,BRIGHT STAR,0,,,,,pending
+252,CATS,0,,,,,pending
+253,DEAR EVAN HANSEN,1,Best Musical,2017.0,,,pending
+254,DISASTER!,0,,,,,pending
+255,ECLIPSED,0,,,,,pending
+256,FALSETTOS,0,,,,,pending
+257,FULLY COMMITTED,0,,,,,pending
+258,HEISENBERG,0,,,,,pending
+259,HUGHIE,0,,,,,pending
+260,IN TRANSIT,0,,,,,pending
+261,LES LIAISONS DANGEREUSES,0,,,,,pending
+262,LONG DAY'S JOURNEY INTO NIGHT,0,,,,,pending
+263,"OH, HELLO ON BROADWAY",0,,,,,pending
+264,OUR MOTHER'S BRIEF AFFAIR,0,,,,,pending
+265,SHE LOVES ME,0,,,,,pending
+266,THE CHERRY ORCHARD,0,,,,,pending
+267,THE CRUCIBLE,0,,,,,pending
+268,THE ENCOUNTER,0,,,,,pending
+269,THE FATHER,0,,,,,pending
+270,THE FRONT PAGE,0,,,,,pending
+271,THE HUMANS,1,Best Play,2016.0,,,pending
+272,THE PRESENT,0,,,,,pending
+273,TUCK EVERLASTING,0,,,,,pending
+274,WAITRESS,0,,,,,pending
+275,1984,0,,,,,pending
+276,"A DOLL'S HOUSE, PART 2",0,,,,,pending
+277,AMÉLIE,0,,,,,pending
+278,ANASTASIA,0,,,,,pending
+279,BANDSTAND,0,,,,,pending
+280,CHARLIE AND THE CHOCOLATE FACTORY,0,,,,,pending
+281,COME FROM AWAY,0,,,,,pending
+282,FARINELLI AND THE KING,0,,,,,pending
+283,GROUNDHOG DAY,0,,,,,pending
+284,"HELLO, DOLLY!",1,Best Revival of a Musical,2017.0,,,pending
+285,HOME FOR THE HOLIDAYS,0,,,,,pending
+286,INDECENT,0,,,,,pending
+287,JITNEY,1,Best Revival of a Play,2017.0,,,pending
+288,JOHN LITHGOW: STORIES BY HEART,0,,,,,pending
+289,JUNK,0,,,,,pending
+290,LATIN HISTORY FOR MORONS,0,,,,,pending
+291,M. BUTTERFLY,0,,,,,pending
+292,MARVIN'S ROOM,0,,,,,pending
+293,METEOR SHOWER,0,,,,,pending
+294,MISS SAIGON,0,,,,,pending
+295,ONCE ON THIS ISLAND,1,Best Revival of a Musical,2018.0,,,pending
+296,OSLO,1,Best Play,2017.0,,,pending
+297,PRINCE OF BROADWAY,0,,,,,pending
+298,SIGNIFICANT OTHER,0,,,,,pending
+299,SIX DEGREES OF SEPARATION,0,,,,,pending
+300,SPONGEBOB SQUAREPANTS,0,,,,,pending
+301,SPRINGSTEEN ON BROADWAY,0,,,,,pending
+302,SUNDAY IN THE PARK WITH GEORGE,0,,,,,pending
+303,SUNSET BOULEVARD,0,,,,,pending
+304,SWEAT,0,,,,,pending
+305,THE BAND'S VISIT,1,Best Musical,2018.0,,,pending
+306,THE CHILDREN,0,,,,,pending
+307,THE LITTLE FOXES,0,,,,,pending
+308,THE PARISIAN WOMAN,0,,,,,pending
+309,THE PLAY THAT GOES WRONG,0,,,,,pending
+310,THE PRICE,0,,,,,pending
+311,THE TERMS OF MY SURRENDER,0,,,,,pending
+312,TIME AND THE CONWAYS,0,,,,,pending
+313,WAR PAINT,0,,,,,pending
+314,AMERICAN SON,0,,,,,pending
+315,ANGELS IN AMERICA,1,Best Revival of a Play,2018.0,,,pending
+316,BERNHARDT/HAMLET,0,,,,,pending
+317,CAROUSEL,0,,,,,pending
+318,CELEBRITY AUTOBIOGRAPHY,0,,,,,pending
+319,CHILDREN OF A LESSER GOD,0,,,,,pending
+320,CHOIR BOY,0,,,,,pending
+321,ESCAPE TO MARGARITAVILLE,0,,,,,pending
+322,FROZEN,0,,,,,pending
+323,GETTIN' THE BAND BACK TOGETHER,0,,,,,pending
+324,HEAD OVER HEELS,0,,,,,pending
+325,KING KONG,0,,,,,pending
+326,LOBBY HERO,0,,,,,pending
+327,MEAN GIRLS,0,,,,,pending
+328,MY FAIR LADY,0,,,,,pending
+329,NETWORK,0,,,,,pending
+330,ROCKTOPIA,0,,,,,pending
+331,SAINT JOAN,0,,,,,pending
+332,STRAIGHT WHITE MEN,0,,,,,pending
+333,THE BOYS IN THE BAND,0,,,,,pending
+334,THE CHER SHOW,0,,,,,pending
+335,THE FERRYMAN,1,Best Play,2019.0,,,pending
+336,THE ICEMAN COMETH,0,,,,,pending
+337,THE ILLUSIONISTS - MAGIC OF THE HOLIDAYS,0,,,,,pending
+338,THE LIFESPAN OF A FACT,0,,,,,pending
+339,THE NAP,0,,,,,pending
+340,THE PROM,0,,,,,pending
+341,THE WAVERLY GALLERY,1,Best Revival of a Play,2019.0,,,pending
+342,THREE TALL WOMEN,0,,,,,pending
+343,TO KILL A MOCKINGBIRD,0,,,,,pending
+344,TORCH SONG,0,,,,,pending
+345,TRAVESTIES,0,,,,,pending
+346,TRUE WEST,0,,,,,pending
+347,A CHRISTMAS CAROL,0,,,,,pending
+348,A SOLDIER'S PLAY,0,,,,,pending
+349,AIN'T TOO PROUD,0,,,,,pending
+350,ALL MY SONS,0,,,,,pending
+351,AMERICAN UTOPIA,0,,,,,pending
+352,BE MORE CHILL,0,,,,,pending
+353,BEETLEJUICE,0,,,,,pending
+354,BURN THIS,0,,,,,pending
+355,DERREN BROWN: SECRET,0,,,,,pending
+356,FRANKIE AND JOHNNY IN THE CLAIR DE LUNE,0,,,,,pending
+357,FREESTYLE LOVE SUPREME,0,,,,,pending
+358,GARY: A SEQUEL TO TITUS ANDRONICUS,0,,,,,pending
+359,GRAND HORIZONS,0,,,,,pending
+360,HADESTOWN,1,Best Musical,2019.0,,,pending
+361,"HARRY CONNICK, JR. - A CELEBRATION OF COLE PORTER",0,,,,,pending
+362,HILLARY AND CLINTON,0,,,,,pending
+363,INK,0,,,,,pending
+364,JAGGED LITTLE PILL,0,,,,,pending
+365,KING LEAR,0,,,,,pending
+366,"KISS ME, KATE",0,,,,,pending
+367,KRISTIN CHENOWETH: FOR THE GIRLS,0,,,,,pending
+368,LINDA VISTA,0,,,,,pending
+369,MOULIN ROUGE!,0,,,,,pending
+370,OKLAHOMA!,1,Best Revival of a Musical,2019.0,,,pending
+371,SLAVA'S SNOWSHOW,0,,,,,pending
+372,SLAVE PLAY,0,,,,,pending
+373,THE GREAT SOCIETY,0,,,,,pending
+374,THE HEIGHT OF THE STORM,0,,,,,pending
+375,THE INHERITANCE,0,,,,,pending
+376,THE ROSE TATTOO,0,,,,,pending
+377,THE SOUND INSIDE,0,,,,,pending
+378,TOOTSIE,0,,,,,pending
+379,WEST SIDE STORY,0,,,,,pending
+380,WHAT THE CONSTITUTION MEANS TO ME,0,,,,,pending
+381,YANNI,0,,,,,pending
+382,COMPANY,1,Best Revival of a Musical,2022.0,,,pending
+383,DIANA,0,,,,,pending
+384,GIRL FROM THE NORTH COUNTRY,0,,,,,pending
+385,HANGMEN,0,,,,,pending
+386,MY NAME IS LUCY BARTON,0,,,,,pending
+387,SIX: THE MUSICAL,0,,,,,pending
+388,THE LEHMAN TRILOGY,1,Best Play,2022.0,,,pending
+389,THE MINUTES,0,,,,,pending
+390,"CAROLINE, OR CHANGE",0,,,,,pending
+391,CLYDE'S,0,,,,,pending
+392,FLYING OVER SUNSET,0,,,,,pending
+393,HARRY POTTER AND THE CURSED CHILD,1,Best Play,2018.0,,,pending
+394,IS THIS A ROOM,0,,,,,pending
+395,LACKAWANNA BLUES,0,,,,,pending
+396,MJ,0,,,,,pending
+397,MOULIN ROUGE! THE MUSICAL,0,,,,,pending
+398,MRS. DOUBTFIRE,0,,,,,pending
+399,PASS OVER,0,,,,,pending
+400,THE MUSIC MAN,0,,,,,pending
+401,THOUGHTS OF A COLORED MAN,0,,,,,pending
+402,TROUBLE IN MIND,0,,,,,pending
+403,& JULIET,0,,,,,pending
+404,1776,0,,,,,pending
+405,"A BEAUTIFUL NOISE, THE NEIL DIAMOND MUSICAL",0,,,,,pending
+406,A STRANGE LOOP,1,Best Musical,2022.0,,,pending
+407,AIN'T NO MO',0,,,,,pending
+408,ALMOST FAMOUS,0,,,,,pending
+409,AMERICAN BUFFALO,0,,,,,pending
+410,BETWEEN RIVERSIDE AND CRAZY,0,,,,,pending
+411,BIRTHDAY CANDLES,0,,,,,pending
+412,COST OF LIVING,0,,,,,pending
+413,FOR COLORED GIRLS WHO HAVE CONSIDERED SUICIDE / WHEN THE RAINBOW IS ENUF,0,,,,,pending
+414,FUNNY GIRL,0,,,,,pending
+415,HOW I LEARNED TO DRIVE,0,,,,,pending
+416,INTO THE WOODS,0,,,,,pending
+417,KIMBERLY AKIMBO,1,Best Musical,2023.0,,,pending
+418,KPOP,0,,,,,pending
+419,LEOPOLDSTADT,1,Best Play,2023.0,,,pending
+420,MR. SATURDAY NIGHT,0,,,,,pending
+421,OHIO STATE MURDERS,0,,,,,pending
+422,PARADISE SQUARE,0,,,,,pending
+423,PLAZA SUITE,0,,,,,pending
+424,SKELETON CREW,0,,,,,pending
+425,SOME LIKE IT HOT,0,,,,,pending
+426,TAKE ME OUT,1,Best Revival of a Play,2022.0,,,pending
+427,THE COLLABORATION,0,,,,,pending
+428,THE KITE RUNNER,0,,,,,pending
+429,THE LITTLE PRINCE,0,,,,,pending
+430,THE PIANO LESSON,0,,,,,pending
+431,THE SKIN OF OUR TEETH,0,,,,,pending
+432,TOPDOG / UNDERDOG,1,Best Revival of a Play,2023.0,,,pending
+433,A DOLL'S HOUSE,0,,,,,pending
+434,APPROPRIATE,1,Best Revival of a Play,2024.0,,,pending
+435,BACK TO THE FUTURE: THE MUSICAL,0,,,,,pending
+436,BAD CINDERELLA,0,,,,,pending
+437,BOB FOSSE'S DANCIN',0,,,,,pending
+438,CAMELOT,0,,,,,pending
+439,EL MAGO POP,0,,,,,pending
+440,FAT HAM,0,,,,,pending
+441,"GOOD NIGHT, OSCAR",0,,,,,pending
+442,GREY HOUSE,0,,,,,pending
+443,GUTENBERG! THE MUSICAL!,0,,,,,pending
+444,HARMONY,0,,,,,pending
+445,HERE LIES LOVE,0,,,,,pending
+446,HOW TO DANCE IN OHIO,0,,,,,pending
+447,I NEED THAT,0,,,,,pending
+448,JAJA'S AFRICAN HAIR BRAIDING,0,,,,,pending
+449,LIFE OF PI,0,,,,,pending
+450,MELISSA ETHERIDGE: MY WINDOW,0,,,,,pending
+451,MERRILY WE ROLL ALONG,1,Best Revival of a Musical,2024.0,,,pending
+452,"NEW YORK, NEW YORK",0,,,,,pending
+453,ONCE UPON A ONE MORE TIME,0,,,,,pending
+454,PARADE,1,Best Revival of a Musical,2023.0,,,pending
+455,PETER PAN GOES WRONG,0,,,,,pending
+456,PICTURES FROM HOME,0,,,,,pending
+457,PRAYER FOR THE FRENCH REPUBLIC,0,,,,,pending
+458,PRIMA FACIE,0,,,,,pending
+459,PURLIE VICTORIOUS: A NON-CONFEDERATE ROMP THROUGH THE COTTON PATCH,0,,,,,pending
+460,SHUCKED,0,,,,,pending
+461,SPAMALOT,0,,,,,pending
+462,"SUMMER, 1976",0,,,,,pending
+463,SWEENEY TODD: THE DEMON BARBER OF FLEET STREET,0,,,,,pending
+464,THE COTTAGE,0,,,,,pending
+465,THE SHARK IS BROKEN,0,,,,,pending
+466,THE SIGN IN SIDNEY BRUSTEIN'S WINDOW,0,,,,,pending
+467,THE THANKSGIVING PLAY,0,,,,,pending
+468,A WONDERFUL WORLD: THE LOUIS ARMSTRONG MUSICAL,0,,,,,pending
+469,ALL IN: COMEDY ABOUT LOVE,0,,,,,pending
+470,CABARET AT THE KIT KAT CLUB,0,,,,,pending
+471,CULT OF LOVE,0,,,,,pending
+472,DAYS OF WINE AND ROSES,0,,,,,pending
+473,DEATH BECOMES HER,0,,,,,pending
+474,DOUBT: A PARABLE,0,,,,,pending
+475,EUREKA DAY,0,,,,,pending
+476,GYPSY,0,,,,,pending
+477,HELL'S KITCHEN,0,,,,,pending
+478,HOME,0,,,,,pending
+479,ILLINOISE,0,,,,,pending
+480,JOB,0,,,,,pending
+481,LEFT ON TENTH,0,,,,,pending
+482,LEMPICKA,0,,,,,pending
+483,MARY JANE,0,,,,,pending
+484,MAYBE HAPPY ENDING,0,,,,,pending
+485,MCNEAL,0,,,,,pending
+486,MOTHER PLAY,0,,,,,pending
+487,"OH, MARY!",0,,,,,pending
+488,ONCE UPON A MATTRESS,0,,,,,pending
+489,OUR TOWN,0,,,,,pending
+490,PATRIOTS,0,,,,,pending
+491,ROMEO + JULIET,0,,,,,pending
+492,STEREOPHONIC,1,Best Play,2024.0,,,pending
+493,SUFFS,0,,,,,pending
+494,SUNSET BLVD.,0,,,,,pending
+495,SWEPT AWAY,0,,,,,pending
+496,TAMMY FAYE,0,,,,,pending
+497,THE GREAT GATSBY,0,,,,,pending
+498,THE HEART OF ROCK AND ROLL,0,,,,,pending
+499,THE HILLS OF CALIFORNIA,0,,,,,pending
+500,THE NOTEBOOK,0,,,,,pending
+501,THE OUTSIDERS,1,Best Musical,2024.0,,,pending
+502,THE ROOMMATE,0,,,,,pending
+503,THE WHO'S TOMMY,0,,,,,pending
+504,THE WIZ,0,,,,,pending
+505,UNCLE VANYA,0,,,,,pending
+506,WATER FOR ELEPHANTS,0,,,,,pending
+507,YELLOW FACE,0,,,,,pending
+508,ART,0,,,,,pending
+509,BOOP! THE MUSICAL,0,,,,,pending
+510,BUENA VISTA SOCIAL CLUB,0,,,,,pending
+511,CALL ME IZZY,0,,,,,pending
+512,CHESS,0,,,,,pending
+513,DEAD OUTLAW,0,,,,,pending
+514,ENGLISH,0,,,,,pending
+515,FLOYD COLLINS,0,,,,,pending
+516,"GOOD NIGHT, AND GOOD LUCK",0,,,,,pending
+517,JOHN PROCTOR IS THE VILLAIN,0,,,,,pending
+518,JUST IN TIME,0,,,,,pending
+519,LIBERATION,0,,,,,pending
+520,LITTLE BEAR RIDGE ROAD,0,,,,,pending
+521,OEDIPUS,0,,,,,pending
+522,OPERATION MINCEMEAT: A NEW MUSICAL,0,,,,,pending
+523,OTHELLO,0,,,,,pending
+524,PIRATES! THE PENZANCE MUSICAL,0,,,,,pending
+525,PUNCH,0,,,,,pending
+526,PURPOSE,0,,,,,pending
+527,REAL WOMEN HAVE CURVES: THE MUSICAL,0,,,,,pending
+528,REDWOOD,0,,,,,pending
+529,SMASH,0,,,,,pending
+530,STEPHEN SONDHEIM'S OLD FRIENDS,0,,,,,pending
+531,STRANGER THINGS: THE FIRST SHADOW,0,,,,,pending
+532,THE LAST FIVE YEARS,0,,,,,pending
+533,THE PICTURE OF DORIAN GRAY,0,,,,,pending
+534,THE QUEEN OF VERSAILLES,0,,,,,pending
+535,WAITING FOR GODOT,0,,,,,pending
