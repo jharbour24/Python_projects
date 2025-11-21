@@ -39,45 +39,37 @@ def load_and_merge_data():
     Load producer counts, Tony outcomes, and grosses data, merge them.
 
     Returns:
-        Merged DataFrame
+        Merged DataFrame, grosses DataFrame
     """
     logger.info("Loading data...")
 
-    # Try different file names
-    producer_files = [
-        'data/show_producer_counts_manual.csv',
-        'data/show_producer_counts_ibdb.csv',
-    ]
-
+    # Try different file names for Tony data (now with performances)
     tony_files = [
+        'data/tony_outcomes_with_performances.csv',  # NEW: Enhanced with performance data
         'data/tony_outcomes_manual.csv',
         'data/tony_outcomes.csv',
+    ]
+
+    # Producer data (optional - may not exist yet)
+    producer_files = [
+        'data/broadway_producer_data.xlsx',  # Output from browser_ibdb_scraper.py
+        'data/show_producer_counts_manual.csv',
+        'data/show_producer_counts_ibdb.csv',
     ]
 
     grosses_files = [
         'data/broadway_grosses_2010_present.xlsx',
     ]
 
-    # Load producer data
-    producer_df = None
-    for file_path in producer_files:
-        if Path(file_path).exists():
-            logger.info(f"Loading producer data from: {file_path}")
-            producer_df = pd.read_csv(file_path)
-            break
-
-    if producer_df is None:
-        raise FileNotFoundError(
-            f"No producer data found. Please create one of: {producer_files}\n"
-            f"Use templates in data/templates/ for manual data entry."
-        )
-
-    # Load Tony data
+    # Load Tony data (required)
     tony_df = None
     for file_path in tony_files:
         if Path(file_path).exists():
             logger.info(f"Loading Tony outcomes from: {file_path}")
-            tony_df = pd.read_csv(file_path)
+            if file_path.endswith('.xlsx'):
+                tony_df = pd.read_excel(file_path)
+            else:
+                tony_df = pd.read_csv(file_path)
             break
 
     if tony_df is None:
@@ -85,6 +77,20 @@ def load_and_merge_data():
             f"No Tony outcomes data found. Please create one of: {tony_files}\n"
             f"Use templates in data/templates/ for manual data entry."
         )
+
+    logger.info(f"  Tony data: {len(tony_df)} shows")
+
+    # Load producer data (optional)
+    producer_df = None
+    for file_path in producer_files:
+        if Path(file_path).exists():
+            logger.info(f"Loading producer data from: {file_path}")
+            if file_path.endswith('.xlsx'):
+                producer_df = pd.read_excel(file_path)
+            else:
+                producer_df = pd.read_csv(file_path)
+            logger.info(f"  Producer data: {len(producer_df)} shows")
+            break
 
     # Load grosses data (optional)
     grosses_df = None
@@ -99,18 +105,47 @@ def load_and_merge_data():
                 grosses_df = None
             break
 
-    # Merge on show_name
+    # Merge datasets
     logger.info(f"Merging datasets...")
-    logger.info(f"  Producer data: {len(producer_df)} shows")
-    logger.info(f"  Tony data: {len(tony_df)} shows")
 
-    merged_df = producer_df.merge(
-        tony_df[['show_name', 'tony_win', 'tony_category', 'tony_year']],
-        on='show_name',
-        how='inner'
-    )
+    if producer_df is not None:
+        # If we have producer data, merge it with Tony data
+        # Keep performance data from tony_df (more reliable)
+        merge_cols = ['show_name', 'num_total_producers', 'producer_names']
+        if 'num_performances' in producer_df.columns and 'num_performances' not in tony_df.columns:
+            merge_cols.append('num_performances')
+        if 'production_year' in producer_df.columns and 'production_year' not in tony_df.columns:
+            merge_cols.append('production_year')
 
-    logger.info(f"  Merged: {len(merged_df)} shows")
+        # Filter to columns that exist
+        merge_cols = [col for col in merge_cols if col in producer_df.columns]
+
+        merged_df = tony_df.merge(
+            producer_df[merge_cols],
+            on='show_name',
+            how='left',  # Keep all tony data even if no producer data
+            suffixes=('', '_producer')
+        )
+
+        # If we have duplicate performance/year columns, prefer the tony_df version
+        if 'num_performances_producer' in merged_df.columns:
+            merged_df['num_performances'] = merged_df['num_performances'].fillna(merged_df['num_performances_producer'])
+            merged_df = merged_df.drop('num_performances_producer', axis=1)
+
+        if 'production_year_producer' in merged_df.columns:
+            merged_df['production_year'] = merged_df['production_year'].fillna(merged_df['production_year_producer'])
+            merged_df = merged_df.drop('production_year_producer', axis=1)
+
+    else:
+        # No producer data yet - use tony_df as-is
+        logger.warning("  No producer data found - analysis will be limited")
+        merged_df = tony_df.copy()
+
+        # Add num_total_producers column if missing
+        if 'num_total_producers' not in merged_df.columns:
+            merged_df['num_total_producers'] = None
+
+    logger.info(f"  Final merged: {len(merged_df)} shows")
 
     return merged_df, grosses_df
 
@@ -130,13 +165,27 @@ def clean_data(df):
     initial_count = len(df)
 
     # Convert numeric columns
-    df['num_total_producers'] = pd.to_numeric(df['num_total_producers'], errors='coerce')
+    if 'num_total_producers' in df.columns:
+        df['num_total_producers'] = pd.to_numeric(df['num_total_producers'], errors='coerce')
+    if 'num_performances' in df.columns:
+        df['num_performances'] = pd.to_numeric(df['num_performances'], errors='coerce')
+    if 'production_year' in df.columns:
+        df['production_year'] = pd.to_numeric(df['production_year'], errors='coerce')
     df['tony_win'] = pd.to_numeric(df['tony_win'], errors='coerce')
 
-    # Drop rows missing critical data
-    df_clean = df.dropna(subset=['num_total_producers', 'tony_win']).copy()
+    # Drop rows missing critical tony data (always required)
+    df_clean = df.dropna(subset=['tony_win']).copy()
 
-    logger.info(f"  Dropped {initial_count - len(df_clean)} rows with missing data")
+    # For producer analysis, we need num_total_producers
+    # But we'll keep all rows and just skip producer analysis if missing
+    has_producer_data = 'num_total_producers' in df_clean.columns and df_clean['num_total_producers'].notna().any()
+
+    if not has_producer_data:
+        logger.warning(f"  No producer count data available - producer analysis will be skipped")
+    else:
+        logger.info(f"  Shows with producer data: {df_clean['num_total_producers'].notna().sum()}")
+
+    logger.info(f"  Dropped {initial_count - len(df_clean)} rows with missing Tony data")
     logger.info(f"  Final analysis dataset: {len(df_clean)} shows")
 
     # Convert tony_win to int
@@ -1009,11 +1058,17 @@ def save_results(df, producer_df=None, yearly_stats=None, financial_df=None):
         f.write(f"Tony Winners: {df['tony_win'].sum()}\n")
         f.write(f"Non-Winners: {(1-df['tony_win']).sum()}\n\n")
 
-        f.write("PRODUCER COUNTS\n")
-        f.write("-"*70 + "\n")
-        f.write(f"Overall Mean: {df['num_total_producers'].mean():.2f}\n")
-        f.write(f"Winners Mean: {df[df['tony_win']==1]['num_total_producers'].mean():.2f}\n")
-        f.write(f"Non-Winners Mean: {df[df['tony_win']==0]['num_total_producers'].mean():.2f}\n\n")
+        # Producer counts (if available)
+        if 'num_total_producers' in df.columns and df['num_total_producers'].notna().any():
+            f.write("PRODUCER COUNTS\n")
+            f.write("-"*70 + "\n")
+            producer_data = df[df['num_total_producers'].notna()]
+            f.write(f"Overall Mean: {producer_data['num_total_producers'].mean():.2f}\n")
+            if (producer_data['tony_win']==1).any():
+                f.write(f"Winners Mean: {producer_data[producer_data['tony_win']==1]['num_total_producers'].mean():.2f}\n")
+            if (producer_data['tony_win']==0).any():
+                f.write(f"Non-Winners Mean: {producer_data[producer_data['tony_win']==0]['num_total_producers'].mean():.2f}\n")
+            f.write("\n")
 
         if producer_df is not None:
             f.write("INDIVIDUAL PRODUCERS\n")
@@ -1058,20 +1113,31 @@ def main():
             logger.error("No data available for analysis after cleaning")
             return 1
 
-        # Run basic analyses
-        descriptive_stats(df_clean)
-        statistical_tests(df_clean)
-        logistic_regression(df_clean)
+        # Check if we have producer data
+        has_producer_data = 'num_total_producers' in df_clean.columns and df_clean['num_total_producers'].notna().any()
+
+        # Run basic analyses (only if we have producer data)
+        if has_producer_data:
+            descriptive_stats(df_clean)
+            statistical_tests(df_clean)
+            logistic_regression(df_clean)
+        else:
+            logger.warning("\n⚠️  Skipping producer-based analyses - no producer count data available")
+            logger.info("Run browser_ibdb_scraper.py to collect producer data, then re-run this analysis")
 
         # Run enhanced analyses
-        producer_df = analyze_individual_producers(df_clean)
+        producer_df = None
+        if has_producer_data:
+            producer_df = analyze_individual_producers(df_clean)
 
         # Run financial analysis if grosses data is available
         financial_df = None
-        if grosses_df is not None:
+        if grosses_df is not None and has_producer_data:
             financial_df = analyze_producer_financials(df_clean, grosses_df)
 
-        yearly_result = analyze_yearly_trends(df_clean)
+        yearly_result = None
+        if has_producer_data:
+            yearly_result = analyze_yearly_trends(df_clean)
         if yearly_result is not None:
             yearly_stats, model = yearly_result
             prediction_df = predict_future_producers(yearly_stats, model)
@@ -1079,9 +1145,12 @@ def main():
             yearly_stats = None
             prediction_df = None
 
-        # Create all visualizations
-        create_visualizations(df_clean)
-        create_enhanced_visualizations(df_clean, yearly_stats, prediction_df, producer_df, financial_df)
+        # Create all visualizations (only if we have producer data)
+        if has_producer_data:
+            create_visualizations(df_clean)
+            create_enhanced_visualizations(df_clean, yearly_stats, prediction_df, producer_df, financial_df)
+        else:
+            logger.info("\n⚠️  Skipping visualizations - requires producer data")
 
         # Save results
         save_results(df_clean, producer_df, yearly_stats, financial_df)
