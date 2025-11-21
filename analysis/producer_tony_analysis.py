@@ -2,8 +2,13 @@
 """
 Statistical analysis of relationship between producer counts and Tony Award wins.
 
-Analyzes whether Broadway shows with more producers are more/less likely to win Tony Awards.
-Uses logistic regression to model the relationship.
+Analyzes:
+1. Whether Broadway shows with more producers are more/less likely to win Tony Awards
+2. Which specific producers have higher Tony win rates
+3. Yearly trends in producer counts
+4. 5-year prediction for future producer counts
+
+Uses logistic regression and time series forecasting.
 """
 
 import sys
@@ -21,6 +26,8 @@ import seaborn as sns
 from scipy import stats
 import statsmodels.api as sm
 from statsmodels.formula.api import logit
+from sklearn.linear_model import LinearRegression
+from collections import Counter
 
 from utils import setup_logger
 
@@ -381,12 +388,294 @@ def create_visualizations(df):
         logger.warning(f"Could not create visualizations: {e}")
 
 
-def save_results(df):
+def analyze_individual_producers(df):
+    """
+    Analyze which specific producers have higher Tony win rates.
+
+    Args:
+        df: Clean DataFrame with producer_names column
+    """
+    logger.info("\n" + "="*70)
+    logger.info("INDIVIDUAL PRODUCER ANALYSIS")
+    logger.info("="*70)
+
+    if 'producer_names' not in df.columns:
+        logger.warning("producer_names column not found - skipping individual producer analysis")
+        return None
+
+    # Parse producer names and track their wins
+    producer_stats = {}
+
+    for _, row in df.iterrows():
+        if pd.isna(row['producer_names']):
+            continue
+
+        # Split by semicolon
+        producers = [p.strip() for p in str(row['producer_names']).split(';') if p.strip()]
+        tony_win = row['tony_win']
+
+        for producer in producers:
+            if producer not in producer_stats:
+                producer_stats[producer] = {'wins': 0, 'total': 0, 'shows': []}
+
+            producer_stats[producer]['total'] += 1
+            producer_stats[producer]['wins'] += tony_win
+            producer_stats[producer]['shows'].append(row['show_name'])
+
+    # Convert to DataFrame
+    producer_df = pd.DataFrame([
+        {
+            'producer_name': name,
+            'total_shows': stats['total'],
+            'tony_wins': stats['wins'],
+            'win_rate': stats['wins'] / stats['total'] if stats['total'] > 0 else 0,
+            'shows': '; '.join(stats['shows'])
+        }
+        for name, stats in producer_stats.items()
+    ])
+
+    # Filter producers with at least 3 shows
+    producer_df_filtered = producer_df[producer_df['total_shows'] >= 3].copy()
+    producer_df_filtered = producer_df_filtered.sort_values('win_rate', ascending=False)
+
+    logger.info(f"\nTotal unique producers: {len(producer_df)}")
+    logger.info(f"Producers with 3+ shows: {len(producer_df_filtered)}")
+
+    # Top 20 producers by win rate (with at least 3 shows)
+    logger.info("\n--- TOP 20 PRODUCERS BY TONY WIN RATE (min 3 shows) ---")
+    for i, row in producer_df_filtered.head(20).iterrows():
+        logger.info(f"{row['producer_name']:50s} | {row['tony_wins']}/{row['total_shows']} wins ({row['win_rate']*100:.1f}%)")
+
+    # Most prolific producers (10+ shows)
+    prolific = producer_df[producer_df['total_shows'] >= 10].sort_values('total_shows', ascending=False)
+    if len(prolific) > 0:
+        logger.info("\n--- MOST PROLIFIC PRODUCERS (10+ shows) ---")
+        for i, row in prolific.head(15).iterrows():
+            logger.info(f"{row['producer_name']:50s} | {row['total_shows']} shows, {row['tony_wins']} wins ({row['win_rate']*100:.1f}%)")
+
+    # Save detailed producer analysis
+    output_path = Path('analysis/results/producer_success_analysis.csv')
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    producer_df.sort_values('win_rate', ascending=False).to_csv(output_path, index=False)
+    logger.info(f"\n✓ Saved detailed producer analysis: {output_path}")
+
+    return producer_df
+
+
+def analyze_yearly_trends(df):
+    """
+    Analyze trends in producer counts over the years.
+
+    Args:
+        df: Clean DataFrame with production_year column
+    """
+    logger.info("\n" + "="*70)
+    logger.info("YEARLY TRENDS IN PRODUCER COUNTS")
+    logger.info("="*70)
+
+    if 'production_year' not in df.columns:
+        logger.warning("production_year column not found - skipping yearly trend analysis")
+        return None
+
+    # Group by year
+    df_clean = df[df['production_year'].notna()].copy()
+    df_clean['production_year'] = df_clean['production_year'].astype(int)
+
+    yearly_stats = df_clean.groupby('production_year').agg({
+        'num_total_producers': ['mean', 'median', 'std', 'min', 'max', 'count'],
+        'tony_win': 'sum'
+    }).round(2)
+
+    yearly_stats.columns = ['mean_producers', 'median_producers', 'std_producers',
+                           'min_producers', 'max_producers', 'num_shows', 'tony_wins']
+    yearly_stats = yearly_stats.reset_index()
+
+    logger.info(f"\nYearly producer count statistics:")
+    logger.info(f"\n{yearly_stats.to_string(index=False)}")
+
+    # Calculate trend
+    years = yearly_stats['production_year'].values.reshape(-1, 1)
+    mean_producers = yearly_stats['mean_producers'].values
+
+    # Fit linear regression
+    model = LinearRegression()
+    model.fit(years, mean_producers)
+    slope = model.coef_[0]
+    intercept = model.intercept_
+
+    logger.info(f"\n--- TREND ANALYSIS ---")
+    logger.info(f"Linear trend: y = {slope:.3f}x + {intercept:.1f}")
+
+    if abs(slope) < 0.05:
+        logger.info(f"→ Producer counts are relatively STABLE over time")
+    elif slope > 0:
+        logger.info(f"→ Producer counts are INCREASING by ~{slope:.2f} per year")
+    else:
+        logger.info(f"→ Producer counts are DECREASING by ~{abs(slope):.2f} per year")
+
+    # Save yearly stats
+    output_path = Path('analysis/results/yearly_producer_trends.csv')
+    yearly_stats.to_csv(output_path, index=False)
+    logger.info(f"\n✓ Saved yearly trends: {output_path}")
+
+    return yearly_stats, model
+
+
+def predict_future_producers(yearly_stats, model):
+    """
+    Predict producer counts for the next 5 years.
+
+    Args:
+        yearly_stats: DataFrame with yearly statistics
+        model: Fitted LinearRegression model
+    """
+    logger.info("\n" + "="*70)
+    logger.info("5-YEAR PREDICTION FOR PRODUCER COUNTS")
+    logger.info("="*70)
+
+    if yearly_stats is None or model is None:
+        logger.warning("Skipping prediction - yearly trend analysis not available")
+        return None
+
+    # Get last year in data
+    last_year = int(yearly_stats['production_year'].max())
+
+    # Predict next 5 years
+    future_years = np.array(range(last_year + 1, last_year + 6)).reshape(-1, 1)
+    predictions = model.predict(future_years)
+
+    logger.info(f"\nProjected mean producer counts (based on linear trend):")
+    logger.info(f"{'Year':<10} {'Predicted Mean Producers':<30}")
+    logger.info("-" * 50)
+
+    for year, pred in zip(future_years.flatten(), predictions):
+        logger.info(f"{year:<10} {pred:.2f}")
+
+    # Calculate confidence based on historical variance
+    historical_std = yearly_stats['mean_producers'].std()
+
+    logger.info(f"\n--- PREDICTION CONFIDENCE ---")
+    logger.info(f"Historical standard deviation: ±{historical_std:.2f} producers")
+    logger.info(f"95% prediction interval: approximately ±{1.96 * historical_std:.2f} producers")
+
+    logger.info(f"\n--- INTERPRETATION ---")
+    last_mean = yearly_stats['mean_producers'].iloc[-1]
+    change = predictions[-1] - last_mean
+
+    if abs(change) < 1:
+        logger.info(f"Producer counts expected to remain STABLE (~{last_mean:.1f} producers)")
+    elif change > 0:
+        logger.info(f"Producer counts expected to INCREASE from {last_mean:.1f} to {predictions[-1]:.1f} by {future_years[-1][0]}")
+    else:
+        logger.info(f"Producer counts expected to DECREASE from {last_mean:.1f} to {predictions[-1]:.1f} by {future_years[-1][0]}")
+
+    # Save predictions
+    prediction_df = pd.DataFrame({
+        'year': future_years.flatten(),
+        'predicted_mean_producers': predictions,
+        'lower_bound_95': predictions - 1.96 * historical_std,
+        'upper_bound_95': predictions + 1.96 * historical_std
+    })
+
+    output_path = Path('analysis/results/producer_count_predictions.csv')
+    prediction_df.to_csv(output_path, index=False)
+    logger.info(f"\n✓ Saved predictions: {output_path}")
+
+    return prediction_df
+
+
+def create_enhanced_visualizations(df, yearly_stats, prediction_df, producer_df):
+    """
+    Create enhanced visualizations including trends and predictions.
+
+    Args:
+        df: Clean DataFrame
+        yearly_stats: Yearly statistics DataFrame
+        prediction_df: Future predictions DataFrame
+        producer_df: Producer analysis DataFrame
+    """
+    logger.info("\n" + "="*70)
+    logger.info("CREATING ENHANCED VISUALIZATIONS")
+    logger.info("="*70)
+
+    output_dir = Path('analysis/results')
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    sns.set_style("whitegrid")
+
+    try:
+        # Figure 1: Yearly trends with predictions
+        if yearly_stats is not None and prediction_df is not None:
+            fig, ax = plt.subplots(figsize=(12, 6))
+
+            # Historical data
+            ax.plot(yearly_stats['production_year'], yearly_stats['mean_producers'],
+                   'o-', linewidth=2, markersize=8, label='Historical Mean', color='blue')
+            ax.fill_between(yearly_stats['production_year'],
+                           yearly_stats['mean_producers'] - yearly_stats['std_producers'],
+                           yearly_stats['mean_producers'] + yearly_stats['std_producers'],
+                           alpha=0.2, color='blue', label='±1 Std Dev')
+
+            # Predictions
+            ax.plot(prediction_df['year'], prediction_df['predicted_mean_producers'],
+                   'o--', linewidth=2, markersize=8, label='Predicted Mean', color='red')
+            ax.fill_between(prediction_df['year'],
+                           prediction_df['lower_bound_95'],
+                           prediction_df['upper_bound_95'],
+                           alpha=0.2, color='red', label='95% Prediction Interval')
+
+            ax.set_xlabel('Year', fontsize=12)
+            ax.set_ylabel('Mean Number of Producers', fontsize=12)
+            ax.set_title('Producer Count Trends and 5-Year Forecast', fontsize=14, fontweight='bold')
+            ax.legend(loc='best')
+            ax.grid(True, alpha=0.3)
+
+            fig_path = output_dir / 'producer_trends_forecast.png'
+            plt.savefig(fig_path, dpi=150, bbox_inches='tight')
+            logger.info(f"✓ Saved: {fig_path}")
+            plt.close()
+
+        # Figure 2: Top producers by win rate
+        if producer_df is not None:
+            top_producers = producer_df[producer_df['total_shows'] >= 5].sort_values('win_rate', ascending=False).head(15)
+
+            if len(top_producers) > 0:
+                fig, ax = plt.subplots(figsize=(12, 8))
+
+                bars = ax.barh(range(len(top_producers)), top_producers['win_rate'] * 100)
+                ax.set_yticks(range(len(top_producers)))
+                ax.set_yticklabels(top_producers['producer_name'])
+                ax.set_xlabel('Tony Win Rate (%)', fontsize=12)
+                ax.set_title('Top 15 Producers by Tony Win Rate (5+ shows)', fontsize=14, fontweight='bold')
+                ax.grid(axis='x', alpha=0.3)
+
+                # Add value labels
+                for i, (idx, row) in enumerate(top_producers.iterrows()):
+                    ax.text(row['win_rate'] * 100 + 1, i,
+                           f"{row['win_rate']*100:.1f}% ({row['tony_wins']}/{row['total_shows']})",
+                           va='center', fontsize=9)
+
+                fig_path = output_dir / 'top_producers_win_rate.png'
+                plt.savefig(fig_path, dpi=150, bbox_inches='tight')
+                logger.info(f"✓ Saved: {fig_path}")
+                plt.close()
+
+        logger.info(f"\nEnhanced visualizations saved to: {output_dir}/")
+
+    except Exception as e:
+        logger.warning(f"Could not create enhanced visualizations: {e}")
+        import traceback
+        traceback.print_exc()
+
+
+def save_results(df, producer_df=None, yearly_stats=None):
     """
     Save analysis dataset and summary.
 
     Args:
         df: Clean DataFrame
+        producer_df: Producer analysis DataFrame (optional)
+        yearly_stats: Yearly statistics DataFrame (optional)
     """
     logger.info("\n" + "="*70)
     logger.info("SAVING RESULTS")
@@ -422,6 +711,19 @@ def save_results(df):
         f.write(f"Winners Mean: {df[df['tony_win']==1]['num_total_producers'].mean():.2f}\n")
         f.write(f"Non-Winners Mean: {df[df['tony_win']==0]['num_total_producers'].mean():.2f}\n\n")
 
+        if producer_df is not None:
+            f.write("INDIVIDUAL PRODUCERS\n")
+            f.write("-"*70 + "\n")
+            f.write(f"Total Unique Producers: {len(producer_df)}\n")
+            top_producer = producer_df[producer_df['total_shows'] >= 3].sort_values('win_rate', ascending=False).iloc[0]
+            f.write(f"Top Producer (3+ shows): {top_producer['producer_name']} ({top_producer['win_rate']*100:.1f}% win rate)\n\n")
+
+        if yearly_stats is not None:
+            f.write("YEARLY TRENDS\n")
+            f.write("-"*70 + "\n")
+            f.write(f"Years Covered: {int(yearly_stats['production_year'].min())} - {int(yearly_stats['production_year'].max())}\n")
+            f.write(f"Recent Year Mean Producers: {yearly_stats['mean_producers'].iloc[-1]:.2f}\n\n")
+
         f.write("See full log file for detailed statistical results.\n")
 
     logger.info(f"✓ Saved summary: {summary_path}")
@@ -444,18 +746,37 @@ def main():
             logger.error("No data available for analysis after cleaning")
             return 1
 
-        # Run analyses
+        # Run basic analyses
         descriptive_stats(df_clean)
         statistical_tests(df_clean)
         logistic_regression(df_clean)
+
+        # Run enhanced analyses
+        producer_df = analyze_individual_producers(df_clean)
+
+        yearly_result = analyze_yearly_trends(df_clean)
+        if yearly_result is not None:
+            yearly_stats, model = yearly_result
+            prediction_df = predict_future_producers(yearly_stats, model)
+        else:
+            yearly_stats = None
+            prediction_df = None
+
+        # Create all visualizations
         create_visualizations(df_clean)
-        save_results(df_clean)
+        create_enhanced_visualizations(df_clean, yearly_stats, prediction_df, producer_df)
+
+        # Save results
+        save_results(df_clean, producer_df, yearly_stats)
 
         logger.info("\n" + "="*70)
         logger.info("✓✓✓ ANALYSIS COMPLETE ✓✓✓")
         logger.info("="*70)
         logger.info("\nResults saved to:")
         logger.info("  - data/producer_tony_analysis.csv (analysis dataset)")
+        logger.info("  - analysis/results/producer_success_analysis.csv (individual producer stats)")
+        logger.info("  - analysis/results/yearly_producer_trends.csv (yearly trends)")
+        logger.info("  - analysis/results/producer_count_predictions.csv (5-year forecast)")
         logger.info("  - analysis/results/ (visualizations and summary)")
         logger.info("  - logs/analysis.log (detailed output)")
 
