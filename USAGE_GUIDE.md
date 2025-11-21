@@ -6,6 +6,7 @@ This project analyzes the relationship between Broadway producers and Tony Award
 ## Project Components
 
 ### 1. Data Collection Scripts
+- **`add_performances_to_tony_data.py`** - **NEW** Independently scrapes performance counts for all shows from IBDB
 - **`browser_ibdb_scraper.py`** - Scrapes producer data from IBDB for all Broadway shows
 - **`broadway_grosses_scraper.py`** - Scrapes weekly grosses data from BroadwayWorld (2010-present)
 
@@ -25,7 +26,33 @@ This project analyzes the relationship between Broadway producers and Tony Award
 
 ## Step-by-Step Workflow
 
-### Step 1: Scrape Broadway Grosses Data
+### **NEW RECOMMENDED WORKFLOW** (Independent Performance Scraping)
+
+### Step 1: Add Performance Data to Tony Outcomes
+```bash
+python3 add_performances_to_tony_data.py
+```
+
+**What it does:**
+- Independently scrapes number of performances and production year for all 535 shows
+- Adds data directly to `data/tony_outcomes.csv`
+- Creates `data/tony_outcomes_with_performances.csv`
+- **IMPORTANT:** You must be present to solve CAPTCHAs manually
+- Infinite retry loop - won't stop until 100% complete
+
+**Features:**
+- 4-second delay between shows for CAPTCHA solving
+- Saves progress after each show (resumable)
+- Automatically includes "revival" in IBDB searches
+
+**Expected duration:** 30-60 minutes (with CAPTCHA solving)
+
+**Why this first?**
+- More reliable than extracting from producer scraper
+- Can check if show counts are correct (e.g., Romeo + Juliet 2011 vs 2024)
+- Provides performance data even if you don't need producer analysis yet
+
+### Step 2 (Optional): Scrape Broadway Grosses Data
 ```bash
 python3 broadway_grosses_scraper.py
 ```
@@ -35,9 +62,9 @@ python3 broadway_grosses_scraper.py
 - Collects: gross revenue, ticket prices, attendance, capacity %
 - Output: `data/broadway_grosses_2010_present.xlsx`
 
-**Expected duration:** 15-30 minutes (depends on number of weeks)
+**Expected duration:** 15-30 minutes
 
-### Step 2: Scrape IBDB Producer Data
+### Step 3 (Optional): Scrape IBDB Producer Data
 ```bash
 python3 browser_ibdb_scraper.py
 ```
@@ -45,7 +72,7 @@ python3 browser_ibdb_scraper.py
 **What it does:**
 - Opens Chrome browser (Safari also supported)
 - Searches IBDB for each of the 536 Broadway shows
-- Extracts producer names, counts, production year, performances
+- Extracts producer names and counts
 - **IMPORTANT:** You must be present to solve CAPTCHAs manually
 - Output: `data/broadway_producer_data.xlsx`
 
@@ -53,31 +80,29 @@ python3 browser_ibdb_scraper.py
 - 4-second delay between shows for CAPTCHA solving
 - Infinite retry loop - won't stop until all shows are successfully scraped
 - Progress saved after each show (can resume if interrupted)
-- Automatically includes "revival" in search for better accuracy
 
 **Expected duration:** 30-60 minutes (with CAPTCHA solving)
 
-**Tips:**
-- Stay near your computer to solve CAPTCHAs promptly
-- If Google blocks you, wait a few minutes and the script will retry
-- Check the Excel file periodically to see progress
+**Note:** Only run this if you need producer-specific analysis
 
-### Step 3: Run Complete Analysis
+### Step 4: Run Complete Analysis
 ```bash
 python3 analysis/producer_tony_analysis.py
 ```
 
 **What it does:**
-- Loads producer data, Tony outcomes, and grosses data
-- Runs comprehensive statistical analysis:
-  - Logistic regression on producer count vs Tony wins
-  - T-tests comparing winners vs non-winners
-  - Individual producer success rates
-  - Performance metrics (longest-running shows)
-  - Financial metrics (ticket prices, revenues)
-  - Yearly trends + 5-year prediction
-- Generates visualizations and charts
+- Loads Tony outcomes (with performance data) and optionally producer/grosses data
+- Runs analysis based on available data:
+  - **Performance Analysis** (if you ran Step 1) - show lengths, production years
+  - **Producer Analysis** (if you ran Step 3) - Tony win rates, producer success
+  - **Financial Analysis** (if you ran Step 2) - ticket prices, gross revenues
+- Generates visualizations and charts (when producer data available)
 - Saves results to CSV files
+
+**Flexible Workflow:**
+- Works with any combination of data sources
+- Gracefully skips analyses for missing data
+- Warns you about what's missing and how to get it
 
 **Outputs:**
 - `data/producer_tony_analysis.csv` - Complete merged dataset
