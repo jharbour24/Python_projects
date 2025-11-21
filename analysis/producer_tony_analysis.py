@@ -1175,6 +1175,22 @@ def main():
         # Save results
         save_results(df_clean, producer_df, yearly_stats, financial_df)
 
+        # Generate comprehensive reports
+        logger.info("\n" + "="*70)
+        logger.info("GENERATING COMPREHENSIVE REPORTS")
+        logger.info("="*70)
+
+        try:
+            from generate_reports import BroadwayAnalysisReportGenerator
+            generator = BroadwayAnalysisReportGenerator()
+            report_results = generator.generate_all_reports()
+
+            if report_results:
+                logger.info("\n✓ Generated comprehensive report package")
+        except Exception as e:
+            logger.warning(f"Could not generate comprehensive reports: {e}")
+            logger.info("(Main analysis complete - reports are optional)")
+
         logger.info("\n" + "="*70)
         logger.info("✓✓✓ ANALYSIS COMPLETE ✓✓✓")
         logger.info("="*70)
@@ -1187,6 +1203,9 @@ def main():
         logger.info("  - analysis/results/producer_count_predictions.csv (5-year forecast)")
         logger.info("  - analysis/results/producer_bubble_*.png (network charts for top 25 producers)")
         logger.info("  - analysis/results/ (all visualizations including financial charts)")
+        logger.info("  - analysis/reports/layman_report.md (easy-to-understand summary)")
+        logger.info("  - analysis/reports/technical_report.md (PhD-level technical analysis)")
+        logger.info("  - analysis/reports/*.png (executive summary visualizations)")
         logger.info("  - logs/analysis.log (detailed output)")
 
         return 0
