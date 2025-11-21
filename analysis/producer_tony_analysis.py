@@ -36,7 +36,7 @@ logger = setup_logger(__name__, log_file='logs/analysis.log')
 
 def load_and_merge_data():
     """
-    Load producer counts and Tony outcomes, merge them.
+    Load producer counts, Tony outcomes, and grosses data, merge them.
 
     Returns:
         Merged DataFrame
@@ -52,6 +52,10 @@ def load_and_merge_data():
     tony_files = [
         'data/tony_outcomes_manual.csv',
         'data/tony_outcomes.csv',
+    ]
+
+    grosses_files = [
+        'data/broadway_grosses_2010_present.xlsx',
     ]
 
     # Load producer data
@@ -82,6 +86,19 @@ def load_and_merge_data():
             f"Use templates in data/templates/ for manual data entry."
         )
 
+    # Load grosses data (optional)
+    grosses_df = None
+    for file_path in grosses_files:
+        if Path(file_path).exists():
+            logger.info(f"Loading grosses data from: {file_path}")
+            try:
+                grosses_df = pd.read_excel(file_path)
+                logger.info(f"  Grosses data: {len(grosses_df)} show-week records")
+            except Exception as e:
+                logger.warning(f"  Could not load grosses data: {e}")
+                grosses_df = None
+            break
+
     # Merge on show_name
     logger.info(f"Merging datasets...")
     logger.info(f"  Producer data: {len(producer_df)} shows")
@@ -95,7 +112,7 @@ def load_and_merge_data():
 
     logger.info(f"  Merged: {len(merged_df)} shows")
 
-    return merged_df
+    return merged_df, grosses_df
 
 
 def clean_data(df):
@@ -506,6 +523,123 @@ def analyze_individual_producers(df):
     return producer_df
 
 
+def analyze_producer_financials(df, grosses_df):
+    """
+    Analyze financial metrics for producers using grosses data.
+
+    Args:
+        df: Clean DataFrame with producer_names column
+        grosses_df: DataFrame with Broadway grosses data
+
+    Returns:
+        DataFrame with producer financial metrics
+    """
+    logger.info("\n" + "="*70)
+    logger.info("PRODUCER FINANCIAL ANALYSIS")
+    logger.info("="*70)
+
+    if grosses_df is None or 'producer_names' not in df.columns:
+        logger.warning("Grosses data or producer_names not available - skipping financial analysis")
+        return None
+
+    # Normalize show names in both datasets for matching
+    df_shows = df.copy()
+    df_shows['show_name_upper'] = df_shows['show_name'].str.upper().str.strip()
+
+    grosses_df['Show_upper'] = grosses_df['Show'].str.upper().str.strip()
+
+    # Aggregate grosses by show
+    show_grosses = grosses_df.groupby('Show_upper').agg({
+        'Gross': ['sum', 'mean'],
+        'Avg_Ticket': 'mean',
+        'Attendance': 'sum',
+        'Week': 'count'
+    }).reset_index()
+
+    show_grosses.columns = ['Show_upper', 'Total_Gross', 'Avg_Weekly_Gross', 'Avg_Ticket_Price', 'Total_Attendance', 'Num_Weeks']
+
+    # Merge with producer data
+    df_with_grosses = df_shows.merge(show_grosses, left_on='show_name_upper', right_on='Show_upper', how='left')
+
+    # Parse producer names and aggregate financial metrics
+    producer_financial_stats = {}
+
+    for _, row in df_with_grosses.iterrows():
+        if pd.isna(row['producer_names']) or pd.isna(row['Total_Gross']):
+            continue
+
+        producers = [p.strip() for p in str(row['producer_names']).split(';') if p.strip()]
+
+        for producer in producers:
+            if producer not in producer_financial_stats:
+                producer_financial_stats[producer] = {
+                    'total_gross': 0,
+                    'gross_counts': [],
+                    'ticket_prices': [],
+                    'show_count': 0
+                }
+
+            producer_financial_stats[producer]['total_gross'] += row['Total_Gross']
+            producer_financial_stats[producer]['gross_counts'].append(row['Total_Gross'])
+            if not pd.isna(row['Avg_Ticket_Price']):
+                producer_financial_stats[producer]['ticket_prices'].append(row['Avg_Ticket_Price'])
+            producer_financial_stats[producer]['show_count'] += 1
+
+    # Convert to DataFrame
+    financial_df = pd.DataFrame([
+        {
+            'producer_name': name,
+            'total_shows_with_data': stats['show_count'],
+            'total_gross': stats['total_gross'],
+            'avg_gross_per_show': stats['total_gross'] / stats['show_count'] if stats['show_count'] > 0 else 0,
+            'avg_ticket_price': sum(stats['ticket_prices']) / len(stats['ticket_prices']) if len(stats['ticket_prices']) > 0 else 0
+        }
+        for name, stats in producer_financial_stats.items()
+    ])
+
+    # Filter for producers with at least 3 shows with grosses data
+    financial_df_filtered = financial_df[financial_df['total_shows_with_data'] >= 3].copy()
+
+    logger.info(f"\nProducers with financial data (3+ shows): {len(financial_df_filtered)}")
+
+    # TOP 5 BY AVERAGE TICKET PRICE
+    if len(financial_df_filtered) > 0:
+        top_ticket = financial_df_filtered.sort_values('avg_ticket_price', ascending=False)
+
+        logger.info("\n" + "="*70)
+        logger.info("TOP 5 PRODUCERS BY AVERAGE TICKET PRICE (min 3 shows)")
+        logger.info("="*70)
+        for i, row in top_ticket.head(5).iterrows():
+            logger.info(f"{i+1}. {row['producer_name']:50s} | Avg ticket: ${row['avg_ticket_price']:.2f} ({row['total_shows_with_data']} shows)")
+
+        # TOP 5 BY AVERAGE GROSS PER SHOW
+        top_avg_gross = financial_df_filtered.sort_values('avg_gross_per_show', ascending=False)
+
+        logger.info("\n" + "="*70)
+        logger.info("TOP 5 PRODUCERS BY AVERAGE GROSS PER SHOW (min 3 shows)")
+        logger.info("="*70)
+        for i, row in top_avg_gross.head(5).iterrows():
+            logger.info(f"{i+1}. {row['producer_name']:50s} | Avg gross: ${row['avg_gross_per_show']:,.0f} ({row['total_shows_with_data']} shows)")
+
+        # TOP 5 BY TOTAL GROSS
+        top_total_gross = financial_df_filtered.sort_values('total_gross', ascending=False)
+
+        logger.info("\n" + "="*70)
+        logger.info("TOP 5 PRODUCERS BY TOTAL GROSS (min 3 shows)")
+        logger.info("Most gross revenue collectively")
+        logger.info("="*70)
+        for i, row in top_total_gross.head(5).iterrows():
+            logger.info(f"{i+1}. {row['producer_name']:50s} | Total gross: ${row['total_gross']:,.0f} ({row['total_shows_with_data']} shows)")
+
+    # Save financial analysis
+    output_path = Path('analysis/results/producer_financial_analysis.csv')
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    financial_df.sort_values('total_gross', ascending=False).to_csv(output_path, index=False)
+    logger.info(f"\n✓ Saved producer financial analysis: {output_path}")
+
+    return financial_df
+
+
 def analyze_yearly_trends(df):
     """
     Analyze trends in producer counts over the years.
@@ -628,7 +762,7 @@ def predict_future_producers(yearly_stats, model):
     return prediction_df
 
 
-def create_enhanced_visualizations(df, yearly_stats, prediction_df, producer_df):
+def create_enhanced_visualizations(df, yearly_stats, prediction_df, producer_df, financial_df=None):
     """
     Create enhanced visualizations including trends and predictions.
 
@@ -754,6 +888,81 @@ def create_enhanced_visualizations(df, yearly_stats, prediction_df, producer_df)
                 logger.info(f"✓ Saved: {fig_path}")
                 plt.close()
 
+        # Figure 5: Top producers by average ticket price
+        if financial_df is not None and len(financial_df) > 0:
+            top_ticket_price = financial_df[financial_df['total_shows_with_data'] >= 3].sort_values('avg_ticket_price', ascending=False).head(10)
+
+            if len(top_ticket_price) > 0:
+                fig, ax = plt.subplots(figsize=(12, 8))
+
+                bars = ax.barh(range(len(top_ticket_price)), top_ticket_price['avg_ticket_price'])
+                ax.set_yticks(range(len(top_ticket_price)))
+                ax.set_yticklabels(top_ticket_price['producer_name'])
+                ax.set_xlabel('Average Ticket Price ($)', fontsize=12)
+                ax.set_title('Top 10 Producers by Average Ticket Price (3+ shows)', fontsize=14, fontweight='bold')
+                ax.grid(axis='x', alpha=0.3)
+
+                # Add value labels
+                for i, (idx, row) in enumerate(top_ticket_price.iterrows()):
+                    ax.text(row['avg_ticket_price'] + 2, i,
+                           f"${row['avg_ticket_price']:.2f} ({row['total_shows_with_data']} shows)",
+                           va='center', fontsize=9)
+
+                fig_path = output_dir / 'top_producers_avg_ticket_price.png'
+                plt.savefig(fig_path, dpi=150, bbox_inches='tight')
+                logger.info(f"✓ Saved: {fig_path}")
+                plt.close()
+
+        # Figure 6: Top producers by average gross per show
+        if financial_df is not None and len(financial_df) > 0:
+            top_avg_gross = financial_df[financial_df['total_shows_with_data'] >= 3].sort_values('avg_gross_per_show', ascending=False).head(10)
+
+            if len(top_avg_gross) > 0:
+                fig, ax = plt.subplots(figsize=(12, 8))
+
+                bars = ax.barh(range(len(top_avg_gross)), top_avg_gross['avg_gross_per_show'] / 1_000_000)
+                ax.set_yticks(range(len(top_avg_gross)))
+                ax.set_yticklabels(top_avg_gross['producer_name'])
+                ax.set_xlabel('Average Gross per Show (Millions $)', fontsize=12)
+                ax.set_title('Top 10 Producers by Average Gross per Show (3+ shows)', fontsize=14, fontweight='bold')
+                ax.grid(axis='x', alpha=0.3)
+
+                # Add value labels
+                for i, (idx, row) in enumerate(top_avg_gross.iterrows()):
+                    ax.text(row['avg_gross_per_show'] / 1_000_000 + 5, i,
+                           f"${row['avg_gross_per_show']/1_000_000:.1f}M ({row['total_shows_with_data']} shows)",
+                           va='center', fontsize=9)
+
+                fig_path = output_dir / 'top_producers_avg_gross.png'
+                plt.savefig(fig_path, dpi=150, bbox_inches='tight')
+                logger.info(f"✓ Saved: {fig_path}")
+                plt.close()
+
+        # Figure 7: Top producers by total gross
+        if financial_df is not None and len(financial_df) > 0:
+            top_total_gross = financial_df[financial_df['total_shows_with_data'] >= 3].sort_values('total_gross', ascending=False).head(10)
+
+            if len(top_total_gross) > 0:
+                fig, ax = plt.subplots(figsize=(12, 8))
+
+                bars = ax.barh(range(len(top_total_gross)), top_total_gross['total_gross'] / 1_000_000)
+                ax.set_yticks(range(len(top_total_gross)))
+                ax.set_yticklabels(top_total_gross['producer_name'])
+                ax.set_xlabel('Total Gross Revenue (Millions $)', fontsize=12)
+                ax.set_title('Top 10 Producers by Total Gross Revenue (3+ shows)', fontsize=14, fontweight='bold')
+                ax.grid(axis='x', alpha=0.3)
+
+                # Add value labels
+                for i, (idx, row) in enumerate(top_total_gross.iterrows()):
+                    ax.text(row['total_gross'] / 1_000_000 + 20, i,
+                           f"${row['total_gross']/1_000_000:.1f}M ({row['total_shows_with_data']} shows)",
+                           va='center', fontsize=9)
+
+                fig_path = output_dir / 'top_producers_total_gross.png'
+                plt.savefig(fig_path, dpi=150, bbox_inches='tight')
+                logger.info(f"✓ Saved: {fig_path}")
+                plt.close()
+
         logger.info(f"\nEnhanced visualizations saved to: {output_dir}/")
 
     except Exception as e:
@@ -762,7 +971,7 @@ def create_enhanced_visualizations(df, yearly_stats, prediction_df, producer_df)
         traceback.print_exc()
 
 
-def save_results(df, producer_df=None, yearly_stats=None):
+def save_results(df, producer_df=None, yearly_stats=None, financial_df=None):
     """
     Save analysis dataset and summary.
 
@@ -770,6 +979,7 @@ def save_results(df, producer_df=None, yearly_stats=None):
         df: Clean DataFrame
         producer_df: Producer analysis DataFrame (optional)
         yearly_stats: Yearly statistics DataFrame (optional)
+        financial_df: Producer financial analysis DataFrame (optional)
     """
     logger.info("\n" + "="*70)
     logger.info("SAVING RESULTS")
@@ -818,6 +1028,14 @@ def save_results(df, producer_df=None, yearly_stats=None):
             f.write(f"Years Covered: {int(yearly_stats['production_year'].min())} - {int(yearly_stats['production_year'].max())}\n")
             f.write(f"Recent Year Mean Producers: {yearly_stats['mean_producers'].iloc[-1]:.2f}\n\n")
 
+        if financial_df is not None and len(financial_df) > 0:
+            f.write("FINANCIAL METRICS\n")
+            f.write("-"*70 + "\n")
+            top_gross_producer = financial_df[financial_df['total_shows_with_data'] >= 3].sort_values('total_gross', ascending=False).iloc[0]
+            f.write(f"Top Producer by Total Gross (3+ shows): {top_gross_producer['producer_name']} (${top_gross_producer['total_gross']/1e6:.1f}M)\n")
+            top_ticket_producer = financial_df[financial_df['total_shows_with_data'] >= 3].sort_values('avg_ticket_price', ascending=False).iloc[0]
+            f.write(f"Top Producer by Avg Ticket Price (3+ shows): {top_ticket_producer['producer_name']} (${top_ticket_producer['avg_ticket_price']:.2f})\n\n")
+
         f.write("See full log file for detailed statistical results.\n")
 
     logger.info(f"✓ Saved summary: {summary_path}")
@@ -831,7 +1049,7 @@ def main():
 
     try:
         # Load and merge data
-        df = load_and_merge_data()
+        df, grosses_df = load_and_merge_data()
 
         # Clean data
         df_clean = clean_data(df)
@@ -848,6 +1066,11 @@ def main():
         # Run enhanced analyses
         producer_df = analyze_individual_producers(df_clean)
 
+        # Run financial analysis if grosses data is available
+        financial_df = None
+        if grosses_df is not None:
+            financial_df = analyze_producer_financials(df_clean, grosses_df)
+
         yearly_result = analyze_yearly_trends(df_clean)
         if yearly_result is not None:
             yearly_stats, model = yearly_result
@@ -858,10 +1081,10 @@ def main():
 
         # Create all visualizations
         create_visualizations(df_clean)
-        create_enhanced_visualizations(df_clean, yearly_stats, prediction_df, producer_df)
+        create_enhanced_visualizations(df_clean, yearly_stats, prediction_df, producer_df, financial_df)
 
         # Save results
-        save_results(df_clean, producer_df, yearly_stats)
+        save_results(df_clean, producer_df, yearly_stats, financial_df)
 
         logger.info("\n" + "="*70)
         logger.info("✓✓✓ ANALYSIS COMPLETE ✓✓✓")
@@ -869,9 +1092,10 @@ def main():
         logger.info("\nResults saved to:")
         logger.info("  - data/producer_tony_analysis.csv (analysis dataset)")
         logger.info("  - analysis/results/producer_success_analysis.csv (individual producer stats)")
+        logger.info("  - analysis/results/producer_financial_analysis.csv (financial metrics)")
         logger.info("  - analysis/results/yearly_producer_trends.csv (yearly trends)")
         logger.info("  - analysis/results/producer_count_predictions.csv (5-year forecast)")
-        logger.info("  - analysis/results/ (visualizations and summary)")
+        logger.info("  - analysis/results/ (visualizations including financial charts)")
         logger.info("  - logs/analysis.log (detailed output)")
 
         return 0
