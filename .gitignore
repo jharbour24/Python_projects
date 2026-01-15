@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs (optional - keep for now)
+# logs/
+
+# Sample data (synthetic - don't commit to avoid confusion)
+data/show_producer_counts_manual.csv
+data/tony_outcomes_manual.csv
+data/producer_tony_analysis.csv
+analysis/results/*.png
+analysis/results/*.txt

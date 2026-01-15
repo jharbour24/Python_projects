@@ -1,0 +1,17 @@
+2025-11-20 14:53:06 - __main__ - INFO - ======================================================================
+2025-11-20 14:53:06 - __main__ - INFO - BUILDING TONY AWARD OUTCOMES DATASET
+2025-11-20 14:53:06 - __main__ - INFO - ======================================================================
+2025-11-20 14:53:06 - __main__ - INFO - Loaded 173 shows from show list
+2025-11-20 14:53:06 - __main__ - ERROR - Access forbidden (403): https://en.wikipedia.org/wiki/Tony_Awards - May be blocked
+2025-11-20 14:53:06 - __main__ - ERROR - Cannot access Wikipedia - will create empty template
+2025-11-20 14:53:06 - __main__ - INFO - 
+✓ Saved Tony outcomes to: data/tony_outcomes.csv
+2025-11-20 14:53:06 - __main__ - INFO - 
+Summary:
+2025-11-20 14:53:06 - __main__ - INFO -   Total shows: 173
+2025-11-20 14:53:06 - __main__ - INFO -   Tony winners: 0
+2025-11-20 14:53:06 - __main__ - INFO -   Non-winners: 173
+2025-11-20 14:53:06 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:53:06 - __main__ - INFO - DONE
+2025-11-20 14:53:06 - __main__ - INFO - ======================================================================

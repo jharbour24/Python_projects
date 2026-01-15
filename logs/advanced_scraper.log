@@ -1,0 +1,44 @@
+2025-11-20 15:07:44 - __main__ - INFO - ======================================================================
+2025-11-20 15:07:44 - __main__ - INFO - TESTING ADVANCED SCRAPER WITH SPECIFIC SHOWS
+2025-11-20 15:07:44 - __main__ - INFO - ======================================================================
+2025-11-20 15:07:44 - __main__ - INFO - AdvancedIBDBScraper initialized with Cloudflare bypass
+2025-11-20 15:07:44 - __main__ - INFO - 
+======================================================================
+2025-11-20 15:07:44 - __main__ - INFO - TEST: Hamilton (expecting ~4 producers)
+2025-11-20 15:07:44 - __main__ - INFO - ======================================================================
+2025-11-20 15:07:44 - __main__ - INFO - 
+======================================================================
+2025-11-20 15:07:44 - __main__ - INFO - Processing: Hamilton
+2025-11-20 15:07:44 - __main__ - INFO - ======================================================================
+2025-11-20 15:07:44 - __main__ - INFO - Searching Google for: Hamilton
+2025-11-20 15:07:45 - __main__ - WARNING - Google search failed with status 403
+2025-11-20 15:07:45 - __main__ - INFO - 
+Results for Hamilton:
+2025-11-20 15:07:45 - __main__ - INFO -   IBDB URL: None
+2025-11-20 15:07:45 - __main__ - INFO -   Total producers: None
+2025-11-20 15:07:45 - __main__ - INFO -   Lead producers: None
+2025-11-20 15:07:45 - __main__ - INFO -   Co-producers: None
+2025-11-20 15:07:45 - __main__ - INFO -   Status: not_found
+2025-11-20 15:07:50 - __main__ - INFO - 
+======================================================================
+2025-11-20 15:07:50 - __main__ - INFO - TEST: Hadestown (expecting ~45 producers)
+2025-11-20 15:07:50 - __main__ - INFO - ======================================================================
+2025-11-20 15:07:50 - __main__ - INFO - 
+======================================================================
+2025-11-20 15:07:50 - __main__ - INFO - Processing: Hadestown
+2025-11-20 15:07:50 - __main__ - INFO - ======================================================================
+2025-11-20 15:07:50 - __main__ - INFO - Searching Google for: Hadestown
+2025-11-20 15:07:50 - __main__ - WARNING - Google search failed with status 403
+2025-11-20 15:07:50 - __main__ - INFO - 
+Results for Hadestown:
+2025-11-20 15:07:50 - __main__ - INFO -   IBDB URL: None
+2025-11-20 15:07:50 - __main__ - INFO -   Total producers: None
+2025-11-20 15:07:50 - __main__ - INFO -   Lead producers: None
+2025-11-20 15:07:50 - __main__ - INFO -   Co-producers: None
+2025-11-20 15:07:50 - __main__ - INFO -   Status: not_found
+2025-11-20 15:07:55 - __main__ - INFO - 
+======================================================================
+2025-11-20 15:07:55 - __main__ - INFO - TEST SUMMARY
+2025-11-20 15:07:55 - __main__ - INFO - ======================================================================
+2025-11-20 15:07:55 - __main__ - INFO - Hamilton: Found 0, Expected ~4, Status: not_found
+2025-11-20 15:07:55 - __main__ - INFO - Hadestown: Found 0, Expected ~45, Status: not_found

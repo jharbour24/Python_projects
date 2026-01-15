@@ -1,0 +1,124 @@
+2025-11-20 14:56:42 - __main__ - INFO - ======================================================================
+2025-11-20 14:56:42 - __main__ - INFO - BROADWAY PRODUCER & TONY AWARDS ANALYSIS
+2025-11-20 14:56:42 - __main__ - INFO - ======================================================================
+2025-11-20 14:56:42 - __main__ - INFO - Loading data...
+2025-11-20 14:56:42 - __main__ - INFO - Loading producer data from: data/show_producer_counts_manual.csv
+2025-11-20 14:56:42 - __main__ - INFO - Loading Tony outcomes from: data/tony_outcomes_manual.csv
+2025-11-20 14:56:42 - __main__ - INFO - Merging datasets...
+2025-11-20 14:56:42 - __main__ - INFO -   Producer data: 50 shows
+2025-11-20 14:56:42 - __main__ - INFO -   Tony data: 50 shows
+2025-11-20 14:56:42 - __main__ - INFO -   Merged: 50 shows
+2025-11-20 14:56:42 - __main__ - INFO - 
+Cleaning data...
+2025-11-20 14:56:42 - __main__ - INFO -   Dropped 0 rows with missing data
+2025-11-20 14:56:42 - __main__ - INFO -   Final analysis dataset: 50 shows
+2025-11-20 14:56:42 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:56:42 - __main__ - INFO - DESCRIPTIVE STATISTICS
+2025-11-20 14:56:42 - __main__ - INFO - ======================================================================
+2025-11-20 14:56:42 - __main__ - INFO - 
+Dataset size: 50 shows
+2025-11-20 14:56:42 - __main__ - INFO - Tony winners: 4 (8.0%)
+2025-11-20 14:56:42 - __main__ - INFO - Non-winners: 46 (92.0%)
+2025-11-20 14:56:42 - __main__ - INFO - 
+Producer counts (all shows):
+2025-11-20 14:56:42 - __main__ - INFO -   Mean total producers: 11.24
+2025-11-20 14:56:42 - __main__ - INFO -   Median total producers: 10.0
+2025-11-20 14:56:42 - __main__ - INFO -   Std dev: 4.64
+2025-11-20 14:56:42 - __main__ - INFO -   Range: 3 - 22
+2025-11-20 14:56:42 - __main__ - INFO - 
+--- Tony Winners ---
+2025-11-20 14:56:42 - __main__ - INFO -   N = 4
+2025-11-20 14:56:42 - __main__ - INFO -   Mean total producers: 17.75
+2025-11-20 14:56:42 - __main__ - INFO -   Median total producers: 17.0
+2025-11-20 14:56:42 - __main__ - INFO -   Std dev: 3.10
+2025-11-20 14:56:42 - __main__ - INFO -   Mean lead producers: 1.50
+2025-11-20 14:56:42 - __main__ - INFO - 
+--- Non-Winners ---
+2025-11-20 14:56:42 - __main__ - INFO -   N = 46
+2025-11-20 14:56:42 - __main__ - INFO -   Mean total producers: 10.67
+2025-11-20 14:56:42 - __main__ - INFO -   Median total producers: 9.5
+2025-11-20 14:56:42 - __main__ - INFO -   Std dev: 4.32
+2025-11-20 14:56:42 - __main__ - INFO -   Mean lead producers: 2.43
+2025-11-20 14:56:42 - __main__ - INFO - 
+--- Difference (Winners - Non-Winners) ---
+2025-11-20 14:56:42 - __main__ - INFO -   Mean difference: +7.08 producers
+2025-11-20 14:56:42 - __main__ - INFO -   → Winners have MORE producers on average
+2025-11-20 14:56:42 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:56:42 - __main__ - INFO - STATISTICAL TESTS
+2025-11-20 14:56:42 - __main__ - INFO - ======================================================================
+2025-11-20 14:56:42 - __main__ - INFO - 
+--- Independent Samples T-Test ---
+2025-11-20 14:56:42 - __main__ - INFO - H0: Winners and non-winners have equal mean producer counts
+2025-11-20 14:56:42 - __main__ - INFO -   t-statistic: 3.191
+2025-11-20 14:56:42 - __main__ - INFO -   p-value: 0.0025
+2025-11-20 14:56:42 - __main__ - INFO -   Result: SIGNIFICANT (p < 0.05)
+2025-11-20 14:56:42 - __main__ - INFO -   → Reject null hypothesis: difference is statistically significant
+2025-11-20 14:56:42 - __main__ - INFO - 
+--- Mann-Whitney U Test (non-parametric) ---
+2025-11-20 14:56:42 - __main__ - INFO -   U-statistic: 167.000
+2025-11-20 14:56:42 - __main__ - INFO -   p-value: 0.0074
+2025-11-20 14:56:42 - __main__ - INFO -   Result: SIGNIFICANT (p < 0.05)
+2025-11-20 14:56:42 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:56:42 - __main__ - INFO - LOGISTIC REGRESSION ANALYSIS
+2025-11-20 14:56:42 - __main__ - INFO - ======================================================================
+2025-11-20 14:56:42 - __main__ - INFO - 
+Model: tony_win ~ num_total_producers
+2025-11-20 14:56:42 - __main__ - INFO - (Binary logistic regression)
+2025-11-20 14:56:42 - __main__ - INFO - 
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:               tony_win   No. Observations:                   50
+Model:                          Logit   Df Residuals:                       48
+Method:                           MLE   Df Model:                            1
+Date:                Thu, 20 Nov 2025   Pseudo R-squ.:                  0.2905
+Time:                        14:56:42   Log-Likelihood:                -9.8887
+converged:                       True   LL-Null:                       -13.938
+Covariance Type:            nonrobust   LLR p-value:                  0.004428
+=======================================================================================
+                          coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------
+Intercept              -7.1599      2.370     -3.021      0.003     -11.806      -2.514
+num_total_producers     0.3326      0.138      2.411      0.016       0.062       0.603
+=======================================================================================
+2025-11-20 14:56:42 - __main__ - INFO - 
+--- Key Results ---
+2025-11-20 14:56:42 - __main__ - INFO - Coefficient (log-odds): 0.3326
+2025-11-20 14:56:42 - __main__ - INFO - 95% CI: [0.0622, 0.6029]
+2025-11-20 14:56:42 - __main__ - INFO - p-value: 0.0159
+2025-11-20 14:56:42 - __main__ - INFO - 
+Odds Ratio: 1.395
+2025-11-20 14:56:42 - __main__ - INFO - 
+--- Interpretation ---
+2025-11-20 14:56:42 - __main__ - INFO - ✓ SIGNIFICANT POSITIVE association (p < 0.05)
+2025-11-20 14:56:42 - __main__ - INFO -   Each additional producer increases the odds of winning by 39.5%
+2025-11-20 14:56:42 - __main__ - INFO - 
+--- Practical Significance ---
+2025-11-20 14:56:42 - __main__ - INFO - Pseudo R-squared: 0.291
+2025-11-20 14:56:42 - __main__ - INFO - (Proportion of variance explained: 29.1%)
+2025-11-20 14:56:42 - __main__ - INFO - → Moderate explanatory power
+2025-11-20 14:56:42 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:56:42 - __main__ - INFO - CREATING VISUALIZATIONS
+2025-11-20 14:56:42 - __main__ - INFO - ======================================================================
+2025-11-20 14:56:42 - __main__ - INFO - ✓ Saved: analysis/results/producer_counts_comparison.png
+2025-11-20 14:56:43 - __main__ - INFO - ✓ Saved: analysis/results/producer_tony_relationship.png
+2025-11-20 14:56:43 - __main__ - INFO - 
+Visualizations saved to: analysis/results/
+2025-11-20 14:56:43 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:56:43 - __main__ - INFO - SAVING RESULTS
+2025-11-20 14:56:43 - __main__ - INFO - ======================================================================
+2025-11-20 14:56:43 - __main__ - INFO - ✓ Saved analysis dataset: data/producer_tony_analysis.csv
+2025-11-20 14:56:43 - __main__ - INFO - ✓ Saved summary: analysis/results/analysis_summary.txt
+2025-11-20 14:56:43 - __main__ - INFO - 
+======================================================================
+2025-11-20 14:56:43 - __main__ - INFO - ✓✓✓ ANALYSIS COMPLETE ✓✓✓
+2025-11-20 14:56:43 - __main__ - INFO - ======================================================================
+2025-11-20 14:56:43 - __main__ - INFO - 
+Results saved to:
+2025-11-20 14:56:43 - __main__ - INFO -   - data/producer_tony_analysis.csv (analysis dataset)
+2025-11-20 14:56:43 - __main__ - INFO -   - analysis/results/ (visualizations and summary)
+2025-11-20 14:56:43 - __main__ - INFO -   - logs/analysis.log (detailed output)
