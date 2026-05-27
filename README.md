@@ -134,4 +134,4 @@ Against three outcomes:
 
 [MIT](LICENSE).
 
-_Last data refresh: 2026-05-17 (grosses). Analysis cutoff: 2026-05-25._
+_Last data refresh: 2026-05-17 (grosses). Analysis cutoff: 2026-05-25. Charts at 220 dpi._
