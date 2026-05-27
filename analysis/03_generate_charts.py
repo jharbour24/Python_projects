@@ -81,7 +81,7 @@ plt.rcParams.update({
     "grid.color":       GRID,
     "grid.linewidth":   0.7,
     "savefig.facecolor": BG,
-    "savefig.dpi":      200,
+    "savefig.dpi":      220,
 })
 
 def add_title(fig, title, subtitle=None, source=None):
