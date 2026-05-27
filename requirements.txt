@@ -1,9 +1,14 @@
+# Core data + stats
 pandas>=2.0.0
 numpy>=1.24.0
 scipy>=1.11.0
 matplotlib>=3.7.0
 statsmodels>=0.14.0
-lifelines>=0.27.0          # Cox PH in 01_consensus_models.py
-scikit-learn>=1.3.0        # NearestNeighbors for propensity matching
-pymc>=5.0.0                # Bayesian change-point in 02_decline_analysis.py
-arviz>=0.16.0              # PyMC posterior diagnostics
+
+# Survival analysis + matching (01_consensus_models.py)
+lifelines>=0.27.0
+scikit-learn>=1.3.0
+
+# Bayesian change-point (02_decline_analysis.py)
+pymc>=5.0.0
+arviz>=0.16.0
