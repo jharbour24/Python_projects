@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtualenvs
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Local secrets
+.env
+.env.local
+
+# Scraper cache (rebuild from sources)
+data/raw_html/
+data/checkpoints/
+
+# Logs
+logs/
+*.log
+
+# Generated previews and intermediate Excel rebuilds
+**/preview_*.png
+data/exports/Broadway_Critics_Impact_MASTER.xlsx
+data/exports/cohort_v2.parquet
+data/exports/opening_reviews_long.csv
