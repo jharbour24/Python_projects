@@ -34,6 +34,11 @@ Thumbs.db
 data/raw_html/
 data/checkpoints/
 
+# SQLite WAL/SHM sidecars
+*.db-shm
+*.db-wal
+*.db-journal
+
 # Logs
 logs/
 *.log
