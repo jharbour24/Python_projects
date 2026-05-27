@@ -1,25 +1,9 @@
-# --- For the analysis (just reproducing charts and tables) ---
 pandas>=2.0.0
 numpy>=1.24.0
 scipy>=1.11.0
 matplotlib>=3.7.0
 statsmodels>=0.14.0
-pyarrow>=14.0.0             # parquet exports
-rapidfuzz>=3.5.0            # used by analysis cohort-matching
-
-# Bayesian change-point in analysis/02_decline_analysis.py
-pymc>=5.0.0
-arviz>=0.16.0
-
-# --- For the scraping pipeline (only if you're rebuilding the DB) ---
-requests>=2.31.0
-cloudscraper>=1.2.71
-beautifulsoup4>=4.12.0
-lxml>=4.9.0
-openpyxl>=3.1.0             # only needed if seeding from an .xlsx
-playwright>=1.40.0          # fallback for JS-rendered pages
-
-# --- CLI / dev ---
-click>=8.1.0
-rich>=13.0.0
-python-dotenv>=1.0.0
+lifelines>=0.27.0          # Cox PH in 01_consensus_models.py
+scikit-learn>=1.3.0        # NearestNeighbors for propensity matching
+pymc>=5.0.0                # Bayesian change-point in 02_decline_analysis.py
+arviz>=0.16.0              # PyMC posterior diagnostics
