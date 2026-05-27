@@ -2,10 +2,6 @@
 Critic Consensus & NYT Critics Pick — Generalized Broadway Impact Report
 ========================================================================
 
-A re-do of the original NYT-Critics-Pick analysis, generalized to use the full
-DTLI critic consensus (every reviewer, not just NYT). The NYT Critics Pick
-signal is re-run in parallel as a separate, independent track.
-
 Cohort: Broadway shows (show_type ∈ {M, P}) opening on or before
 2025-06-15 (end of the 2024–25 Tony season), with at least one opening-
 window review on file, excluding COVID-disrupted openings (Sept 2019 –
