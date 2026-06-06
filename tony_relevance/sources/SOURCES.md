@@ -1,0 +1,37 @@
+# Data sources & provenance
+
+Every row in `award_broadcasts`, `audience_demographics` and `tv_universe`
+carries a `source_key` that maps to a URL below. These are **secondary
+aggregators and trade-press reports** gathered via web search (June 2026).
+Treat them as a v1 seed: before publishing any *specific* figure, validate
+against primary Nielsen releases and the per-ceremony Wikipedia infoboxes.
+
+A known measurement wrinkle: outlets report different bases for the *same*
+ceremony — Live+Same-Day vs. final national vs. "across-platform" (linear +
+streaming). Recent years are the worst affected. Rows are tagged `measurement`
+(`linear` vs `xplat`) and `confidence` (`high`/`med`/`low`) accordingly.
+
+| source_key | Outlet / dataset | URL |
+|---|---|---|
+| statista  | Statista award-show viewership series (Tonys, Oscars, Emmys, Grammys) | https://www.statista.com/statistics/307240/tony-awards-number-of-viewers/ ; https://www.statista.com/statistics/253743/academy-awards-number-of-viewers/ ; https://www.statista.com/statistics/260428/emmy-awards-number-of-viewers/ ; https://www.statista.com/statistics/466534/grammy-awards-number-viewers/ |
+| nytix     | NYTIX "Tony Award Ratings Year by Year" | https://www.nytix.com/news/tony-award-ratings-year-by-year |
+| variety   | Variety ratings desk | https://variety.com/2022/awards/ratings/tony-awards-ratings-tonys-2022-viewership-1235292423/ ; https://variety.com/2025/tv/ratings/tony-awards-2025-ratings-largest-audience-since-2019-1236423861/ |
+| deadline  | Deadline ratings | https://deadline.com/2022/06/tony-awards-ratings-2022-cbs-paramount-plus-1235044339/ |
+| thewrap   | TheWrap ratings | https://www.thewrap.com/tonys-2024-viewership-ratings-cbs/ ; https://www.thewrap.com/tony-awards-ratings-viewership-cbs/ |
+| thr       | The Hollywood Reporter | https://www.hollywoodreporter.com/tv/tv-news/emmys-2024-tv-ratings-1236004078/ |
+| imdb      | IMDb news (2025 Tony cross-platform) | https://www.imdb.com/news/ni65326134/ |
+| cbsnews   | CBS News (2024 Oscars) | https://www.cbsnews.com/news/oscars-ratings-2024/ |
+| axios     | Axios (2025 Emmys) | https://www.axios.com/2025/09/16/emmys-hit-four-year-viewership-high |
+| chartdata | @chartdata compiled Grammy viewership 2010–2026 | https://x.com/chartdata/status/2019485198757322755 |
+| adage     | Ad Age, award-show median viewer ages | https://adage.com/article/media/grammy-oscar-special-special/134298/ |
+| approx    | Author estimate from Nielsen TV-HH counts & Statista pay-TV penetration | https://www.statista.com/statistics/495693/cord-cut-penetration-usa/ ; https://www.tvb.org/wp-content/uploads/2022/10/National-TV-Household-Penetration-Trends.pdf |
+
+## Primary sources to validate against (recommended before publication)
+- Wikipedia "List of Tony Awards ceremonies" and per-ceremony articles
+  (e.g. "75th Tony Awards") — viewership infobox fields.
+- Nielsen press releases / Nielsen "most-watched" insights posts.
+- The Numbers / ShowBuzzDaily archives for Live+Same-Day national numbers.
+
+## Free, reproducible sources for the unbuilt attention layer
+- **Wikimedia Pageviews API** (no key): `https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/all-agents/{ARTICLE}/daily/{START}/{END}`
+- **Google Trends**: trends.google.com comparative query, or the `pytrends` library.

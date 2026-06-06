@@ -1,0 +1,58 @@
+id,award,ceremony_year,air_date,network,host,viewers_m,measurement,confidence,source_key,notes
+1,Tony,2001,2001-06-03,CBS,Rosie O'Donnell,8.3,linear,med,nytix,Pre-cord-cutting baseline.
+2,Tony,2003,2003-06-08,CBS,Hugh Jackman,5.4,linear,low,nytix,Notably low year; figure varies by source.
+3,Tony,2011,2011-06-12,CBS,Neil Patrick Harris,6.95,linear,med,nytix,"NPH era, generally strong reviews."
+4,Tony,2012,2012-06-10,CBS,Neil Patrick Harris,6.01,linear,med,nytix,
+5,Tony,2013,2013-06-09,CBS,Neil Patrick Harris,7.24,linear,med,nytix,NPH 'Bigger' opening number; local ratings peak.
+6,Tony,2014,2014-06-08,CBS,Hugh Jackman,7.0,linear,med,nytix,
+7,Tony,2015,2015-06-07,CBS,Kristin Chenoweth/A.Cumming,6.35,linear,med,nytix,
+8,Tony,2016,2016-06-12,CBS,James Corden,8.7,linear,high,statista,Hamilton year — positive cultural shock; highest since 2001.
+9,Tony,2017,2017-06-11,CBS,Kevin Spacey,6.0,linear,med,nytix,
+10,Tony,2018,2018-06-10,CBS,Sara Bareilles/J.Groban,6.3,linear,med,nytix,
+11,Tony,2019,2019-06-09,CBS,James Corden,5.4,linear,high,statista,Last pre-pandemic ceremony.
+12,Tony,2021,2021-09-26,CBS,Leslie Odom Jr.,2.62,linear,high,deadline,"74th, delayed to Sept 2021. CBS broadcast hour only; the 2hr Paramount+ concert preceded it. All-time-low context."
+13,Tony,2022,2022-06-12,CBS,Ariana DeBose,3.86,linear,high,variety,First live coast-to-coast telecast; time-zone-adjusted L+SD.
+14,Tony,2023,2023-06-11,CBS,Ariana DeBose,4.3,linear,med,variety,Variety final 4.3M ('most-watched since 2019'); TheWrap reported 4.12M L+SD — conflict noted.
+15,Tony,2024,2024-06-16,CBS,Ariana DeBose,3.51,linear,high,thewrap,Down 14% YoY; lowest non-pandemic linear number on record.
+16,Tony,2025,2025-06-08,CBS,Cynthia Erivo,4.85,xplat,low,imdb,Headlined 4.85M ACROSS PLATFORMS (up ~38%). NOT comparable to linear series — excluded from clean trend.
+17,Oscars,2014,2014-03-02,ABC,Ellen DeGeneres,43.74,linear,high,statista,12 Years a Slave / Gravity year.
+18,Oscars,2015,2015-02-22,ABC,Neil Patrick Harris,37.26,linear,high,statista,
+19,Oscars,2016,2016-02-28,ABC,Chris Rock,34.43,linear,high,statista,#OscarsSoWhite year.
+20,Oscars,2017,2017-02-26,ABC,Jimmy Kimmel,32.94,linear,high,statista,La La Land/Moonlight envelope mix-up.
+21,Oscars,2018,2018-03-04,ABC,Jimmy Kimmel,26.5,linear,high,statista,
+22,Oscars,2019,2019-02-24,ABC,(no host),29.56,linear,high,statista,Green Book wins; hostless bump.
+23,Oscars,2020,2020-02-09,ABC,(no host),23.64,linear,high,statista,Parasite.
+24,Oscars,2021,2021-04-25,ABC,(no host),10.4,linear,high,statista,"Pandemic, Union Station; all-time low."
+25,Oscars,2022,2022-03-27,ABC,Schumer/Hall/Sykes,16.62,linear,high,statista,The 'slap' year.
+26,Oscars,2023,2023-03-12,ABC,Jimmy Kimmel,18.76,linear,high,statista,Everything Everywhere All at Once.
+27,Oscars,2024,2024-03-10,ABC,Jimmy Kimmel,19.5,linear,high,cbsnews,Oppenheimer; 4-year high.
+28,Oscars,2025,2025-03-02,ABC,Conan O'Brien,19.69,linear,high,variety,Nielsen incl. digital; 5-year high.
+29,Emmys,2014,2014-08-25,NBC,Seth Meyers,15.6,linear,med,statista,
+30,Emmys,2015,2015-09-20,FOX,Andy Samberg,11.9,linear,med,statista,
+31,Emmys,2016,2016-09-18,ABC,Jimmy Kimmel,11.38,linear,med,statista,
+32,Emmys,2017,2017-09-17,CBS,Stephen Colbert,11.4,linear,med,thr,
+33,Emmys,2018,2018-09-17,NBC,Che/Jost,10.17,linear,high,deadline,Then-record low; NFL counterprogramming.
+34,Emmys,2019,2019-09-22,FOX,(no host),6.9,linear,high,statista,
+35,Emmys,2020,2020-09-20,ABC,Jimmy Kimmel,6.36,linear,high,statista,Virtual / pandemic.
+36,Emmys,2021,2021-09-19,CBS,Cedric the Entertainer,7.4,linear,med,variety,
+37,Emmys,2022,2022-09-12,NBC,Kenan Thompson,5.92,linear,high,variety,
+38,Emmys,2023,2024-01-15,FOX,Anthony Anderson,4.3,linear,high,thr,Strike-delayed to Jan 2024; all-time low.
+39,Emmys,2024,2024-09-15,ABC,Eugene/Dan Levy,6.9,linear,high,variety,+54% off the Jan low.
+40,Emmys,2025,2025-09-14,CBS,Nate Bargatze,7.4,linear,med,axios,4-year high.
+41,Grammys,2010,2010-01-31,CBS,(no host),25.8,linear,med,chartdata,
+42,Grammys,2011,2011-02-13,CBS,(no host),26.5,linear,med,chartdata,
+43,Grammys,2012,2012-02-12,CBS,LL Cool J,39.9,linear,high,chartdata,Whitney Houston died the night before — anomalous spike.
+44,Grammys,2013,2013-02-10,CBS,LL Cool J,28.4,linear,med,chartdata,
+45,Grammys,2014,2014-01-26,CBS,LL Cool J,28.5,linear,med,chartdata,
+46,Grammys,2015,2015-02-08,CBS,LL Cool J,25.3,linear,med,chartdata,
+47,Grammys,2016,2016-02-15,CBS,LL Cool J,24.95,linear,med,chartdata,
+48,Grammys,2017,2017-02-12,CBS,James Corden,26.1,linear,med,chartdata,
+49,Grammys,2018,2018-01-28,CBS,James Corden,19.8,linear,med,chartdata,
+50,Grammys,2019,2019-02-10,CBS,Alicia Keys,19.9,linear,med,chartdata,
+51,Grammys,2020,2020-01-26,CBS,Alicia Keys,18.7,linear,high,chartdata,Kobe Bryant died that day.
+52,Grammys,2021,2021-03-14,CBS,Trevor Noah,9.2,linear,high,chartdata,Pandemic; all-time low.
+53,Grammys,2022,2022-04-03,CBS,Trevor Noah,9.6,linear,high,chartdata,Moved to Las Vegas.
+54,Grammys,2023,2023-02-05,CBS,Trevor Noah,12.5,linear,high,chartdata,
+55,Grammys,2024,2024-02-04,CBS,Trevor Noah,16.9,linear,high,chartdata,Post-pandemic high.
+56,Grammys,2025,2025-02-02,CBS,Trevor Noah,15.4,linear,high,thewrap,
+57,Grammys,2026,2026-02-01,CBS,Trevor Noah,14.4,linear,high,thr,Final year on CBS.
