@@ -69,6 +69,14 @@ charts/                     generated PNGs
 | `2_smallest_in_the_room.png`  | The Tonys were always the smallest absolute audience, even at the Hamilton peak |
 | `3_share_of_voice.png`        | Theatre's slice of award-show attention is flat (~7–8%) — the pie shrank, not the slice |
 | `4_oldest_audience.png`       | Median viewer age ~61, the oldest of any award show |
+| `5_sag_broke_the_ruler.png`   | SAG→Netflix: same axis, two different rulers (Nielsen viewers vs Netflix views) |
+| `6_tony_vs_sag_stakes.png`    | The Tonys have ~2.7× SAG's last linear audience at stake in the platform decision |
+
+**Phase 2 — SAG→Netflix case study** (`analysis/04_sag_netflix_case.py` →
+`outputs/SAG_NETFLIX_CASE.md`): the natural experiment informing the Tonys'
+post-2026 platform choice. SAG fell faster on linear than the Tonys, and Netflix
+*relocated* it rather than reviving it — streaming is a reach/demo/global play,
+not a relevance cure. See [`DEEPER_ANALYSIS.md`](DEEPER_ANALYSIS.md) Q1.
 
 ## Status & honesty
 

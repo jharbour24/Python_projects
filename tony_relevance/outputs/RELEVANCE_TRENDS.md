@@ -1,6 +1,6 @@
 # Tony Awards — Relevance Trends (descriptive layer)
 
-_Generated 2026-06-08 19:11. Linear-TV viewers only (streaming/'across-platforms' rows excluded for comparability)._
+_Generated 2026-06-08 19:26. Linear-TV viewers only (streaming/'across-platforms' rows excluded for comparability)._
 
 ## 1. Absolute decline and decline vs. peers
 

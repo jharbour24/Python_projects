@@ -49,6 +49,8 @@ def load() -> pd.DataFrame:
     con.close()
     # Drop cells with no viewership yet (e.g. the 2026 ceremony, pending Nielsen).
     df = df.dropna(subset=["viewers_m"]).reset_index(drop=True)
+    # Phase 1 is the "big four" only — keep SAG (Phase 2) out of share-of-voice etc.
+    df = df[df.award.isin(AWARDS)].reset_index(drop=True)
     return df
 
 

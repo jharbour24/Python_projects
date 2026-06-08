@@ -1,6 +1,6 @@
 # Tony Awards — Causal-leaning analysis (DiD against peer award shows)
 
-_Generated 2026-06-08 19:11. Window 2014–2025, linear-TV viewers only. Control group: Oscars, Emmys, Grammys._
+_Generated 2026-06-08 19:26. Window 2014–2025, linear-TV viewers only. Control group: Oscars, Emmys, Grammys._
 
 ## Design A — Difference-in-Differences (the headline causal test)
 

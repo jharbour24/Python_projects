@@ -61,6 +61,7 @@ def load():
     demo = pd.read_sql("SELECT * FROM audience_demographics", con)
     con.close()
     df = df.dropna(subset=["viewers_m"])  # drop pending cells (2026 ceremony)
+    df = df[df.award.isin(AWARDS)]        # big four only (exclude SAG/Phase 2)
     return df, demo
 
 

@@ -134,6 +134,27 @@ AWARD_BROADCASTS = [
     ("Grammys",2024, "2024-02-04", "CBS", "Trevor Noah",              16.90, "linear", "high", "chartdata", "Post-pandemic high."),
     ("Grammys",2025, "2025-02-02", "CBS", "Trevor Noah",              15.40, "linear", "high", "thewrap",   ""),
     ("Grammys",2026, "2026-02-01", "CBS", "Trevor Noah",              14.40, "linear", "high", "thr",       "Final year on CBS."),
+
+    # ---- SAG AWARDS (Phase-2 case study; NOT part of the Phase-1 "big four") ----
+    # Two measurement regimes that DO NOT compare 1:1:
+    #   measurement='linear'       TNT/TBS, Nielsen average-audience (through 2022)
+    #   measurement='stream_views' Netflix/YouTube reported *views* (2023+). A
+    #       streaming "view" (qualified play / total-views-over-runtime) is NOT the
+    #       same unit as a Nielsen average-minute viewer and generally OVERSTATES
+    #       reach relative to it. The break is the whole point of the case study.
+    ("SAG",    2013, "2013-01-27", "TNT/TBS",        None, 5.20, "linear",       "med",  "showbuzz",  "Modern peak (~5.2M)."),
+    ("SAG",    2014, "2014-01-18", "TNT/TBS",        None, 4.60, "linear",       "med",  "statista",  ""),
+    ("SAG",    2015, "2015-01-25", "TNT/TBS",        None, 4.00, "linear",       "low",  "statista",  "Mid-decade figures vary by source."),
+    ("SAG",    2016, "2016-01-30", "TNT/TBS",        None, 2.70, "linear",       "low",  "statista",  "Non-monotonic vs 2017 in some sources — flagged."),
+    ("SAG",    2017, "2017-01-29", "TNT/TBS",        None, 3.90, "linear",       "low",  "statista",  ""),
+    ("SAG",    2018, "2018-01-21", "TNT/TBS",        None, 2.70, "linear",       "med",  "statista",  ""),
+    ("SAG",    2019, "2019-01-27", "TNT/TBS",        None, 2.70, "linear",       "med",  "statista",  ""),
+    ("SAG",    2020, "2020-01-19", "TNT/TBS",        None, 2.00, "linear",       "high", "statista",  "Nielsen ~2.0M."),
+    ("SAG",    2021, "2021-04-04", "TNT/TBS",        None, 0.96, "linear",       "high", "variety",   "One-hour pre-taped pandemic special; record low (957k)."),
+    ("SAG",    2022, "2022-02-27", "TNT/TBS",        None, 1.80, "linear",       "high", "deadline",  "Last traditional TNT/TBS telecast (avg 1.8M)."),
+    ("SAG",    2023, "2023-02-26", "Netflix/YouTube",None, 1.50, "stream_views", "med",  "variety",   "Bridge year: free livestream on Netflix's YouTube; ~1.1–1.5M views across YT/FB/X in first 12–24h. Not Nielsen-comparable."),
+    ("SAG",    2024, "2024-02-24", "Netflix",        None, 1.80, "stream_views", "med",  "deadline",  "First under the Netflix multi-year deal; 1.8M views — 'on par' with 2022's last linear outing, but did NOT crack Netflix Top 10 (<2.1M in 24h)."),
+    ("SAG",    2025, "2025-02-23", "Netflix",        None, 2.60, "stream_views", "med",  "thewrap",   "2.6M views over the week (No. 7 on Netflix weekly list); grew ~44% vs 2024. Rebranding toward 'Actor Awards'."),
 ]
 
 

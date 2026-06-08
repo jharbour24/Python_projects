@@ -26,6 +26,18 @@ streaming). Recent years are the worst affected. Rows are tagged `measurement`
 | adage     | Ad Age, award-show median viewer ages | https://adage.com/article/media/grammy-oscar-special-special/134298/ |
 | approx    | Author estimate from Nielsen TV-HH counts & Statista pay-TV penetration | https://www.statista.com/statistics/495693/cord-cut-penetration-usa/ ; https://www.tvb.org/wp-content/uploads/2022/10/National-TV-Household-Penetration-Trends.pdf |
 | pending   | Placeholder for the 2026 (79th) Tony Nielsen figure, unreleased as of 2026-06-08 | (update on publication: Deadline / Variety / TheWrap ratings desks) |
+| showbuzz  | Showbuzz Daily / Statista — SAG Awards historical linear ratings | https://www.statista.com/statistics/568316/sag-awards-number-of-viewers/ ; https://showbuzzdaily.com/tag/sag-awards-ratings |
+
+**SAG Awards (Phase-2 case study) sources.** Linear era: Statista/Showbuzz Daily
+plus Variety (2021 record low: https://variety.com/2021/tv/news/sag-awards-2021-ratings-tnt-tbs-1234944724/)
+and Deadline (2022, last TNT/TBS). Streaming era: Variety (2023 YouTube bridge:
+https://variety.com/2023/awards/news/sag-awards-2023-ratings-views-netflix-youtube-1235536922/),
+Deadline (2024 Netflix "on par," sub-Top-10:
+https://deadline.com/2024/09/sag-awards-netflix-2024-viewership-tnt-tbs-1236094869/),
+TheWrap (2025 2.6M weekly views, No. 7:
+https://www.thewrap.com/sag-awards-netflix-viewership/). **Reminder:** linear
+Nielsen "viewers" and Netflix "views" are different units — see
+`outputs/SAG_NETFLIX_CASE.md` §2.
 
 **2025 (78th) Tonys — corrected reading.** 4.85M = CBS Live+Same-Day **linear**
 (most-watched since 2019, +38% YoY); 5.10M = **across platforms** incl.

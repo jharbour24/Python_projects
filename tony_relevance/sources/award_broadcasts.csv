@@ -58,3 +58,16 @@ id,award,ceremony_year,air_date,network,host,viewers_m,measurement,confidence,so
 57,Grammys,2024,2024-02-04,CBS,Trevor Noah,16.9,linear,high,chartdata,Post-pandemic high.
 58,Grammys,2025,2025-02-02,CBS,Trevor Noah,15.4,linear,high,thewrap,
 59,Grammys,2026,2026-02-01,CBS,Trevor Noah,14.4,linear,high,thr,Final year on CBS.
+60,SAG,2013,2013-01-27,TNT/TBS,,5.2,linear,med,showbuzz,Modern peak (~5.2M).
+61,SAG,2014,2014-01-18,TNT/TBS,,4.6,linear,med,statista,
+62,SAG,2015,2015-01-25,TNT/TBS,,4.0,linear,low,statista,Mid-decade figures vary by source.
+63,SAG,2016,2016-01-30,TNT/TBS,,2.7,linear,low,statista,Non-monotonic vs 2017 in some sources — flagged.
+64,SAG,2017,2017-01-29,TNT/TBS,,3.9,linear,low,statista,
+65,SAG,2018,2018-01-21,TNT/TBS,,2.7,linear,med,statista,
+66,SAG,2019,2019-01-27,TNT/TBS,,2.7,linear,med,statista,
+67,SAG,2020,2020-01-19,TNT/TBS,,2.0,linear,high,statista,Nielsen ~2.0M.
+68,SAG,2021,2021-04-04,TNT/TBS,,0.96,linear,high,variety,One-hour pre-taped pandemic special; record low (957k).
+69,SAG,2022,2022-02-27,TNT/TBS,,1.8,linear,high,deadline,Last traditional TNT/TBS telecast (avg 1.8M).
+70,SAG,2023,2023-02-26,Netflix/YouTube,,1.5,stream_views,med,variety,Bridge year: free livestream on Netflix's YouTube; ~1.1–1.5M views across YT/FB/X in first 12–24h. Not Nielsen-comparable.
+71,SAG,2024,2024-02-24,Netflix,,1.8,stream_views,med,deadline,"First under the Netflix multi-year deal; 1.8M views — 'on par' with 2022's last linear outing, but did NOT crack Netflix Top 10 (<2.1M in 24h)."
+72,SAG,2025,2025-02-23,Netflix,,2.6,stream_views,med,thewrap,2.6M views over the week (No. 7 on Netflix weekly list); grew ~44% vs 2024. Rebranding toward 'Actor Awards'.

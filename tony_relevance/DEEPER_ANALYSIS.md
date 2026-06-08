@@ -38,6 +38,19 @@ the Tonys belong after 2026?**
 
 ### Design 1A — The SAG→Netflix natural experiment (the key causal study)
 
+> **✅ BUILT** — `analysis/04_sag_netflix_case.py` → `outputs/SAG_NETFLIX_CASE.md`,
+> charts `5_sag_broke_the_ruler.png`, `6_tony_vs_sag_stakes.png`.
+> **Headline result:** SAG fell **−11%/yr on linear** (faster than the Tonys'
+> −6.5%) to 1.8M in 2022; on Netflix its *views* grew 1.8M→2.6M (+44%) but it
+> failed to crack Netflix's Top 10. The move **relocated** SAG, it didn't
+> **revive** it. Crucially, the regime change (Nielsen viewers → Netflix views)
+> breaks comparability — so the study brackets rather than differences. Tony
+> read-across: the Tonys are ~2.7× SAG's last linear audience (more to lose) but
+> have the oldest audience (most demo upside) and a 41%-international customer base
+> (best global-streamer fit) → argues for a **hybrid**, not a pure swap. The
+> demo/attention data that would turn this into a quantified treatment effect is
+> the top remaining gap.
+
 The SAG Awards are the **best available analog** for a mid-tier awards show
 leaving linear for a global streamer. Treat the 2024 move as a treatment and run:
 
