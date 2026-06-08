@@ -23,7 +23,15 @@ media-economics work.
 Read **[`RESEARCH_PLAN.md`](RESEARCH_PLAN.md)** for the full plan: how
 "relevance" is operationalized as a latent variable, the causal ladder, the
 confounders, the off-TV "attention layer" to build next, and **exactly what you
-can and can't defensibly write.**
+can and can't defensibly write.** **[`VERIFICATION.md`](VERIFICATION.md)** is the
+cell-by-cell data-accuracy log.
+
+**[`DEEPER_ANALYSIS.md`](DEEPER_ANALYSIS.md)** is Phase 2 — the
+research-intensive extension: the **broadcast-rights decision** (CBS's deal ends
+2026; where should the Tonys go?), the **SAG→Netflix natural experiment** as
+evidence, and a steelman of the harder thesis that **Broadway has decoupled from
+pop culture** — thriving commercially while it stops *exporting* songs and
+stories into the wider culture.
 
 ## Run it
 
