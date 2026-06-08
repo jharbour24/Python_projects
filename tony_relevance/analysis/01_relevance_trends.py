@@ -47,6 +47,8 @@ def load() -> pd.DataFrame:
     con = sqlite3.connect(DB)
     df = pd.read_sql("SELECT * FROM v_relevance ORDER BY award, year", con)
     con.close()
+    # Drop cells with no viewership yet (e.g. the 2026 ceremony, pending Nielsen).
+    df = df.dropna(subset=["viewers_m"]).reset_index(drop=True)
     return df
 
 
@@ -156,6 +158,29 @@ def main():
              "are aging out is, almost by definition, losing its grip on the culture "
              "being made *now*. (Sparse snapshots — backfill a full age panel to make "
              "this a trend, not a point.)\n")
+
+    # ---- 6: most-recent ceremonies (2025 correction + 2026 pending) ----
+    con = sqlite3.connect(DB)
+    recent = pd.read_sql(
+        "SELECT ceremony_year AS year, viewers_m, measurement, confidence, notes "
+        "FROM award_broadcasts WHERE award='Tony' AND ceremony_year >= 2024 "
+        "ORDER BY ceremony_year, measurement", con)
+    con.close()
+    L.append("## 5. Most recent ceremonies (2024–2026)\n")
+    L.append("| Year | Viewers (M) | Basis | Confidence | Note |")
+    L.append("|---|---|---|---|---|")
+    for _, r in recent.iterrows():
+        v = "—" if pd.isna(r["viewers_m"]) else f"{r['viewers_m']:.2f}"
+        L.append(f"| {int(r['year'])} | {v} | {r['measurement']} | {r['confidence']} | {r['notes']} |")
+    L.append("")
+    L.append("**Read:** the Tonys *recovered* in 2025 — **4.85M linear (+38% YoY, the "
+             "best since 2019)**, 5.10M across platforms. That recovery is real, but it "
+             "mirrors a category-wide post-pandemic rebound (the Oscars went 10.4M→19.7M, "
+             "the Grammys 9.2M→16.9M over the same span), which is exactly why the "
+             "causal test (02) still finds **no Tony-specific TV trend**. The **2026 "
+             "(79th) ceremony aired June 7, 2026; its official Nielsen number was not yet "
+             "released at the time of writing** and is intentionally left blank rather "
+             "than estimated.\n")
 
     REPORT.write_text("\n".join(L))
     print(f"Wrote {REPORT}\n")

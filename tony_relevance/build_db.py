@@ -79,8 +79,13 @@ AWARD_BROADCASTS = [
     ("Tony",   2021, "2021-09-26", "CBS", "Leslie Odom Jr.",           2.62, "linear", "high", "deadline",  "74th, delayed to Sept 2021. CBS broadcast hour only; the 2hr Paramount+ concert preceded it. All-time-low context."),
     ("Tony",   2022, "2022-06-12", "CBS", "Ariana DeBose",             3.86, "linear", "high", "variety",   "First live coast-to-coast telecast; time-zone-adjusted L+SD."),
     ("Tony",   2023, "2023-06-11", "CBS", "Ariana DeBose",             4.30, "linear", "med",  "variety",   "Variety final 4.3M ('most-watched since 2019'); TheWrap reported 4.12M L+SD — conflict noted."),
-    ("Tony",   2024, "2024-06-16", "CBS", "Ariana DeBose",             3.51, "linear", "high", "thewrap",   "Down 14% YoY; lowest non-pandemic linear number on record."),
-    ("Tony",   2025, "2025-06-08", "CBS", "Cynthia Erivo",             4.85, "xplat",  "low",  "imdb",      "Headlined 4.85M ACROSS PLATFORMS (up ~38%). NOT comparable to linear series — excluded from clean trend."),
+    ("Tony",   2024, "2024-06-16", "CBS", "Ariana DeBose",             3.51, "linear", "high", "thewrap",   "Down 14% YoY; lowest non-pandemic linear number on record. (Deadline rounds to 3.53M.)"),
+    ("Tony",   2025, "2025-06-08", "CBS", "Cynthia Erivo",             4.85, "linear", "high", "deadline",  "CORRECTED: 4.85M is the CBS Live+Same-Day LINEAR average — most-watched Tonys since 2019; +38% vs 2024. (Earlier this cell was mis-tagged 'xplat' and wrongly excluded from the trend.)"),
+    ("Tony",   2025, "2025-06-08", "CBS", "Cynthia Erivo",             5.10, "xplat",  "high", "thewrap",   "Across-platforms incl. Paramount+ (streaming +208% YoY). NOT comparable to the linear series — excluded from the clean trend."),
+    # 79th Tonys aired 2026-06-07 (Radio City; host Pink; CBS's final contracted year).
+    # Nielsen next-day figure NOT yet released as of 2026-06-08 — left NULL on purpose.
+    # Do not invent it; backfill from Deadline/Variety/Nielsen when published.
+    ("Tony",   2026, "2026-06-07", "CBS", "Pink",                      None, "linear", "pending", "pending", "Aired 2026-06-07. Official next-day Nielsen viewership NOT released as of 2026-06-08; awaiting trade-press report. Update this row when published."),
 
     # ---- ACADEMY AWARDS / OSCARS (ABC) ----
     ("Oscars", 2014, "2014-03-02", "ABC", "Ellen DeGeneres",          43.74, "linear", "high", "statista",  "12 Years a Slave / Gravity year."),

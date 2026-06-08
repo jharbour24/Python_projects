@@ -25,6 +25,13 @@ streaming). Recent years are the worst affected. Rows are tagged `measurement`
 | chartdata | @chartdata compiled Grammy viewership 2010–2026 | https://x.com/chartdata/status/2019485198757322755 |
 | adage     | Ad Age, award-show median viewer ages | https://adage.com/article/media/grammy-oscar-special-special/134298/ |
 | approx    | Author estimate from Nielsen TV-HH counts & Statista pay-TV penetration | https://www.statista.com/statistics/495693/cord-cut-penetration-usa/ ; https://www.tvb.org/wp-content/uploads/2022/10/National-TV-Household-Penetration-Trends.pdf |
+| pending   | Placeholder for the 2026 (79th) Tony Nielsen figure, unreleased as of 2026-06-08 | (update on publication: Deadline / Variety / TheWrap ratings desks) |
+
+**2025 (78th) Tonys — corrected reading.** 4.85M = CBS Live+Same-Day **linear**
+(most-watched since 2019, +38% YoY); 5.10M = **across platforms** incl.
+Paramount+ (streaming +208% YoY). Sources: TheWrap (https://www.thewrap.com/tonys-2025-ratings-viewership-cbs-paramount-plus/),
+Deadline (https://deadline.com/2025/06/tony-award-ratings-2025-1236428454/),
+Playbill, Broadway.com (2025-06-09). See `VERIFICATION.md` §A.
 
 ## Primary sources to validate against (recommended before publication)
 - Wikipedia "List of Tony Awards ceremonies" and per-ceremony articles

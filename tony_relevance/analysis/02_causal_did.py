@@ -56,7 +56,8 @@ OUT.mkdir(exist_ok=True)
 REPORT = OUT / "CAUSAL_DID.md"
 
 PEERS = ["Oscars", "Emmys", "Grammys"]
-WIN_LO, WIN_HI = 2014, 2024   # common clean window for all four shows
+WIN_LO, WIN_HI = 2014, 2025   # common window where all four shows have linear data
+                              # (2026 Tony Nielsen not yet released; excluded)
 
 
 def load_panel(drop_pandemic=False, min_conf=None):
@@ -65,6 +66,7 @@ def load_panel(drop_pandemic=False, min_conf=None):
         "SELECT award, ceremony_year AS year, viewers_m, confidence "
         "FROM award_broadcasts WHERE measurement='linear'", con)
     con.close()
+    df = df.dropna(subset=["viewers_m"])  # drop pending/unreleased cells (e.g. 2026)
     df = df[(df.year >= WIN_LO) & (df.year <= WIN_HI)].copy()
     if drop_pandemic:
         df = df[~df.year.isin([2020, 2021])]

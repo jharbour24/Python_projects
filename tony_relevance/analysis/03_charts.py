@@ -60,6 +60,7 @@ def load():
         "WHERE measurement='linear'", con)
     demo = pd.read_sql("SELECT * FROM audience_demographics", con)
     con.close()
+    df = df.dropna(subset=["viewers_m"])  # drop pending cells (2026 ceremony)
     return df, demo
 
 
@@ -75,7 +76,7 @@ def _style(ax, title, subtitle=None):
 
 def chart1_indexed(df):
     fig, ax = plt.subplots(figsize=(9, 5.6))
-    win = df[(df.year >= BASE_YEAR) & (df.year <= 2024)]
+    win = df[(df.year >= BASE_YEAR) & (df.year <= 2025)]
     for a in AWARDS:
         s = win[win.award == a].sort_values("year")
         base = s.loc[s.year == BASE_YEAR, "viewers_m"]
@@ -101,7 +102,7 @@ def chart1_indexed(df):
 
 def chart2_absolute(df):
     fig, ax = plt.subplots(figsize=(9, 5.6))
-    win = df[(df.year >= BASE_YEAR) & (df.year <= 2024)]
+    win = df[(df.year >= BASE_YEAR) & (df.year <= 2025)]
     for a in AWARDS:
         s = win[win.award == a].sort_values("year")
         c = TONY if a == "Tony" else PEER[a]
@@ -143,7 +144,7 @@ def chart3_share(df):
     ax.set_ylabel("Tony share of big-four award-show audience (%)")
     _style(ax, "Theatre's slice of the award-show pie isn't shrinking — the pie is",
            "Tony viewers ÷ (Tony + Oscars + Emmys + Grammys) viewers, years all four "
-           "aired. The share is small but roughly flat.")
+           "aired. The share is small but holding — even ticking up as peers fell faster.")
     fig.tight_layout()
     fig.savefig(CH / "3_share_of_voice.png", bbox_inches="tight")
     plt.close(fig)

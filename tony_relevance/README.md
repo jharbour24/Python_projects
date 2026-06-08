@@ -5,15 +5,20 @@ losing cultural relevance — built to get **as close to causal as the data allo
 (not just "ratings went down"), and framed in the spirit of Evan Shapiro's
 media-economics work.
 
-> **The punchline.** Tony linear-TV viewership fell ~50% since 2014 — but so did
-> every other award show's, and the Tonys actually declined the *slowest* of the
-> big four. A difference-in-differences test against the Oscars/Emmys/Grammys
-> finds **no Tony-specific TV decline** (+1.5%/yr, p=0.67). The real
-> Tony-specific relevance problem isn't the slope — it's the **smallest reach,
-> the oldest audience (~61), and a dependence on rare Hamilton-scale hits**
-> (worth +41% to the broadcast). And the deepest question — has theatre left the
-> cultural conversation? — has to be answered **off** television, in search and
-> social data the project is scaffolded to ingest next.
+> **The punchline.** Tony linear-TV viewership fell ~50% from 2014 (7.0M) to the
+> 2024 trough (3.51M), then rebounded **+38% to 4.85M in 2025 — its best since
+> 2019**. But every other award show moved the same way, and across 2014–2025 the
+> Tonys declined the *slowest* of the big four. A difference-in-differences test
+> against the Oscars/Emmys/Grammys finds **no Tony-specific TV decline**
+> (+1.7%/yr, p=0.57). The real Tony-specific relevance problem isn't the slope —
+> it's the **smallest reach, the oldest audience (~61), and a dependence on rare
+> Hamilton-scale hits** (worth +45% to the broadcast). And the deepest question —
+> has theatre left the cultural conversation? — has to be answered **off**
+> television, in search and social data the project is scaffolded to ingest next.
+>
+> *(The 79th Tony Awards aired June 7, 2026; their official Nielsen number was
+> not yet released as of June 8, 2026, and is recorded as a pending row rather
+> than estimated.)*
 
 Read **[`RESEARCH_PLAN.md`](RESEARCH_PLAN.md)** for the full plan: how
 "relevance" is operationalized as a latent variable, the causal ladder, the

@@ -15,11 +15,11 @@ interesting half.
 
 | Claim | Verdict from the data | Where |
 |---|---|---|
-| Tony linear viewership has collapsed (~−50% since 2014, −60% off the 2016 peak) | **TRUE** | `01_relevance_trends` |
-| The Tonys are collapsing *faster than other award shows* | **FALSE** — DiD differential trend +1.5%/yr, p=0.67; they're actually the *slowest*-declining of the big four | `02_causal_did` (Design A/B) |
-| The Tonys' *share* of the award-show audience is shrinking | **FALSE** — flat at ~7–8% | `01` (§3) |
+| Tony linear viewership fell sharply (7.0M in 2014 → 3.51M 2024 trough, ~−50%) | **TRUE** — but it then rebounded +38% to 4.85M in 2025 (best since 2019), trimming the 2014→2025 decline to −31% | `01_relevance_trends` |
+| The Tonys are collapsing *faster than other award shows* | **FALSE** — DiD differential trend +1.7%/yr, p=0.57; they're actually the *slowest*-declining of the big four | `02_causal_did` (Design A/B) |
+| The Tonys' *share* of the award-show audience is shrinking | **FALSE** — small but holding; if anything it rose (7.4% in 2014 → 10.2% in 2025 as peers fell faster) | `01` (§3) |
 | The Tonys are the *smallest and oldest* award show | **TRUE** — lowest absolute reach; median viewer age ~61 vs ~45–52 for peers | `01` (§1, §4) |
-| A culture-saturating show (Hamilton) materially moves the broadcast | **TRUE** — +41% above trend in 2016, while peers stayed on-trend | `02` (Design C) |
+| A culture-saturating show (Hamilton) materially moves the broadcast | **TRUE** — +45% above trend in 2016, while peers stayed on-trend | `02` (Design C) |
 
 **The reframed, defensible thesis:** *The Tonys' television decline is not a
 theatre story — it's the linear-TV story, shared by every award show. The
@@ -84,9 +84,12 @@ adopt them as design rules:
    simulcast. Media audiences are event-driven; the chart should be too.
 6. **Distinguish linear from total.** Shapiro is relentless that "linear TV" and
    "television" are now different things. Networks increasingly headline
-   "across-platform" numbers (Tony 2025's 4.85M includes streaming) that are not
-   comparable to the historical linear series. We segregate `measurement =
-   'linear' | 'xplat'` so the trend isn't quietly inflated.
+   "across-platform" numbers that are not comparable to the historical linear
+   series — e.g. the 2025 Tonys drew **4.85M on linear CBS** but **5.10M
+   across platforms** (incl. Paramount+). We segregate `measurement =
+   'linear' | 'xplat'` so the trend isn't quietly inflated. (An earlier draft of
+   this project mistakenly tagged the 4.85M *linear* figure as cross-platform and
+   dropped it; the verification pass in `VERIFICATION.md` caught and fixed it.)
 
 ---
 
@@ -123,7 +126,7 @@ actually supports is the whole game.
 | 2 | Indexed / normalized trend | fell vs. its own past, net of TV-universe shrinkage | ✅ `01` |
 | 3 | Share-of-voice | fell vs. the whole award-show category | ✅ `01` |
 | 4 | **Difference-in-Differences** | Tony-*specific* deviation from the common award-show trajectory (year FE absorb cord-cutting, pandemic, streaming) | ✅ `02` Design A — **null** |
-| 5 | **Event study / natural experiment** (Hamilton 2016) | causal value of a culture-saturating nominee | ✅ `02` Design C — **+41%** |
+| 5 | **Event study / natural experiment** (Hamilton 2016) | causal value of a culture-saturating nominee | ✅ `02` Design C — **+45%** |
 | 6 | Synthetic control | counterfactual "Tony without X" from a weighted peer combo | ◑ illustrative only — 3 donors, short panel |
 | 7 | Interrupted time series | effect of a discrete Tony-specific shock (network/timeslot/simulcast change) | ☐ needs a clean shock + monthly data |
 
@@ -133,14 +136,14 @@ the heavy lifting**: they soak up *everything* that hit all award shows in a
 given year — the secular flight from linear, the pandemic, the growth of
 streaming, NFL counter-programming to the extent it's shared. Whatever is left
 on the `is_tony·year_c` interaction is the Tonys' *own* differential trend. It
-came back **+1.5%/yr, p=0.67** — statistically indistinguishable from zero, and
+came back **+1.7%/yr, p=0.57** — statistically indistinguishable from zero, and
 if anything positive. **That is the cord-cutting rebuttal, defeated with data:
 the Tonys are not dying faster than the category; the category is dying.**
 
 **Why Hamilton is the cleanest causal point.** 2016 is a natural experiment on
 the *upside*: a single show (Hamilton) saturated the culture, the Tonys had it,
 the peers didn't. Fitting the Tony trend *excluding* 2016 and measuring the miss
-gives a **+41%** bump, while the same procedure on each peer (the placebo) sits
+gives a **+45%** bump, while the same procedure on each peer (the placebo) sits
 on-trend. That bounds the causal worth of *cultural penetration* — and reframes
 the relevance problem as **a supply problem in Broadway's hit-making, not a
 defect of the broadcast.**
@@ -215,7 +218,7 @@ somewhere a Nielsen box can't see."**
   `4_oldest_audience`, then the (forthcoming) search-DiD chart.
 
 **B. "The Hamilton Problem"** — a piece on Design C. A culture-saturating show
-is worth +41% on the broadcast, but Broadway's economics (jukebox/IP-driven,
+is worth +45% on the broadcast, but Broadway's economics (jukebox/IP-driven,
 tourist-funded, risk-averse capitalization) manufacture fewer of them. Relevance
 isn't a marketing problem the Tonys can fix; it's a *supply* problem upstream.
 
@@ -237,7 +240,7 @@ your work and admit where the popular narrative is wrong.
 - "Tony ratings fell 50%. So did everyone's. That's not the story."
 - "The Tonys have the oldest audience in entertainment — and that's the real
   red flag."
-- "What Hamilton was worth: +41%, and why Broadway can't make another on demand."
+- "What Hamilton was worth: +45%, and why Broadway can't make another on demand."
 
 **Do NOT write** (the data won't back it): "the Tonys are dying faster than other
 award shows," "the Tony broadcast is uniquely failing," or any single-number
