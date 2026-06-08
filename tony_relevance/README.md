@@ -71,12 +71,23 @@ charts/                     generated PNGs
 | `4_oldest_audience.png`       | Median viewer age ~61, the oldest of any award show |
 | `5_sag_broke_the_ruler.png`   | SAG→Netflix: same axis, two different rulers (Nielsen viewers vs Netflix views) |
 | `6_tony_vs_sag_stakes.png`    | The Tonys have ~2.7× SAG's last linear audience at stake in the platform decision |
+| `7_ip_share_trend.png`        | Best Musical nominees are ~75% adaptation — and have been, flat, since 2000 |
+| `8_source_composition.png`    | The import mix shifts (film→jukebox) but originals hold ~25–33% |
 
 **Phase 2 — SAG→Netflix case study** (`analysis/04_sag_netflix_case.py` →
 `outputs/SAG_NETFLIX_CASE.md`): the natural experiment informing the Tonys'
 post-2026 platform choice. SAG fell faster on linear than the Tonys, and Netflix
 *relocated* it rather than reviving it — streaming is a reach/demo/global play,
 not a relevance cure. See [`DEEPER_ANALYSIS.md`](DEEPER_ANALYSIS.md) Q1.
+
+**Phase 2 — Broadway IP-share study** (`analysis/05_ip_share.py` →
+`outputs/IP_SHARE.md`): does Broadway still *make* pop culture or just *import*
+it? Coding every Best Musical nominee 2000–2025 by source type (in
+`sources/best_musical_source.csv`) shows the "Broadway sold out to IP recently"
+take is a **myth** — adaptation has been ~75% of the field since 2000 (flat).
+The real gap is *cultural export*: it imports as much as ever but no longer sends
+songs back into the monoculture (Hamilton is the lone spike). See
+[`DEEPER_ANALYSIS.md`](DEEPER_ANALYSIS.md) Q2.
 
 ## Status & honesty
 

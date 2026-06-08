@@ -100,6 +100,20 @@ This is the deep thesis. Operationalize "pop-cultural relevance" as **cultural
 *export*: does Broadway still push songs, shows, and language into the shared
 culture — or has it become a downstream consumer of IP made elsewhere?**
 
+> **✅ ORIGINATION LAYER BUILT** — `analysis/05_ip_share.py` →
+> `outputs/IP_SHARE.md`, charts `7_ip_share_trend.png`, `8_source_composition.png`
+> (nominee list from `critics_impact.db`; source-type coding in
+> `sources/best_musical_source.csv`). **Myth-busting headline:** the "import" side
+> of the thesis is **weaker than expected**. The adaptation share of Best Musical
+> nominees is chronically high (67–85%) but **flat since 2000** (−2%/decade,
+> p=0.73) — Broadway did *not* recently sell out to IP; it has *always* adapted.
+> What shifted is the **kind** (jukebox surged in the 2020s; film/TV receded), and
+> the 2020s carry *more* originals than the 2010s. Tony **winners** stay ~36%
+> original vs ~23% for non-winning nominees. **Conclusion: the relevance problem
+> is on the *export* side, not the import side** — the field imports about as much
+> as it always did, but it stopped *exporting* (Hamilton is the lone modern spike).
+> The export index below is the remaining build.
+
 ### The steelman (argue it at full strength)
 
 1. **The "built-in Wikipedia page" problem.** The new-musical pipeline is

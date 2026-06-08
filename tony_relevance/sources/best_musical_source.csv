@@ -1,0 +1,110 @@
+year,title,won,source_type,is_original,confidence,note
+2000,Contact,1,original,1,high,"Dance musical, original."
+2000,James Joyce's The Dead,0,literary,0,high,Joyce short story.
+2000,Swing!,0,jukebox,0,high,Swing-era catalogue.
+2000,The Wild Party,0,literary,0,high,Joseph Moncure March poem.
+2001,The Producers,1,film,0,high,Mel Brooks 1967 film.
+2001,A Class Act,0,original,1,low,Bio of Edward Kleban using his unpublished trunk songs — borderline jukebox.
+2001,Jane Eyre,0,literary,0,high,Brontë novel.
+2001,The Full Monty,0,film,0,high,1997 film.
+2002,Thoroughly Modern Millie,1,film,0,high,1967 film.
+2002,Mamma Mia!,0,jukebox,0,high,ABBA catalogue.
+2002,Sweet Smell of Success,0,film,0,high,1957 film.
+2002,Urinetown,0,original,1,high,Original satire.
+2003,Hairspray,1,film,0,high,John Waters 1988 film.
+2003,A Year with Frog and Toad,0,literary,0,high,Arnold Lobel books.
+2003,Amour,0,literary,0,high,Marcel Aymé story.
+2003,Movin' Out,0,jukebox,0,high,Billy Joel catalogue.
+2004,Avenue Q,1,original,1,high,Original.
+2004,"Caroline, or Change",0,original,1,high,Tony Kushner original.
+2004,The Boy from Oz,0,jukebox,0,high,Peter Allen bio-jukebox.
+2004,Wicked,0,literary,0,high,Gregory Maguire novel.
+2005,Spamalot,1,film,0,high,Monty Python and the Holy Grail.
+2005,Dirty Rotten Scoundrels,0,film,0,high,1988 film.
+2005,The 25th Annual Putnam County Spelling Bee,0,original,1,med,Devised from an improv piece; treated as original.
+2005,The Light in the Piazza,0,literary,0,high,Elizabeth Spencer novella.
+2006,Jersey Boys,1,jukebox,0,high,Four Seasons bio-jukebox.
+2006,The Color Purple,0,literary,0,high,Alice Walker novel.
+2006,The Drowsy Chaperone,0,original,1,high,Original pastiche.
+2006,The Wedding Singer,0,film,0,high,1998 film.
+2007,Spring Awakening,1,literary,0,high,Frank Wedekind 1891 play.
+2007,Curtains,0,original,1,high,Original backstage murder mystery.
+2007,Grey Gardens,0,film,0,high,1975 documentary.
+2007,Mary Poppins,0,film,0,high,Disney film / Travers books.
+2008,In the Heights,1,original,1,high,Original (Miranda).
+2008,Cry-Baby,0,film,0,high,John Waters film.
+2008,Passing Strange,0,original,1,high,Original (Stew).
+2008,Xanadu,0,film,0,high,1980 film.
+2009,Billy Elliot the Musical,1,film,0,high,2000 film.
+2009,Next to Normal,0,original,1,high,Original.
+2009,Rock of Ages,0,jukebox,0,high,1980s rock catalogue.
+2009,Shrek The Musical,0,film,0,high,DreamWorks film.
+2010,Memphis,1,original,1,high,Original story/score (loosely inspired by real DJs).
+2010,American Idiot,0,jukebox,0,high,Green Day album.
+2010,Fela!,0,jukebox,0,med,Fela Kuti bio-jukebox.
+2010,Million Dollar Quartet,0,jukebox,0,high,Sun Records bio-jukebox.
+2011,The Book of Mormon,1,original,1,high,Original (Parker/Stone/Lopez).
+2011,Catch Me If You Can,0,film,0,high,2002 film.
+2011,Sister Act,0,film,0,high,1992 film.
+2011,The Scottsboro Boys,0,original,1,high,History-based original.
+2012,Once,1,film,0,high,2007 film.
+2012,Leap of Faith,0,film,0,high,1992 film.
+2012,Newsies,0,film,0,high,1992 Disney film.
+2012,Nice Work If You Can Get It,0,jukebox,0,high,Gershwin catalogue.
+2013,Kinky Boots,1,film,0,high,2005 film.
+2013,A Christmas Story: The Musical,0,film,0,high,1983 film.
+2013,Bring It On: The Musical,0,film,0,high,2000 film.
+2013,Matilda the Musical,0,literary,0,high,Roald Dahl novel.
+2014,A Gentleman's Guide to Love and Murder,1,literary,0,med,1907 novel / film Kind Hearts and Coronets.
+2014,After Midnight,0,jukebox,0,high,Ellington/Cotton Club catalogue.
+2014,Aladdin,0,film,0,high,Disney film.
+2014,Beautiful: The Carole King Musical,0,jukebox,0,high,Carole King bio-jukebox.
+2015,Fun Home,1,literary,0,high,Alison Bechdel graphic memoir.
+2015,An American in Paris,0,film,0,high,1951 film / Gershwin.
+2015,Something Rotten!,0,original,1,high,Original.
+2015,The Visit,0,literary,0,high,Dürrenmatt play.
+2016,Hamilton,1,literary,0,high,"Ron Chernow biography. The era's great EXPORT is, by source, an adaptation."
+2016,Bright Star,0,original,1,high,Original (Martin/Brickell).
+2016,School of Rock: The Musical,0,film,0,high,2003 film.
+2016,Shuffle Along,0,jukebox,0,low,Original backstage book but uses the 1921 Sissle & Blake score; Tony-classified 'new'. Edge case.
+2016,Waitress,0,film,0,high,2007 film.
+2017,Dear Evan Hansen,1,original,1,high,Original.
+2017,Come from Away,0,original,1,high,9/11 Gander history; no single source text.
+2017,Groundhog Day,0,film,0,high,1993 film.
+2017,"Natasha, Pierre & The Great Comet of 1812",0,literary,0,high,War and Peace excerpt.
+2018,The Band's Visit,1,film,0,high,2007 Israeli film.
+2018,Frozen,0,film,0,high,Disney film.
+2018,Mean Girls,0,film,0,high,2004 film.
+2018,SpongeBob SquarePants,0,tv,0,high,Nickelodeon series.
+2019,Hadestown,1,original,1,high,Greek myth (public domain) + original score.
+2019,Ain't Too Proud,0,jukebox,0,high,The Temptations bio-jukebox.
+2019,Beetlejuice,0,film,0,high,1988 film.
+2019,The Prom,0,original,1,high,Original.
+2019,Tootsie,0,film,0,high,1982 film.
+2021,Moulin Rouge! The Musical,1,film,0,med,2001 film (jukebox score).
+2021,Jagged Little Pill,0,jukebox,0,high,Alanis Morissette album.
+2021,Tina: The Tina Turner Musical,0,jukebox,0,high,Tina Turner bio-jukebox.
+2022,A Strange Loop,1,original,1,high,Original (Michael R. Jackson).
+2022,Girl from the North Country,0,jukebox,0,high,Bob Dylan catalogue.
+2022,MJ,0,jukebox,0,high,Michael Jackson bio-jukebox.
+2022,Mr. Saturday Night,0,film,0,high,1992 film.
+2022,Paradise Square,0,original,1,low,Evolved from 'Hard Times'; adapts Stephen Foster melodies — edge case.
+2022,SIX: The Musical,0,original,1,high,Tudor history (public domain) + original pop score.
+2023,Kimberly Akimbo,1,literary,0,med,Adapts David Lindsay-Abaire's own 2001 play.
+2023,& Juliet,0,jukebox,0,high,Max Martin pop catalogue.
+2023,"New York, New York",0,film,0,med,1977 film / Kander & Ebb.
+2023,Shucked,0,original,1,high,Original.
+2023,Some Like It Hot,0,film,0,high,1959 film.
+2024,The Outsiders,1,literary,0,high,S.E. Hinton 1967 novel (and 1983 film).
+2024,Hell's Kitchen,0,jukebox,0,high,Alicia Keys catalogue (semi-autobiographical).
+2024,Illinoise,0,jukebox,0,high,Sufjan Stevens album.
+2024,Suffs,0,original,1,high,Suffrage history original.
+2024,Water for Elephants,0,literary,0,high,Sara Gruen novel.
+2025,Maybe Happy Ending,1,original,1,high,Original (Korean musical).
+2025,Buena Vista Social Club,0,jukebox,0,high,Bio-jukebox (real musicians/catalogue).
+2025,Dead Outlaw,0,original,1,high,Original score; true story of Elmer McCurdy.
+2025,Death Becomes Her,0,film,0,high,1992 film.
+2025,Operation Mincemeat,0,original,1,med,Original British musical on WWII history (predates the 2021 film).
+2026,Schmigadoon!,1,tv,0,med,Apple TV+ series (itself a golden-age-musical parody). Winner per 2026 ceremony coverage. PARTIAL year.
+2026,Titanique,0,jukebox,0,med,Celine Dion catalogue + Titanic film parody. PARTIAL year.
+2026,Two Strangers (Carry a Cake Across New York),0,original,1,med,Original British musical. PARTIAL year.
