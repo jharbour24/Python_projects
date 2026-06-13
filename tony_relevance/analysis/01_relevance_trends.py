@@ -175,14 +175,17 @@ def main():
         v = "—" if pd.isna(r["viewers_m"]) else f"{r['viewers_m']:.2f}"
         L.append(f"| {int(r['year'])} | {v} | {r['measurement']} | {r['confidence']} | {r['notes']} |")
     L.append("")
-    L.append("**Read:** the Tonys *recovered* in 2025 — **4.85M linear (+38% YoY, the "
-             "best since 2019)**, 5.10M across platforms. That recovery is real, but it "
-             "mirrors a category-wide post-pandemic rebound (the Oscars went 10.4M→19.7M, "
-             "the Grammys 9.2M→16.9M over the same span), which is exactly why the "
-             "causal test (02) still finds **no Tony-specific TV trend**. The **2026 "
-             "(79th) ceremony aired June 7, 2026; its official Nielsen number was not yet "
-             "released at the time of writing** and is intentionally left blank rather "
-             "than estimated.\n")
+    L.append("**Read:** the Tonys have now **recovered for four straight years** — "
+             "2021 trough 2.62M → **5.06M in 2026, the best since 2019** — climbing "
+             "right through the years everyone was calling them culturally dead. The "
+             "rebound mirrors a category-wide post-pandemic bounce (Oscars 10.4M→19.7M; "
+             "Grammys 9.2M→16.9M), which is why the causal test (02) still finds **no "
+             "Tony-specific decline**. Two data-integrity notes: (1) 2026's 5.06M is the "
+             "**linear** CBS number; several outlets called it a 'slight dip' only by "
+             "comparing it to 2025's **5.10M across-platform** figure — on a like-for-"
+             "like linear basis it actually **rose ~4%** (4.85M→5.06M). (2) The "
+             "Paramount+ streaming add for 2026 had not been released at the time of "
+             "writing.\n")
 
     REPORT.write_text("\n".join(L))
     print(f"Wrote {REPORT}\n")

@@ -73,6 +73,13 @@ charts/                     generated PNGs
 | `6_tony_vs_sag_stakes.png`    | The Tonys have ~2.7× SAG's last linear audience at stake in the platform decision |
 | `7_ip_share_trend.png`        | Best Musical nominees are ~75% adaptation — and have been, flat, since 2000 |
 | `8_source_composition.png`    | The import mix shifts (film→jukebox) but originals hold ~25–33% |
+| `striking_1..5_*.png`         | **Bold dark "media-economics" chart set, updated through 2026** (rollercoaster, everyone-fell, measurement-mirage, oldest-room, shrinking-pie) |
+
+**2026 update + striking charts** (`analysis/06_striking_charts.py` →
+`charts/striking_*.png`; findings in `outputs/NIELSEN_2026.md`): the 79th Tonys
+(June 7, 2026) drew **5.06M linear — the best since 2019, +4% vs 2025**. The
+widely-reported "slight dip" is a measurement artifact (a linear figure compared
+to 2025's cross-platform number). The DiD null holds (+1.6%/yr, p=0.59).
 
 **Phase 2 — SAG→Netflix case study** (`analysis/04_sag_netflix_case.py` →
 `outputs/SAG_NETFLIX_CASE.md`): the natural experiment informing the Tonys'

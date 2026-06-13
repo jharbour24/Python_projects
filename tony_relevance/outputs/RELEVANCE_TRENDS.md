@@ -1,6 +1,6 @@
 # Tony Awards — Relevance Trends (descriptive layer)
 
-_Generated 2026-06-08 19:26. Linear-TV viewers only (streaming/'across-platforms' rows excluded for comparability)._
+_Generated 2026-06-13 13:41. Linear-TV viewers only (streaming/'across-platforms' rows excluded for comparability)._
 
 ## 1. Absolute decline and decline vs. peers
 
@@ -8,12 +8,12 @@ Indexed to 2014 = 100. % change is 2014 → latest clean linear year for each sh
 
 | Award | Base-yr viewers (M) | Latest yr | Latest viewers (M) | % change since 2014 | Peak (M, yr) | % off peak |
 |---|---|---|---|---|---|---|
-| Tony | 7.0 | 2025 | 4.85 | -31% | 8.7 (2016) | -44% |
+| Tony | 7.0 | 2026 | 5.06 | -28% | 8.7 (2016) | -42% |
 | Oscars | 43.7 | 2025 | 19.69 | -55% | 43.7 (2014) | -55% |
 | Emmys | 15.6 | 2025 | 7.40 | -53% | 15.6 (2014) | -53% |
 | Grammys | 28.5 | 2026 | 14.40 | -49% | 39.9 (2012) | -64% |
 
-**Read:** Since 2014, the Tonys' linear audience changed **-31%** vs. a peer-average of **-52%** (Oscars/Emmys/Grammys). The Tonys also sit at the **lowest absolute reach** of the four — they entered the streaming era smallest and remain smallest.
+**Read:** Since 2014, the Tonys' linear audience changed **-28%** vs. a peer-average of **-52%** (Oscars/Emmys/Grammys). The Tonys also sit at the **lowest absolute reach** of the four — they entered the streaming era smallest and remain smallest.
 
 ## 2. Normalised for the shrinking TV universe
 
@@ -21,7 +21,7 @@ Viewers per 1,000 US TV households. If the line still falls, the decline is **no
 
 | Award | Base-yr per-1k-HH | Latest per-1k-HH | % change |
 |---|---|---|---|
-| Tony | 60.6 | 38.6 | -36% |
+| Tony | 60.6 | nan | +nan% |
 | Oscars | 378.4 | 156.5 | -59% |
 | Emmys | 134.9 | 58.8 | -56% |
 | Grammys | 246.5 | nan | +nan% |
@@ -42,7 +42,7 @@ Tony viewers ÷ (Tony+Oscars+Emmys+Grammys) viewers, years where all four aired:
 | 2019 | 8.7% | 5.40 | 61.8 |
 | 2021 | 8.8% | 2.62 | 29.6 |
 | 2022 | 10.7% | 3.86 | 36.0 |
-| 2023 | 10.8% | 4.30 | 39.9 |
+| 2023 | 10.4% | 4.12 | 39.7 |
 | 2024 | 7.5% | 3.51 | 46.8 |
 | 2025 | 10.2% | 4.85 | 47.3 |
 
@@ -64,9 +64,9 @@ Tony viewers ÷ (Tony+Oscars+Emmys+Grammys) viewers, years where all four aired:
 
 | Year | Viewers (M) | Basis | Confidence | Note |
 |---|---|---|---|---|
-| 2024 | 3.51 | linear | high | Down 14% YoY; lowest non-pandemic linear number on record. (Deadline rounds to 3.53M.) |
-| 2025 | 4.85 | linear | high | CORRECTED: 4.85M is the CBS Live+Same-Day LINEAR average — most-watched Tonys since 2019; +38% vs 2024. (Earlier this cell was mis-tagged 'xplat' and wrongly excluded from the trend.) |
+| 2024 | 3.51 | linear | high | Down 14% YoY; lowest non-pandemic linear number on record. (CBS/Deadline round to 3.53M.) |
+| 2025 | 4.85 | linear | high | CBS Live+Same-Day LINEAR average — most-watched Tonys since 2019; +38% vs 2024. (5.10M across-platforms is a separate row.) |
 | 2025 | 5.10 | xplat | high | Across-platforms incl. Paramount+ (streaming +208% YoY). NOT comparable to the linear series — excluded from the clean trend. |
-| 2026 | — | linear | pending | Aired 2026-06-07. Official next-day Nielsen viewership NOT released as of 2026-06-08; awaiting trade-press report. Update this row when published. |
+| 2026 | 5.06 | linear | med | CBS LINEAR home viewers (preliminary). Best Tony linear since 2019 (5.40M); +4% vs 2025 linear (4.85M); CBS cites +44% vs 2024 (3.53M) and +23% vs 2023 (4.12M). NB: some outlets framed it a 'slight dip' by comparing this LINEAR 5.06M to 2025's 5.10M ACROSS-PLATFORM number — apples-to-oranges. Paramount+ add not yet released. |
 
 **Read:** the Tonys *recovered* in 2025 — **4.85M linear (+38% YoY, the best since 2019)**, 5.10M across platforms. That recovery is real, but it mirrors a category-wide post-pandemic rebound (the Oscars went 10.4M→19.7M, the Grammys 9.2M→16.9M over the same span), which is exactly why the causal test (02) still finds **no Tony-specific TV trend**. The **2026 (79th) ceremony aired June 7, 2026; its official Nielsen number was not yet released at the time of writing** and is intentionally left blank rather than estimated.

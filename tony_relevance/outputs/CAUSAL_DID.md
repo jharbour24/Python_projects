@@ -1,6 +1,6 @@
 # Tony Awards — Causal-leaning analysis (DiD against peer award shows)
 
-_Generated 2026-06-08 19:26. Window 2014–2025, linear-TV viewers only. Control group: Oscars, Emmys, Grammys._
+_Generated 2026-06-13 13:41. Window 2014–2025, linear-TV viewers only. Control group: Oscars, Emmys, Grammys._
 
 ## Design A — Difference-in-Differences (the headline causal test)
 
@@ -8,11 +8,11 @@ _Generated 2026-06-08 19:26. Window 2014–2025, linear-TV viewers only. Control
 
 | Specification | Tony extra annual change | 95% CI | p | n |
 |---|---|---|---|---|
-| Main (2014–2024) | +1.7% | [-4.0%, +7.7%] | 0.570 | 47 |
-| Drop pandemic (2020–21) | +1.9% | [-4.0%, +8.0%] | 0.541 | 40 |
+| Main (2014–2024) | +1.6% | [-4.1%, +7.6%] | 0.593 | 47 |
+| Drop pandemic (2020–21) | +1.7% | [-4.1%, +7.9%] | 0.564 | 40 |
 | High-confidence cells only | -0.5% | [-9.4%, +9.3%] | 0.916 | 30 |
 
-**Read:** the Tonys' differential trend is **+1.7%/yr** (indistinguishable from zero, p=0.57). 
+**Read:** the Tonys' differential trend is **+1.6%/yr** (indistinguishable from zero, p=0.59). 
 In plain terms: **the Tonys are not falling on TV any faster than the Oscars, Emmys or Grammys.** The ratings collapse is a *linear-TV* phenomenon, not a *theatre* phenomenon. This is the single most important — and most counter-intuitive — result in the project, and it should reshape the thesis (see RESEARCH_PLAN §'What the data actually licenses you to say').
 
 ## Design B — Who is bleeding fastest? (separate slopes)
@@ -22,7 +22,7 @@ In plain terms: **the Tonys are not falling on TV any faster than the Oscars, Em
 | Oscars | -8.5% | 0.000 | 12 |
 | Emmys | -8.1% | 0.000 | 12 |
 | Grammys | -7.6% | 0.000 | 12 |
-| Tony | -6.5% | 0.000 | 11 |
+| Tony | -6.6% | 0.000 | 11 |
 
 **Read:** by annual rate of decline the Tonys rank **#4 of 4** (1 = fastest-falling). The Tonys are mid-pack in *rate*; their problem is *level* (lowest absolute reach) and *age* (oldest audience), not an unusually steep slope.
 

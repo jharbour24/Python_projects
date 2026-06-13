@@ -27,6 +27,14 @@ streaming). Recent years are the worst affected. Rows are tagged `measurement`
 | approx    | Author estimate from Nielsen TV-HH counts & Statista pay-TV penetration | https://www.statista.com/statistics/495693/cord-cut-penetration-usa/ ; https://www.tvb.org/wp-content/uploads/2022/10/National-TV-Household-Penetration-Trends.pdf |
 | pending   | Placeholder for the 2026 (79th) Tony Nielsen figure, unreleased as of 2026-06-08 | (update on publication: Deadline / Variety / TheWrap ratings desks) |
 | showbuzz  | Showbuzz Daily / Statista — SAG Awards historical linear ratings | https://www.statista.com/statistics/568316/sag-awards-number-of-viewers/ ; https://showbuzzdaily.com/tag/sag-awards-ratings |
+| broadwayworld | BroadwayWorld / Broadway.com / Playbill — 79th (2026) Tony ratings | https://www.broadwayworld.com/article/79th-Tony-Awards-Viewership-Dips-Slightly-From-2025-Drawing-506-Million-Viewers-20260611 ; https://www.broadway.com/buzz/207320/the-79th-annual-tony-awards-telecast-hosted-by-pnk-draws-506-million-viewers/ ; https://playbill.com/article/ratings-tony-awards-2026-was-number-1-program-june-7 |
+
+**2026 (79th) Tonys — measurement note.** 5.06M = CBS **linear** home viewers
+(preliminary), the best Tony broadcast since 2019 and +4% vs 2025 linear (4.85M);
+CBS cites +44% vs 2024 (3.53M) and +23% vs 2023 (4.12M). Outlets framed it a
+"slight dip" only by comparing this linear figure to 2025's 5.10M **across-
+platform** number — not comparable. Paramount+ add not yet released. See
+`VERIFICATION.md` §A and `outputs/NIELSEN_2026.md`.
 
 **SAG Awards (Phase-2 case study) sources.** Linear era: Statista/Showbuzz Daily
 plus Variety (2021 record low: https://variety.com/2021/tv/news/sag-awards-2021-ratings-tnt-tbs-1234944724/)
