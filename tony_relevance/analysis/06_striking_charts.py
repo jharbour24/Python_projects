@@ -128,8 +128,10 @@ def c1_rollercoaster(lin):
 
     v2019 = float(t.loc[t.year == 2019, "viewers_m"].iloc[0])
     ax.axhline(v2019, color=FAINT, lw=1.0, ls=(0, (6, 4)), zorder=2)
-    _mlabel(ax, 2001.4, v2019 + 0.12, f"2019 pre-pandemic level · {v2019:.1f}M",
-            color=FAINT, size=8.6, ha="left", weight="normal")
+    # label sits in the empty band above the line at the right (no data above 5.4
+    # for any year after 2019), so it never crosses the curve
+    _mlabel(ax, 2026.7, v2019 + 0.16, f"2019 pre-pandemic level · {v2019:.1f}M",
+            color=FAINT, size=8.6, ha="right", va="bottom", weight="normal")
     ax.axvline(2020, color=MUTED, lw=1.0, ls=(0, (1, 3)), zorder=2)
 
     for _, r in t.iterrows():
@@ -143,10 +145,12 @@ def c1_rollercoaster(lin):
     ax.annotate("pandemic low", xy=(2021, 2.62), xytext=(2021, 1.2), color=MUTED,
                 fontsize=10, family=SERIF, style="italic", ha="center", va="top",
                 arrowprops=dict(arrowstyle="-", color=FAINT, lw=1.0))
-    ax.annotate("2026: 5.06M —\nbest since 2019", xy=(2026, 5.06), xytext=(2022.4, 7.7),
-                color=BRICK, fontsize=11, family=SERIF, ha="center", va="center",
+    # callout lives in the open lower-right; arrow rises to just under the 2026
+    # marker so it never collides with the end-of-line value labels
+    ax.annotate("2026: 5.06M —\nbest since 2019", xy=(2026, 4.74), xytext=(2024.2, 1.95),
+                color=BRICK, fontsize=10.5, family=SERIF, ha="center", va="center",
                 arrowprops=dict(arrowstyle="-|>", color=BRICK, lw=1.6,
-                                connectionstyle="arc3,rad=-0.35"))
+                                connectionstyle="arc3,rad=0.3"))
 
     ax.set_ylim(0, 10.4); ax.set_xlim(2000, 2027)
     ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:.0f}M"))
@@ -167,6 +171,7 @@ def c2_everyone_fell(lin):
     win = lin[(lin.year >= 2014) & (lin.year <= 2025)]
     ax.axhline(100, color=FAINT, lw=1.0, ls=(0, (6, 4)), zorder=2)
     _mlabel(ax, 2014.1, 103, "2014 = 100", color=FAINT, size=8.6, ha="left", weight="normal")
+    ends = []  # [award, x_end, y_true, color]
     for a in AWARDS:
         s = win[win.award == a].sort_values("year")
         base = s.loc[s.year == 2014, "viewers_m"]
@@ -177,11 +182,23 @@ def c2_everyone_fell(lin):
         ax.plot(s.year, idx, color=col, lw=2.8 if a == "Tony" else 1.8,
                 zorder=5 if a == "Tony" else 3, marker="o", ms=3.5,
                 mfc=col, mec=BG, mew=0.8)
-        # nudge near-overlapping end labels (Emmys/Oscars both land ~45-47)
-        yoff = {"Emmys": 3.2, "Oscars": -3.2}.get(a, 0)
-        _mlabel(ax, s.year.iloc[-1] + 0.18, idx.iloc[-1] + yoff, f"{a} {idx.iloc[-1]:.0f}",
+        ends.append([a, float(s.year.iloc[-1]), float(idx.iloc[-1]), col])
+
+    # spread the clustered end labels vertically (Oscars/Emmys/Grammys all land
+    # ~45-54); enforce a minimum gap and draw a faint leader to any nudged label
+    ends.sort(key=lambda e: e[2])
+    ypos = [e[2] for e in ends]
+    min_gap = 6.5
+    for i in range(1, len(ypos)):
+        if ypos[i] - ypos[i - 1] < min_gap:
+            ypos[i] = ypos[i - 1] + min_gap
+    for (a, xend, ytrue, col), yp in zip(ends, ypos):
+        if abs(yp - ytrue) > 1.2:
+            ax.plot([xend + 0.05, xend + 0.34], [ytrue, yp], color=col,
+                    lw=0.8, zorder=4)
+        _mlabel(ax, xend + 0.46, yp, f"{a} {ytrue:.0f}",
                 color=col, size=9.5, ha="left", va="center")
-    ax.set_xlim(2014, 2026.8); ax.set_ylim(0, 132)
+    ax.set_xlim(2014, 2027.8); ax.set_ylim(0, 132)
     ax.set_xticks(range(2014, 2026, 2))
     _mono_ticks(ax)
     _titleblock(fig, "Everyone fell — the Tonys least of all",
@@ -208,19 +225,20 @@ def c3_mirage(lin):
     ax.set_xticks(x); ax.set_xticklabels(labels)
     for lbl in ax.get_xticklabels():
         lbl.set_family(MONO); lbl.set_fontsize(9.5)
-    ax.set_ylim(0, 6.2)
+    ax.set_ylim(0, 6.7)
     ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:.0f}M"))
     _mono_ticks(ax)
     ax.annotate("", xy=(1, 5.06), xytext=(0, 4.85),
                 arrowprops=dict(arrowstyle="-|>", color=OLIVE, lw=2.2))
     ax.annotate("+4% like-for-like\n(linear → linear)", xy=(0.5, 4.96),
-                xytext=(0.5, 5.78), color=OLIVE, fontsize=11, family=SERIF,
+                xytext=(0.5, 5.98), color=OLIVE, fontsize=11, family=SERIF,
                 ha="center", va="center")
-    ax.annotate("the “dip” compared THIS bar\nto 2026 — different rulers",
-                xy=(2, 5.16), xytext=(2.0, 5.95), color=BRICK, fontsize=10.5,
-                family=SERIF, ha="center", va="center",
+    # arrow lands on the bar's right shoulder so it clears the centred value label
+    ax.annotate("the “dip” compared\nthis bar to 2026", xy=(2.30, 5.08),
+                xytext=(2.46, 6.28), color=BRICK, fontsize=10,
+                family=SERIF, ha="right", va="center",
                 arrowprops=dict(arrowstyle="-|>", color=BRICK, lw=1.5,
-                                connectionstyle="arc3,rad=-0.2"))
+                                connectionstyle="arc3,rad=0.25"))
     _titleblock(fig, "The measurement mirage",
                 "Tony Awards viewers (millions): how a rise got reported as a fall.",
                 "“Linear” home viewers and “across-platform” totals are different rulers.")
@@ -247,18 +265,19 @@ def c4_oldest_room(demo):
     ax.set_yticks(y); ax.set_yticklabels(snap.award)
     for lbl in ax.get_yticklabels():
         lbl.set_family(SERIF); lbl.set_fontsize(12); lbl.set_color(INK)
-    ax.set_xlim(0, max(snap.delta) * 1.42)
+    ax.set_xlim(0, max(snap.delta) * 1.5)
     ax.xaxis.set_major_formatter(FuncFormatter(lambda v, _: f"+{v:.0f}"))
     ax.set_xlabel(f"Years older than the typical American (U.S. median age {US_MEDIAN_AGE})",
                   family=SERIF, fontsize=11)
     ax.grid(axis="x", visible=True, color=GRID); ax.grid(axis="y", visible=False)
     _mono_ticks(ax)
+    # callout placed in the open right-hand space, clear of every bar and label
     ax.annotate("≈ 23 years older than\nthe typical American",
-                xy=(snap.delta.max(), len(snap) - 1),
-                xytext=(snap.delta.max() * 0.52, len(snap) - 1.95),
+                xy=(snap.delta.max() - 0.5, len(snap) - 1.28),
+                xytext=(snap.delta.max() * 1.18, len(snap) - 2.42),
                 color=BRICK, fontsize=10.5, family=SERIF, ha="center", va="center",
                 arrowprops=dict(arrowstyle="-|>", color=BRICK, lw=1.4,
-                                connectionstyle="arc3,rad=-0.3"))
+                                connectionstyle="arc3,rad=0.3"))
     _titleblock(fig, "The oldest room in entertainment",
                 "Median award-show viewer age, minus the median American’s.",
                 "The Tony broadcast audience skews oldest of any major award show.")
@@ -283,9 +302,10 @@ def c5_shrinking_pie(lin):
     ax.set_xticks(list(share.index)[::2])
     ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:.0f}%"))
     _mono_ticks(ax)
+    # arrow targets the bar's top-left shoulder, clearing the centred value label
     ax.annotate("a bigger slice as\npeers fell faster",
-                xy=(share.index[-1], share.iloc[-1]),
-                xytext=(share.index[-4], share.values.max() * 1.3), color=BRICK,
+                xy=(share.index[-1] - 0.34, share.iloc[-1] + 0.15),
+                xytext=(share.index[-4] + 0.3, share.values.max() * 1.32), color=BRICK,
                 fontsize=10.5, family=SERIF, ha="center", va="center",
                 arrowprops=dict(arrowstyle="-|>", color=BRICK, lw=1.4,
                                 connectionstyle="arc3,rad=-0.3"))
