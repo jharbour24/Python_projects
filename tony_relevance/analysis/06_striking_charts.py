@@ -134,9 +134,6 @@ def c1_rollercoaster(lin):
             color=FAINT, size=8.6, ha="right", va="bottom", weight="normal")
     ax.axvline(2020, color=MUTED, lw=1.0, ls=(0, (1, 3)), zorder=2)
 
-    for _, r in t.iterrows():
-        _mlabel(ax, r.year, r.viewers_m + 0.22, f"{r.viewers_m:.1f}", size=8.0,
-                weight="normal")
     ax.annotate("Hamilton —\nthe last monoculture moment",
                 xy=(2016, 8.7), xytext=(2009.6, 9.5), color=INK, fontsize=10.5,
                 family=SERIF, ha="left", va="center",
@@ -228,8 +225,6 @@ def c3_mirage(lin):
     ax.set_ylim(0, 6.7)
     ax.yaxis.set_major_formatter(FuncFormatter(lambda v, _: f"{v:.0f}M"))
     _mono_ticks(ax)
-    ax.annotate("", xy=(1, 5.06), xytext=(0, 4.85),
-                arrowprops=dict(arrowstyle="-|>", color=OLIVE, lw=2.2))
     ax.annotate("+4% like-for-like\n(linear → linear)", xy=(0.5, 4.96),
                 xytext=(0.5, 5.98), color=OLIVE, fontsize=11, family=SERIF,
                 ha="center", va="center")
